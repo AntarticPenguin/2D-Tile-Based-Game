@@ -39,10 +39,55 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
-	return 0;
+	int ret = 1;
+	MSG msg = { 0 };
+	/*
+	while (ret = GetMessage(&msg, 0, 0, 0))
+	{
+		if (-1 == ret)
+		{
+			break;
+		}
+		else
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	}
+	*/
+	while (WM_QUIT != msg.message)
+	{
+		//메세지 내용이 있으면 들어옴
+		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+		{
+			//윈도우가 처리
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		else
+		{
+			//게임 처리
+
+		}
+	}
+
+	return (int)msg.wParam;
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	switch (msg)
+	{
+	case WM_KEYDOWN:
+		if (VK_ESCAPE == wParam)
+			DestroyWindow(hWnd);
+		return 0;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
+	case WM_LBUTTONDOWN:
+		MessageBox(0, L"Hello World!!!!!!!!!!!", L"Hello World", MB_OK);
+		return 0;
+	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
