@@ -71,6 +71,67 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
+	if (false == InitDirect3D())
+		return false;
+
+	return true;
+}
+
+bool GameSystem::InitDirect3D()
+{
+	D3D_FEATURE_LEVEL featureLevel;
+
+	HRESULT hr = D3D11CreateDevice(
+		0,								//비디오카드
+		D3D_DRIVER_TYPE_HARDWARE,		//드라이버 타입
+		0,								//소프트웨어 구동자
+		D3D11_CREATE_DEVICE_DEBUG,		//Flag
+		0,								//지원되는 버전 설정
+		0,								//설정한 버전 개수
+		D3D11_SDK_VERSION,				//SDK버전
+		&_d3dDevice,					//Device 포인터
+		&featureLevel,					//featureLevel
+		&_d3dDeviceContext				//DeviceContext 포인터
+	);
+
+	if (FAILED(hr))
+	{
+		MessageBox(0, L"D3D11Device 생성 실패", L"ERROR", MB_OK);
+		return false;
+	}
+
+	//4xMSAA 지원여부 체크
+	hr = _d3dDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 4, &_4xMsaaQuality);
+
+	if (FAILED(hr))
+	{
+		MessageBox(0, L"DX11이 지원되지 않은 하드웨어", L"ERROR", MB_OK);
+		return false;
+	}
+
+	DXGI_SWAP_CHAIN_DESC sd;
+
+	//후면버퍼 세팅
+	sd.BufferDesc.Width = 1280;
+	sd.BufferDesc.Height = 800;
+	sd.BufferDesc.RefreshRate.Numerator = 60;								//디스플레이이 갱신률
+	sd.BufferDesc.RefreshRate.Denominator = 1;
+	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;	//화면 Scanline 모드
+	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;					//디스플레이 비율(16:9 etc..)
+
+	//안티 앨리어싱 품질 세팅
+	if (_isEnable4xMSAA)
+	{
+		sd.SampleDesc.Count = 4;
+		sd.SampleDesc.Quality = _4xMsaaQuality - 1;
+	}
+	else
+	{
+		sd.SampleDesc.Count = 1;
+		sd.SampleDesc.Quality = 0;
+	}
+
 	return true;
 }
 
@@ -111,5 +172,8 @@ int	GameSystem::Update()
 	return (int)msg.wParam;
 }
 
-GameSystem::GameSystem() { }
+GameSystem::GameSystem()
+{
+	_isEnable4xMSAA = false;
+}
 GameSystem::~GameSystem() { }
