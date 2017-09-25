@@ -21,6 +21,27 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 GameSystem* GameSystem::_instance = NULL;
 
+
+GameSystem::GameSystem()
+{
+	_isEnable4xMSAA = false;
+}
+
+GameSystem::~GameSystem()
+{
+	_renderTargetView->Release();
+	_renderTargetView = NULL;
+
+	_swapChain->Release();
+	_swapChain = NULL;
+
+	_d3dDeviceContext->Release();
+	_d3dDeviceContext = NULL;
+
+	_d3dDevice->Release();
+	_d3dDevice = NULL;
+}
+
 GameSystem& GameSystem::GetInstance()
 {
 	if (NULL == _instance)
@@ -48,7 +69,7 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 		return false;
 	}
 
-	HWND hWnd = CreateWindow(
+	_hMainWnd = CreateWindow(
 		L"Base",
 		L"타이틀",
 		WS_OVERLAPPEDWINDOW,
@@ -62,14 +83,14 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 		0
 	);
 
-	if (NULL == hWnd)
+	if (NULL == _hMainWnd)
 	{
 		MessageBox(0, L"FAIL TO CREATE WINDOW", L"ERROR", MB_OK);
 		return false;
 	}
 
-	ShowWindow(hWnd, nCmdShow);
-	UpdateWindow(hWnd);
+	ShowWindow(_hMainWnd, nCmdShow);
+	UpdateWindow(_hMainWnd);
 
 	if (false == InitDirect3D())
 		return false;
@@ -132,6 +153,93 @@ bool GameSystem::InitDirect3D()
 		sd.SampleDesc.Quality = 0;
 	}
 
+	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;	//버퍼의 용도를 서술하는 구조체
+	sd.BufferCount = 1;									//교환사슬에서 이용할 후면버퍼의 개수(더블버퍼링은 1개)
+	sd.OutputWindow = _hMainWnd;						//렌더링 결과를 표시할 창의 핸들
+	sd.Windowed = true;									//윈도우모드 : 전체화면
+	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;			//교환효과 지정(후면->전면 교체될때의 효과)
+	sd.Flags = 0;										//추가 플래그
+
+	//IDXGISwapChain(SwapChain 인스턴스) 인터페이스 생성
+	IDXGISwapChain* dxgiDevice = NULL;
+	hr = _d3dDevice->QueryInterface(__uuidof(IDXGIDevice), (void**)&dxgiDevice);	//uuidof: 일종의 캐스팅
+	if (FAILED(hr))
+	{
+		MessageBox(0, L"dxgiDevice를 얻지 못하였습니다.", L"ERROR", MB_OK);
+		return false;
+	}
+	
+	IDXGIAdapter* dxgiAdapter = NULL;
+	hr = dxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&dxgiAdapter);
+	if (FAILED(hr))
+	{
+		MessageBox(0, L"dxgiAdapter를 얻지 못하였습니다.", L"ERROR", MB_OK);
+		return false;
+	}
+
+	IDXGIFactory* dxgiFactory = NULL;
+	hr = dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&dxgiFactory);
+	if (FAILED(hr))
+	{
+		MessageBox(0, L"dxgiFactory를 얻지 못하였습니다.", L"ERROR", MB_OK);
+		return false;
+	}
+
+	hr = dxgiFactory->CreateSwapChain(_d3dDevice, &sd, &_swapChain);
+	if (FAILED(hr))
+	{
+		MessageBox(0, L"SwapChain 인터페이스 생성 실패", L"ERROR", MB_OK);
+		return false;
+	}
+
+	//이전 3개(Device, Adapter, Factory) 인터페이스 해제
+	dxgiDevice->Release();
+	dxgiDevice = NULL;
+
+	dxgiAdapter->Release();
+	dxgiAdapter = NULL;
+
+	dxgiFactory->Release();
+	dxgiFactory = NULL;
+
+	//SwapChain의 후면버퍼에 대한 RenderTargetView 생성
+	// 1.후면버퍼의 인터페이스 획득
+	ID3D11Texture2D* backBuffer;
+	hr = _swapChain->GetBuffer(
+		0,										//얻고자 하는 backBuffer의 인덱스
+		__uuidof(ID3D11Texture2D),
+		reinterpret_cast<void**>(&backBuffer)
+	);
+	if (FAILED(hr))
+	{
+		MessageBox(0, L"backBuffer 획득 실패", L"ERROR", MB_OK);
+		return false;
+	}
+
+	//2.backBuffer를 사용할 뷰 생성
+	hr = _d3dDevice->CreateRenderTargetView(
+		backBuffer,
+		NULL,
+		&_renderTargetView		//backBuffer를 사용하는 RenderTargetView
+	);
+	if (FAILED(hr))
+	{
+		MessageBox(0, L"RenderTargetView 생성 실패", L"ERROR", MB_OK);
+		return false;
+	}
+
+	backBuffer->Release();
+	backBuffer = NULL;
+
+	//*****이 밑으로는 3D를 위한 작업 *****
+	//깊이, 스텐실 버퍼와 그에 연결되는 뷰 생성(그림자 등 특수효과)
+	D3D11_TEXTURE2D_DESC depthStencilDesc;
+	depthStencilDesc.Width = 1280;
+	depthStencilDesc.Height = 800;							
+	depthStencilDesc.MipLevels = 1;		//밉맵의 수준(보간 정도: (ex)줌인 아웃)
+	depthStencilDesc.ArraySize = 1;		//배열에 들어갈 텍스 갯수
+	depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
 	return true;
 }
 
@@ -171,9 +279,3 @@ int	GameSystem::Update()
 
 	return (int)msg.wParam;
 }
-
-GameSystem::GameSystem()
-{
-	_isEnable4xMSAA = false;
-}
-GameSystem::~GameSystem() { }

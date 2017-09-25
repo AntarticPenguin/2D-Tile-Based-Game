@@ -11,6 +11,9 @@ public:
 	static GameSystem& GetInstance();
 	
 	//Windows
+private:
+	HWND _hMainWnd;
+
 public:
 	bool InitSystem(HINSTANCE hInstance, int nCmdShow);
 	int	Update();
@@ -21,6 +24,9 @@ private:
 	ID3D11DeviceContext* _d3dDeviceContext;
 	UINT _4xMsaaQuality;					//하드웨어가 지원하는 최대 품질
 	bool _isEnable4xMSAA;
+
+	IDXGISwapChain* _swapChain;
+	ID3D11RenderTargetView* _renderTargetView;
 
 public:
 	bool InitDirect3D();
