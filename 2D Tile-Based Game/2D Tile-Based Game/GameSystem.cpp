@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string>
+
 #include "GameSystem.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -122,6 +124,9 @@ int	GameSystem::Update()
 	}
 	*/
 
+	_gameTimer.Reset();
+	_frameDuration = 0.0f;
+
 	while (WM_QUIT != msg.message)
 	{
 		//메세지 내용이 있으면 들어옴
@@ -133,19 +138,36 @@ int	GameSystem::Update()
 		}
 		else
 		{
-			//게임 업데이트
-			float color[4];
-			color[0] = 1.0f;	//RED
-			color[1] = 1.0f;	//GREEN
-			color[2] = 0.0f;	//BLUE
-			color[3] = 1.0f;	//ALPHA
+			_gameTimer.Update();
+			float deltaTime = _gameTimer.GetDeltaTime();
+			wchar_t timeCheck[256];
+			swprintf(timeCheck, L"DeltaTime: %f\n", deltaTime);
+			OutputDebugString(timeCheck);
 
-			_d3dDeviceContext->ClearRenderTargetView(_renderTargetView, color);			//후면버퍼(사용자 눈에 안보임)
-			_d3dDeviceContext->ClearDepthStencilView(_depthStencilView, D3D11_CLEAR_DEPTH || D3D11_CLEAR_STENCIL, 1.0f, 0);
+			_frameDuration += _gameTimer.GetDeltaTime();
 
-			//게임관련 Draw
+			float secPerFrame = 1.0f / 60.0f;
+			if (secPerFrame <= _frameDuration)
+			{
+				wchar_t timeCheck[256];
+				swprintf(timeCheck, L"FrameDuration: %f\n", _frameDuration);
+				OutputDebugString(timeCheck);
 
-			_swapChain->Present(0, 0);		//PRESENT(전면으로 교체)
+				_frameDuration = 0.0f;
+
+				//게임 업데이트
+				float color[4];
+				color[0] = 0.3f;	//RED
+				color[1] = 0.3f;	//GREEN
+				color[2] = 0.3f;	//BLUE
+				color[3] = 1.0f;	//ALPHA
+
+				_d3dDeviceContext->ClearRenderTargetView(_renderTargetView, color);			//후면버퍼(사용자 눈에 안보임)
+				_d3dDeviceContext->ClearDepthStencilView(_depthStencilView, D3D11_CLEAR_DEPTH || D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+				//게임관련 Draw
+				_swapChain->Present(0, 0);		//PRESENT(전면으로 교체)
+			}
 		}
 	}
 

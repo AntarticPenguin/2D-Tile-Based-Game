@@ -1,6 +1,8 @@
 #pragma once
 #include <Windows.h>
+
 #include "d3dx11.h"
+#include "GameTimer.h"
 
 class GameSystem
 {
@@ -36,6 +38,11 @@ private:
 
 public:
 	bool InitDirect3D();
+
+	//Game
+private:
+	GameTimer _gameTimer;
+	float _frameDuration;
 
 	//Initializer & Destroyer
 private:
