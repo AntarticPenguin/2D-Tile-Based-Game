@@ -26,28 +26,25 @@ GameSystem* GameSystem::_instance = NULL;
 
 GameSystem::GameSystem()
 {
-	_isEnable4xMSAA = false;
+	//_isEnable4xMSAA = false;
+	_isFullScreen = false;
+	_clientWidth = 1280;
+	_clientHeight = 800;
 }
 
 GameSystem::~GameSystem()
 {
-	_depthStencilView->Release();
-	_depthStencilView = NULL;
+	/*
+	RELEASE_COM(_depthStencilView);
+	RELEASE_COM(_depthStencilBuffer);
+	RELEASE_COM(_renderTargetView);
+	RELEASE_COM(_swapChain);
+	RELEASE_COM(_d3dDeviceContext);
+	RELEASE_COM(_d3dDevice);
+	*/
 
-	_depthStencilBuffer->Release();
-	_depthStencilBuffer = NULL;
-
-	_renderTargetView->Release();
-	_renderTargetView = NULL;
-
-	_swapChain->Release();
-	_swapChain = NULL;
-
-	_d3dDeviceContext->Release();
-	_d3dDeviceContext = NULL;
-
-	_d3dDevice->Release();
-	_d3dDevice = NULL;
+	RELEASE_COM(_sprite);
+	RELEASE_COM(_device3d);
 }
 
 GameSystem& GameSystem::GetInstance()
@@ -76,11 +73,20 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	{
 		return false;
 	}
-
+	
+	DWORD style;
+	if (_isFullScreen)
+	{
+		style = WS_EX_TOPMOST | WS_VISIBLE | WS_POPUP;
+	}
+	else
+	{
+		style = WS_OVERLAPPEDWINDOW;
+	}
 	_hMainWnd = CreateWindow(
 		L"Base",
 		L"타이틀",
-		WS_OVERLAPPEDWINDOW,
+		style,
 		CW_USEDEFAULT,			//x
 		CW_USEDEFAULT,			//y
 		CW_USEDEFAULT,			//Width
@@ -95,6 +101,19 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	{
 		MessageBox(0, L"FAIL TO CREATE WINDOW", L"ERROR", MB_OK);
 		return false;
+	}
+
+	if (false == _isFullScreen)
+	{
+		RECT clientRect;
+		GetClientRect(_hMainWnd, &clientRect);
+
+		int addWidth = _clientWidth - clientRect.right;
+		int addHeight = _clientHeight - clientRect.bottom;
+		int finalWidth = _clientWidth + addWidth;
+		int finalHeight = _clientHeight + addHeight;
+
+		MoveWindow(_hMainWnd, 0, 0, finalWidth, finalHeight, TRUE);
 	}
 
 	ShowWindow(_hMainWnd, nCmdShow);
@@ -156,6 +175,7 @@ int	GameSystem::Update()
 				_frameDuration = 0.0f;
 
 				//게임 업데이트
+				/*
 				float color[4];
 				color[0] = 0.3f;	//RED
 				color[1] = 0.3f;	//GREEN
@@ -167,6 +187,27 @@ int	GameSystem::Update()
 
 				//게임관련 Draw
 				_swapChain->Present(0, 0);		//PRESENT(전면으로 교체)
+				*/
+
+				_device3d->Clear(0,
+					NULL,
+					D3DCLEAR_TARGET,				//클리어 타겟(후면버퍼)
+					D3DCOLOR_XRGB(100, 100, 100),	//색상
+					0.0f,							//깊이
+					0
+				);
+
+				//Begin과 End 사이에 출력작업
+				_device3d->BeginScene();
+
+				_sprite->Begin(0);
+				{
+
+				}
+				_sprite->End();
+
+				_device3d->EndScene();
+				_device3d->Present(NULL, NULL, NULL, NULL);
 			}
 		}
 	}
@@ -176,6 +217,7 @@ int	GameSystem::Update()
 
 bool GameSystem::InitDirect3D()
 {
+	/*
 	D3D_FEATURE_LEVEL featureLevel;
 
 	HRESULT hr = D3D11CreateDevice(
@@ -207,8 +249,8 @@ bool GameSystem::InitDirect3D()
 	DXGI_SWAP_CHAIN_DESC sd;
 
 	//후면버퍼 세팅
-	sd.BufferDesc.Width = 1280;
-	sd.BufferDesc.Height = 800;
+	sd.BufferDesc.Width = _clientWidth;
+	sd.BufferDesc.Height = _clientHeight;
 	sd.BufferDesc.RefreshRate.Numerator = 60;								//디스플레이이 갱신률
 	sd.BufferDesc.RefreshRate.Denominator = 1;
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -310,8 +352,8 @@ bool GameSystem::InitDirect3D()
 
 	//1.특성 세팅
 	D3D11_TEXTURE2D_DESC depthStencilDesc;
-	depthStencilDesc.Width = 1280;
-	depthStencilDesc.Height = 800;							
+	depthStencilDesc.Width = _clientWidth;
+	depthStencilDesc.Height = _clientHeight;							
 	depthStencilDesc.MipLevels = 1;		//밉맵의 수준(보간 정도: (ex)줌인 아웃)
 	depthStencilDesc.ArraySize = 1;		//배열에 들어갈 텍스쳐 갯수
 	depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -353,12 +395,75 @@ bool GameSystem::InitDirect3D()
 	//뷰포트 설정
 	_screenViewport.TopLeftX = 0;
 	_screenViewport.TopLeftY = 0;
-	_screenViewport.Width = 1280.0f;
-	_screenViewport.Height = 800.0f;
+	_screenViewport.Width = (float)_clientWidth;
+	_screenViewport.Height = (float)_clientHeight;
 	_screenViewport.MinDepth = 0.0f;
 	_screenViewport.MaxDepth = 1.0f;
 
 	_d3dDeviceContext->RSSetViewports(1, &_screenViewport);
+	*/
+	
+	//Ver DX9
+	LPDIRECT3D9 direct3d = Direct3DCreate9(D3D_SDK_VERSION);
+	if (NULL == direct3d)
+	{
+		MessageBox(0, L"D3D9객체를 얻지 못했습니다.", L"ERROR", MB_OK);
+		return false;
+	}
+
+	D3DPRESENT_PARAMETERS d3dpp;
+	ZeroMemory(&d3dpp, sizeof(d3dpp));
+
+	d3dpp.BackBufferWidth = _clientWidth;
+	d3dpp.BackBufferHeight = _clientHeight;
+
+	if (_isFullScreen)
+	{
+		d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
+	}
+	else
+	{
+		d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
+	}
+	d3dpp.BackBufferCount = 1;
+	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	d3dpp.hDeviceWindow = _hMainWnd;
+	d3dpp.Windowed = (!_isFullScreen);
+	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+	
+	D3DCAPS9 caps;		//하드웨어 성능검사
+	HRESULT hr = direct3d->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &caps);	//하드웨어 가속을 얼만큼 지원하는가
+	if (FAILED(hr))
+	{
+		MessageBox(0, L"하드웨어 성능체크 실패", L"ERROR", MB_OK);
+		return false;
+	}
+
+	DWORD behavior;
+	if ((caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT) == 0 ||
+		caps.VertexShaderVersion < D3DVS_VERSION(1,1))
+	{
+		behavior = D3DCREATE_SOFTWARE_VERTEXPROCESSING;		//하드웨어 가속을 지원하지 않으면 소프트웨어로 구동
+	}
+	else
+	{
+		behavior = D3DCREATE_HARDWARE_VERTEXPROCESSING;
+	}
+
+	hr = direct3d->CreateDevice(D3DADAPTER_DEFAULT,
+		D3DDEVTYPE_HAL, _hMainWnd, behavior, &d3dpp, &_device3d);
+	if (FAILED(hr))
+	{
+		MessageBox(0, L"direct3d device 생성실패", L"ERROR", MB_OK);
+		return false;
+	}
+
+	hr = D3DXCreateSprite(_device3d, &_sprite);
+	if (FAILED(hr))
+	{
+		MessageBox(0, L"Sprite 생성 실패", L"ERROR", MB_OK);
+		return false;
+	}
 
 	return true;
 }

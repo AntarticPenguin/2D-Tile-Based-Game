@@ -1,8 +1,12 @@
 #pragma once
 #include <Windows.h>
+//#include <d3dx11.h>
+#include <d3dx9.h>
 
-#include "d3dx11.h"
 #include "GameTimer.h"
+
+#define RELEASE_COM(x) { if(x){x->Release(); x = NULL;} }
+#define SAFE_DELETE(x) { if(x){delete x; x = NULL;} }
 
 class GameSystem
 {
@@ -15,6 +19,9 @@ public:
 	//Windows
 private:
 	HWND _hMainWnd;
+	bool _isFullScreen;
+	int _clientWidth;
+	int _clientHeight;
 
 public:
 	bool InitSystem(HINSTANCE hInstance, int nCmdShow);
@@ -22,19 +29,23 @@ public:
 
 	//Direct3D
 private:
-	ID3D11Device* _d3dDevice;
-	ID3D11DeviceContext* _d3dDeviceContext;
-	UINT _4xMsaaQuality;					//하드웨어가 지원하는 최대 품질
-	bool _isEnable4xMSAA;
+//	ID3D11Device* _d3dDevice;
+//	ID3D11DeviceContext* _d3dDeviceContext;
+//	UINT _4xMsaaQuality;					//하드웨어가 지원하는 최대 품질
+//	bool _isEnable4xMSAA;
+//
+//	IDXGISwapChain* _swapChain;
+//
+//	ID3D11RenderTargetView* _renderTargetView;
+//
+//	ID3D11Texture2D* _depthStencilBuffer;
+//	ID3D11DepthStencilView* _depthStencilView;
+//
+//	D3D11_VIEWPORT _screenViewport;
 
-	IDXGISwapChain* _swapChain;
-
-	ID3D11RenderTargetView* _renderTargetView;
-
-	ID3D11Texture2D* _depthStencilBuffer;
-	ID3D11DepthStencilView* _depthStencilView;
-
-	D3D11_VIEWPORT _screenViewport;
+	//Ver DX9
+	LPDIRECT3DDEVICE9 _device3d;
+	LPD3DXSPRITE _sprite;
 
 public:
 	bool InitDirect3D();
