@@ -175,6 +175,8 @@ int	GameSystem::Update()
 				_frameDuration = 0.0f;
 
 				//게임 업데이트
+
+				//DX11
 				/*
 				float color[4];
 				color[0] = 0.3f;	//RED
@@ -189,6 +191,7 @@ int	GameSystem::Update()
 				_swapChain->Present(0, 0);		//PRESENT(전면으로 교체)
 				*/
 
+				//DX9
 				_device3d->Clear(0,
 					NULL,
 					D3DCLEAR_TARGET,				//클리어 타겟(후면버퍼)
@@ -200,9 +203,27 @@ int	GameSystem::Update()
 				//Begin과 End 사이에 출력작업
 				_device3d->BeginScene();
 
-				_sprite->Begin(0);
+				_sprite->Begin(D3DXSPRITE_ALPHABLEND);
 				{
+					//Sprite 출력 전 모양(위치, 크기, 회전) 조정
+					D3DXVECTOR2  spriteCenter = D3DXVECTOR2((float)_textureInfo.Width / 2.0f, (float)_textureInfo.Height / 2.0f);	//행렬계산용
+					D3DXVECTOR2 translate = D3DXVECTOR2((float)_clientWidth / 2.0f - (float)_textureInfo.Width / 2.0f,
+															(float)_clientHeight / 2.0f - (float)_textureInfo.Height / 2.0f);		//위치
+					D3DXVECTOR2 scaling = D3DXVECTOR2(1.0f, 1.0f);	//크기
 
+					D3DXMATRIX matrix;
+					D3DXMatrixTransformation2D(
+						&matrix,
+						NULL,
+						0.0f,
+						&scaling,
+						&spriteCenter,
+						0.0f,
+						&translate
+					);
+
+					_sprite->SetTransform(&matrix);
+					_sprite->Draw(_texture, &_srcTextureRect, NULL, NULL, _textureColor);
 				}
 				_sprite->End();
 
@@ -217,6 +238,7 @@ int	GameSystem::Update()
 
 bool GameSystem::InitDirect3D()
 {
+	//DX11
 	/*
 	D3D_FEATURE_LEVEL featureLevel;
 
@@ -463,6 +485,47 @@ bool GameSystem::InitDirect3D()
 	{
 		MessageBox(0, L"Sprite 생성 실패", L"ERROR", MB_OK);
 		return false;
+	}
+
+	//Texture
+	{
+		//파일로 이미지 너비와 높이를 가져온다.
+		HRESULT hr = D3DXGetImageInfoFromFile(L"character_sprite.png", &_textureInfo);
+		if (FAILED(hr))
+		{
+			MessageBox(0, L"TextureInfo 획득 실패", L"ERROR", MB_OK);
+			return false;
+		}
+
+		//텍스쳐 생성
+		hr = D3DXCreateTextureFromFileEx(
+			_device3d, 
+			L"character_sprite.png", 
+			_textureInfo.Width,
+			_textureInfo.Height,
+			1,
+			0,
+			D3DFMT_UNKNOWN, 
+			D3DPOOL_DEFAULT, 
+			D3DX_DEFAULT, 
+			D3DX_DEFAULT,
+			D3DCOLOR_ARGB(255, 255, 255, 255),		//컬러키
+			&_textureInfo,
+			NULL,
+			&_texture
+		);
+		if (FAILED(hr))
+		{
+			MessageBox(0, L"Texture 생성 실패", L"ERROR", MB_OK);
+			return false;
+		}
+	
+		_srcTextureRect.left = 0;
+		_srcTextureRect.top = 0;
+		_srcTextureRect.right = _textureInfo.Width;
+		_srcTextureRect.bottom = _textureInfo.Height;
+
+		_textureColor = D3DCOLOR_ARGB(255, 255, 255, 255);
 	}
 
 	return true;
