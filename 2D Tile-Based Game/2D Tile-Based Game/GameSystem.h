@@ -8,6 +8,8 @@
 #define RELEASE_COM(x) { if(x){x->Release(); x = NULL;} }
 #define SAFE_DELETE(x) { if(x){delete x; x = NULL;} }
 
+class Sprite;
+
 class GameSystem
 {
 private:
@@ -48,17 +50,22 @@ private:
 
 	//Ver DX9
 	LPDIRECT3DDEVICE9 _device3d;
+	D3DPRESENT_PARAMETERS _d3dpp;
+	LPD3DXSPRITE _sprite;
 
 	//Sprite & Texture
 private:
-	LPD3DXSPRITE _sprite;
+	Sprite* _testSprite;
+	/*
 	D3DXIMAGE_INFO _textureInfo;
 	IDirect3DTexture9* _texture;
 	RECT _srcTextureRect;
 	D3DCOLOR _textureColor;
+	*/
 
 public:
 	bool InitDirect3D();
+	void CheckDeviceLost();
 
 	//Game
 private:

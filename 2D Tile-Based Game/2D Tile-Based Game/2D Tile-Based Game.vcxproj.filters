@@ -16,6 +16,9 @@
     <Filter Include="소스 파일\System">
       <UniqueIdentifier>{8c818967-6089-456e-aac0-a6511fca82df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Graphics">
+      <UniqueIdentifier>{614239a8-f58a-43ac-a9b5-ccf760db518c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -27,6 +30,9 @@
     <ClCompile Include="GameTimer.cpp">
       <Filter>소스 파일\System</Filter>
     </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>소스 파일\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -34,6 +40,9 @@
     </ClInclude>
     <ClInclude Include="GameTimer.h">
       <Filter>소스 파일\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>소스 파일\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

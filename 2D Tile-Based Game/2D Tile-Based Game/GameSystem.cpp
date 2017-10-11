@@ -2,6 +2,7 @@
 #include <string>
 
 #include "GameSystem.h"
+#include "Sprite.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -27,9 +28,10 @@ GameSystem* GameSystem::_instance = NULL;
 GameSystem::GameSystem()
 {
 	//_isEnable4xMSAA = false;
-	_isFullScreen = false;
-	_clientWidth = 1280;
-	_clientHeight = 800;
+	_isFullScreen = true;
+	_clientWidth = 1920;
+	_clientHeight = 1080;
+	_testSprite = NULL;
 }
 
 GameSystem::~GameSystem()
@@ -42,7 +44,12 @@ GameSystem::~GameSystem()
 	RELEASE_COM(_d3dDeviceContext);
 	RELEASE_COM(_d3dDevice);
 	*/
-
+	if (NULL != _testSprite)
+	{
+		_testSprite->Deinit();
+		delete _testSprite;
+		_testSprite = NULL;
+	}
 	RELEASE_COM(_sprite);
 	RELEASE_COM(_device3d);
 }
@@ -121,6 +128,9 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 
 	if (false == InitDirect3D())
 		return false;
+
+	_testSprite = new Sprite();
+	_testSprite->Init(_device3d, _sprite);
 
 	return true;
 }
@@ -204,9 +214,12 @@ int	GameSystem::Update()
 				_device3d->BeginScene();
 
 				_sprite->Begin(D3DXSPRITE_ALPHABLEND);
+
+				_testSprite->Render();
+				/*
 				{
 					//Sprite 출력 전 모양(위치, 크기, 회전) 조정
-					D3DXVECTOR2  spriteCenter = D3DXVECTOR2((float)_textureInfo.Width / 2.0f, (float)_textureInfo.Height / 2.0f);	//행렬계산용
+					D3DXVECTOR2  spriteCenter = D3DXVECTOR2((float)_textureInfo.Width / 2.0f, (float)_textureInfo.Height / 2.0f);	//행렬계산용 Sprite 중심좌표
 					D3DXVECTOR2 translate = D3DXVECTOR2((float)_clientWidth / 2.0f - (float)_textureInfo.Width / 2.0f,
 															(float)_clientHeight / 2.0f - (float)_textureInfo.Height / 2.0f);		//위치
 					D3DXVECTOR2 scaling = D3DXVECTOR2(1.0f, 1.0f);	//크기
@@ -225,9 +238,14 @@ int	GameSystem::Update()
 					_sprite->SetTransform(&matrix);
 					_sprite->Draw(_texture, &_srcTextureRect, NULL, NULL, _textureColor);
 				}
+				*/
 				_sprite->End();
 
 				_device3d->EndScene();
+
+				//출력 직전에 Device Lost 체크
+				CheckDeviceLost();
+
 				_device3d->Present(NULL, NULL, NULL, NULL);
 			}
 		}
@@ -433,25 +451,24 @@ bool GameSystem::InitDirect3D()
 		return false;
 	}
 
-	D3DPRESENT_PARAMETERS d3dpp;
-	ZeroMemory(&d3dpp, sizeof(d3dpp));
+	ZeroMemory(&_d3dpp, sizeof(_d3dpp));
 
-	d3dpp.BackBufferWidth = _clientWidth;
-	d3dpp.BackBufferHeight = _clientHeight;
+	_d3dpp.BackBufferWidth = _clientWidth;
+	_d3dpp.BackBufferHeight = _clientHeight;
 
 	if (_isFullScreen)
 	{
-		d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
+		_d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
 	}
 	else
 	{
-		d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
+		_d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
 	}
-	d3dpp.BackBufferCount = 1;
-	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-	d3dpp.hDeviceWindow = _hMainWnd;
-	d3dpp.Windowed = (!_isFullScreen);
-	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+	_d3dpp.BackBufferCount = 1;
+	_d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	_d3dpp.hDeviceWindow = _hMainWnd;
+	_d3dpp.Windowed = (!_isFullScreen);
+	_d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 	
 	D3DCAPS9 caps;		//하드웨어 성능검사
 	HRESULT hr = direct3d->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &caps);	//하드웨어 가속을 얼만큼 지원하는가
@@ -473,7 +490,7 @@ bool GameSystem::InitDirect3D()
 	}
 
 	hr = direct3d->CreateDevice(D3DADAPTER_DEFAULT,
-		D3DDEVTYPE_HAL, _hMainWnd, behavior, &d3dpp, &_device3d);
+		D3DDEVTYPE_HAL, _hMainWnd, behavior, &_d3dpp, &_device3d);
 	if (FAILED(hr))
 	{
 		MessageBox(0, L"direct3d device 생성실패", L"ERROR", MB_OK);
@@ -487,46 +504,73 @@ bool GameSystem::InitDirect3D()
 		return false;
 	}
 
-	//Texture
-	{
-		//파일로 이미지 너비와 높이를 가져온다.
-		HRESULT hr = D3DXGetImageInfoFromFile(L"character_sprite.png", &_textureInfo);
-		if (FAILED(hr))
-		{
-			MessageBox(0, L"TextureInfo 획득 실패", L"ERROR", MB_OK);
-			return false;
-		}
-
-		//텍스쳐 생성
-		hr = D3DXCreateTextureFromFileEx(
-			_device3d, 
-			L"character_sprite.png", 
-			_textureInfo.Width,
-			_textureInfo.Height,
-			1,
-			0,
-			D3DFMT_UNKNOWN, 
-			D3DPOOL_DEFAULT, 
-			D3DX_DEFAULT, 
-			D3DX_DEFAULT,
-			D3DCOLOR_ARGB(255, 255, 255, 255),		//컬러키
-			&_textureInfo,
-			NULL,
-			&_texture
-		);
-		if (FAILED(hr))
-		{
-			MessageBox(0, L"Texture 생성 실패", L"ERROR", MB_OK);
-			return false;
-		}
-	
-		_srcTextureRect.left = 0;
-		_srcTextureRect.top = 0;
-		_srcTextureRect.right = _textureInfo.Width;
-		_srcTextureRect.bottom = _textureInfo.Height;
-
-		_textureColor = D3DCOLOR_ARGB(255, 255, 255, 255);
-	}
-
 	return true;
+}
+
+void GameSystem::CheckDeviceLost()
+{
+	HRESULT hr = _device3d->TestCooperativeLevel();
+
+	//유효한 상태가 아니라면
+	if (FAILED(hr))
+	{
+		if (D3DERR_DEVICELOST == hr)		//복구가 불가능한 상태: 대기
+		{
+			Sleep(100);						//OS의 빠른 처리를 위해 App을 정지
+			return;
+		}
+		else if (D3DERR_DEVICENOTRESET == hr)	//복구가 가능한 상태
+		{
+			//복구
+			//RELEASE_COM(_texture);
+			_testSprite->Release();
+
+			InitDirect3D();
+			hr = _device3d->Reset(&_d3dpp);
+
+			_testSprite->Reset(_device3d, _sprite);
+			/*
+			//Texture
+			{
+				//파일로 이미지 너비와 높이를 가져온다.
+				HRESULT hr = D3DXGetImageInfoFromFile(L"character_sprite.png", &_textureInfo);
+				if (FAILED(hr))
+				{
+					MessageBox(0, L"TextureInfo 획득 실패", L"ERROR", MB_OK);
+					return;
+				}
+
+				//텍스쳐 생성
+				hr = D3DXCreateTextureFromFileEx(
+					_device3d,
+					L"character_sprite.png",
+					_textureInfo.Width,
+					_textureInfo.Height,
+					1,
+					0,
+					D3DFMT_UNKNOWN,
+					D3DPOOL_DEFAULT,
+					D3DX_DEFAULT,
+					D3DX_DEFAULT,
+					D3DCOLOR_ARGB(255, 255, 255, 255),		//컬러키
+					&_textureInfo,
+					NULL,
+					&_texture
+				);
+				if (FAILED(hr))
+				{
+					MessageBox(0, L"Texture 생성 실패", L"ERROR", MB_OK);
+					return;
+				}
+
+				_srcTextureRect.left = 0;
+				_srcTextureRect.top = 0;
+				_srcTextureRect.right = _textureInfo.Width;
+				_srcTextureRect.bottom = _textureInfo.Height;
+
+				_textureColor = D3DCOLOR_ARGB(255, 255, 255, 255);
+			}
+			*/
+		}
+	}
 }
