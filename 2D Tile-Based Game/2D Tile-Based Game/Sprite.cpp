@@ -1,7 +1,10 @@
 #include "GameSystem.h"
 #include "Sprite.h"
+#include "Frame.h"
+
 
 Sprite::Sprite()
+	:_curFrame(0)
 {
 
 }
@@ -14,18 +17,17 @@ Sprite::~Sprite()
 void Sprite::Init(LPDIRECT3DDEVICE9 device3d, LPD3DXSPRITE sprite)
 {
 	//Texture
+	//파일로 이미지 너비와 높이를 가져온다.
+	HRESULT hr = D3DXGetImageInfoFromFile(L"character_sprite.png", &_textureInfo);
+	if (FAILED(hr))
 	{
-		//파일로 이미지 너비와 높이를 가져온다.
-		HRESULT hr = D3DXGetImageInfoFromFile(L"character_sprite.png", &_textureInfo);
-		if (FAILED(hr))
-		{
-			MessageBox(0, L"TextureInfo 획득 실패", L"ERROR", MB_OK);
-			return false;
-		}
+		MessageBox(0, L"TextureInfo 획득 실패", L"ERROR", MB_OK);
+		return;
+	}
 
 	//텍스쳐 생성
 	hr = D3DXCreateTextureFromFileEx(
-		_device3d,
+		device3d,
 		L"character_sprite.png",
 		_textureInfo.Width,
 		_textureInfo.Height,
@@ -43,54 +45,64 @@ void Sprite::Init(LPDIRECT3DDEVICE9 device3d, LPD3DXSPRITE sprite)
 	if (FAILED(hr))
 	{
 		MessageBox(0, L"Texture 생성 실패", L"ERROR", MB_OK);
-		return false;
+		return;
 	}
 
-	_srcTextureRect.left = 0;
-	_srcTextureRect.top = 0;
-	_srcTextureRect.right = _textureInfo.Width;
-	_srcTextureRect.bottom = _textureInfo.Height;
-
-	_textureColor = D3DCOLOR_ARGB(255, 255, 255, 255);
+	{
+		Frame* frame = new Frame();
+		frame->Init(device3d, sprite, _texture, 32 * 0, 0, 32, 32);
+		_frameList.push_back(frame);
 	}
+	{
+		Frame* frame = new Frame();
+		frame->Init(device3d, sprite, _texture, 32 * 1, 0, 32, 32);
+		_frameList.push_back(frame);
+	}
+	{
+		Frame* frame = new Frame();
+		frame->Init(device3d, sprite, _texture, 32 * 2, 0, 32, 32);
+		_frameList.push_back(frame);
+	}
+
+	_curFrame = 0;
 }
 
 void Sprite::Deinit()
 {
+	for (std::vector<Frame*>::iterator iter = _frameList.begin(); iter != _frameList.end(); iter++)
+	{
+		Frame* frame = (*iter);
+		frame->Deinit();
+		delete frame;
+	}
+	_frameList.clear();
+
 	RELEASE_COM(_texture);
 }
 
 void Sprite::Render()
 {
-	{
-		//Sprite 출력 전 모양(위치, 크기, 회전) 조정
-		D3DXVECTOR2  spriteCenter = D3DXVECTOR2((float)_textureInfo.Width / 2.0f, (float)_textureInfo.Height / 2.0f);	//행렬계산용 Sprite 중심좌표
-		D3DXVECTOR2 translate = D3DXVECTOR2((float)_clientWidth / 2.0f - (float)_textureInfo.Width / 2.0f,
-			(float)_clientHeight / 2.0f - (float)_textureInfo.Height / 2.0f);		//위치
-		D3DXVECTOR2 scaling = D3DXVECTOR2(1.0f, 1.0f);	//크기
-
-		D3DXMATRIX matrix;
-		D3DXMatrixTransformation2D(
-			&matrix,
-			NULL,
-			0.0f,
-			&scaling,
-			&spriteCenter,
-			0.0f,
-			&translate
-		);
-
-		_sprite->SetTransform(&matrix);
-		_sprite->Draw(_texture, &_srcTextureRect, NULL, NULL, _textureColor);
-	}
+	if (_curFrame < _frameList.size())
+		_frameList[_curFrame]->Render();
 }
 
 void Sprite::Reset(LPDIRECT3DDEVICE9 device3d, LPD3DXSPRITE sprite)
 {
 	Init(device3d, sprite);
+	for (std::vector<Frame*>::iterator iter = _frameList.begin(); iter != _frameList.end(); iter++)
+	{
+		Frame* frame = (*iter);
+		frame->Reset(device3d, sprite);
+	}
 }
 
 void Sprite::Release()
 {
+	for (std::vector<Frame*>::iterator iter = _frameList.begin(); iter != _frameList.end(); iter++)
+	{
+		Frame* frame = (*iter);
+		frame->Release();
+	}
+
 	RELEASE_COM(_texture);
 }

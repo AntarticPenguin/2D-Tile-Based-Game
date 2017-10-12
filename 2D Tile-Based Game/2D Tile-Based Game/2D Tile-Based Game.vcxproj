@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Frame.cpp" />
     <ClCompile Include="GameSystem.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Frame.h" />
     <ClInclude Include="GameSystem.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Sprite.h" />

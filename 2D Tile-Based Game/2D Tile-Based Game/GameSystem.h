@@ -28,6 +28,8 @@ private:
 public:
 	bool InitSystem(HINSTANCE hInstance, int nCmdShow);
 	int	Update();
+	int GetClientWidth();
+	int GetClientHeight();
 
 	//Direct3D
 private:
@@ -56,12 +58,6 @@ private:
 	//Sprite & Texture
 private:
 	Sprite* _testSprite;
-	/*
-	D3DXIMAGE_INFO _textureInfo;
-	IDirect3DTexture9* _texture;
-	RECT _srcTextureRect;
-	D3DCOLOR _textureColor;
-	*/
 
 public:
 	bool InitDirect3D();
