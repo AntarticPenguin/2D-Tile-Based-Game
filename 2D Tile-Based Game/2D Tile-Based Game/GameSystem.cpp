@@ -29,8 +29,8 @@ GameSystem::GameSystem()
 {
 	//_isEnable4xMSAA = false;
 	_isFullScreen = false;
-	_clientWidth = 1920;
-	_clientHeight = 1080;
+	_clientWidth = 1280;
+	_clientHeight = 800;
 	_testSprite = NULL;
 }
 
@@ -130,7 +130,7 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 		return false;
 
 	_testSprite = new Sprite();
-	_testSprite->Init(_device3d, _sprite);
+	_testSprite->Init();
 
 	return true;
 }
@@ -244,6 +244,16 @@ int GameSystem::GetClientWidth()
 int GameSystem::GetClientHeight()
 {
 	return _clientHeight;
+}
+
+LPD3DXSPRITE GameSystem::GetSprite()
+{
+	return _sprite;
+}
+
+LPDIRECT3DDEVICE9 GameSystem::GetDevice()
+{
+	return _device3d;
 }
 
 bool GameSystem::InitDirect3D()
@@ -519,7 +529,7 @@ void GameSystem::CheckDeviceLost()
 			InitDirect3D();
 			hr = _device3d->Reset(&_d3dpp);
 
-			_testSprite->Reset(_device3d, _sprite);
+			_testSprite->Reset();
 		}
 	}
 }

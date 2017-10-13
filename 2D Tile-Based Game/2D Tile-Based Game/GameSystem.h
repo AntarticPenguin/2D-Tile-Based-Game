@@ -30,6 +30,8 @@ public:
 	int	Update();
 	int GetClientWidth();
 	int GetClientHeight();
+	LPD3DXSPRITE GetSprite();
+	LPDIRECT3DDEVICE9 GetDevice();
 
 	//Direct3D
 private:

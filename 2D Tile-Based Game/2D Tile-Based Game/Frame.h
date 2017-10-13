@@ -1,26 +1,32 @@
 #pragma once
 #include <d3dx9.h>
 
+class Texture;
+
 class Frame
 {
 private:
 	LPD3DXSPRITE _sprite;
 	
-	IDirect3DTexture9* _texture;
+	Texture* _texture;
 	RECT _srcTextureRect;
 	D3DCOLOR _textureColor;
 
 	int _width;
 	int _height;
 
+	float _frameDelay;
+
 public:
 	Frame();
 	~Frame();
 
 public:
-	void Init(LPDIRECT3DDEVICE9 device3d, LPD3DXSPRITE sprite, IDirect3DTexture9* texture, int x, int y, int width, int height);
+	void Init(Texture* texture, int x, int y, int width, int height, float frameDelay);
 	void Deinit();
 	void Render();
-	void Reset(LPDIRECT3DDEVICE9 device3d, LPD3DXSPRITE sprite);
+	void Reset();
 	void Release();
+
+	float GetFrameDelay();
 };

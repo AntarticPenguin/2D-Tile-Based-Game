@@ -1,7 +1,9 @@
 #include "GameSystem.h"
+#include "Texture.h"
 #include "Frame.h"
 
-Frame::Frame()
+Frame::Frame() :
+	_frameDelay(0.0f)
 {
 
 }
@@ -11,9 +13,9 @@ Frame::~Frame()
 
 }
 
-void Frame::Init(LPDIRECT3DDEVICE9 device3d, LPD3DXSPRITE sprite, IDirect3DTexture9* texture, int x, int y, int width, int height)
+void Frame::Init(Texture* texture, int x, int y, int width, int height, float frameDelay)
 {
-	_sprite = sprite;
+	_sprite = GameSystem::GetInstance().GetSprite();
 	_texture = texture;
 	
 	_width = width;
@@ -21,10 +23,12 @@ void Frame::Init(LPDIRECT3DDEVICE9 device3d, LPD3DXSPRITE sprite, IDirect3DTextu
 
 	_srcTextureRect.left = x;
 	_srcTextureRect.top = y;
-	_srcTextureRect.right = _width;
-	_srcTextureRect.bottom = _height;
+	_srcTextureRect.right = _width + x;
+	_srcTextureRect.bottom = _height + y;
 
 	_textureColor = D3DCOLOR_ARGB(255, 255, 255, 255);
+
+	_frameDelay = frameDelay;
 }
 
 void Frame::Deinit()
@@ -53,11 +57,11 @@ void Frame::Render()
 	);
 
 	_sprite->SetTransform(&matrix);
-	_sprite->Draw(_texture, &_srcTextureRect, NULL, NULL, _textureColor);
+	_sprite->Draw(_texture->GetTextureDX(), &_srcTextureRect, NULL, NULL, _textureColor);
 	
 }
 
-void Frame::Reset(LPDIRECT3DDEVICE9 device3d, LPD3DXSPRITE sprite)
+void Frame::Reset()
 {
 
 }
@@ -65,4 +69,9 @@ void Frame::Reset(LPDIRECT3DDEVICE9 device3d, LPD3DXSPRITE sprite)
 void Frame::Release()
 {
 
+}
+
+float Frame::GetFrameDelay()
+{
+	return _frameDelay;
 }
