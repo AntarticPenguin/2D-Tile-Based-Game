@@ -1,6 +1,10 @@
+#include <fstream>
+#include <reader.h>	//JSON PARSING
+
 #include "GameSystem.h"
+#include "ResourceManager.h"
+
 #include "Sprite.h"
-#include "Texture.h"
 #include "Frame.h"
 
 
@@ -25,12 +29,34 @@ void Sprite::Init()
 	_device3d = GameSystem::GetInstance().GetDevice();
 	_sprite = GameSystem::GetInstance().GetSprite();
 
-	
-	_srcTexture = new Texture();
-	_srcTexture->Init(L"character_sprite.png");
-	
-	//_srcTexture = ResourceManager::GetInstance().LoadTexture(L"character_sprite.png");
+	_srcTexture = ResourceManager::GetInstance().LoadTexture(L"character_sprite.png");
 
+	//JSON TEST
+	{
+		//파일을 읽어, 텍스트 정보를 파싱
+		
+		char inputBuffer[1000];
+		std::ifstream infile("jsontest.json");
+
+		while (!infile.eof())
+		{
+			infile.getline(inputBuffer, 100);
+			
+			Json::Value root;		//key, value 구조는 Tree로 구성되어있다
+			Json::Reader reader;
+			bool isSuccess = reader.parse(infile, root);
+			while (isSuccess)
+			{
+				std::string texture = root["texture"].asString();
+				int x = root["x"].asInt();
+				int y = root["y"].asInt();
+				int width = root["width"].asInt();
+				int height = root["height"].asInt();
+				int framedelay = root["framedelay"].asDouble();
+			}
+		}
+	}
+	
 	{
 		Frame* frame = new Frame();
 		frame->Init(_srcTexture, 32 * 0, 0, 32, 32, 0.2f);

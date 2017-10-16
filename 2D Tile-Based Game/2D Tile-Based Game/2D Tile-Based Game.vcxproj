@@ -89,8 +89,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>../../DirectX/SDK/Include/;$(IncludePath)</IncludePath>
-    <LibraryPath>../../DirectX/SDK/lib/x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>../../DirectX/SDK/Include/;../../JSON/;$(IncludePath)</IncludePath>
+    <LibraryPath>../../DirectX/SDK/lib/x86;../../JSON/;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -111,7 +111,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>d3d9.lib;DxErr.lib;dxgi.lib;dxguid.lib;d3dx9d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;DxErr.lib;dxgi.lib;dxguid.lib;d3dx9d.lib;json_vc71_libmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
