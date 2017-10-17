@@ -8,8 +8,8 @@
 #include "Frame.h"
 
 
-Sprite::Sprite() :
-	_curFrame(0), _frameTime(0.0f), _srcTexture(NULL)
+Sprite::Sprite(LPCWSTR textureFileName, LPCWSTR scriptFileName) :
+	_textureFileName(textureFileName), _scriptFileName(scriptFileName), _curFrame(0), _frameTime(0.0f), _srcTexture(NULL)
 {
 
 }
@@ -29,14 +29,14 @@ void Sprite::Init()
 	_device3d = GameSystem::GetInstance().GetDevice();
 	_sprite = GameSystem::GetInstance().GetSprite();
 
-	_srcTexture = ResourceManager::GetInstance().LoadTexture(L"character_sprite.png");
+	_srcTexture = ResourceManager::GetInstance().LoadTexture(_textureFileName);
 
 	//JSON TEST
 	{
 		//파일을 읽어, 텍스트 정보를 파싱
-		
+	
 		char inputBuffer[1000];
-		std::ifstream infile("jsontest.json");
+		std::ifstream infile(_scriptFileName);
 
 		while (!infile.eof())
 		{
@@ -44,28 +44,21 @@ void Sprite::Init()
 			
 			Json::Value root;		//key, value 구조는 Tree로 구성되어있다
 			Json::Reader reader;
-			bool isSuccess = reader.parse(infile, root);
-			while (isSuccess)
+			bool isSuccess = reader.parse(inputBuffer, root);
+			if (isSuccess)
 			{
 				std::string texture = root["texture"].asString();
 				int x = root["x"].asInt();
 				int y = root["y"].asInt();
 				int width = root["width"].asInt();
 				int height = root["height"].asInt();
-				int framedelay = root["framedelay"].asDouble();
+				double framedelay = root["framedelay"].asDouble();
+
+				Frame* frame = new Frame();
+				frame->Init(_srcTexture, x, y, width, height, framedelay);
+				_frameList.push_back(frame);
 			}
 		}
-	}
-	
-	{
-		Frame* frame = new Frame();
-		frame->Init(_srcTexture, 32 * 0, 0, 32, 32, 0.2f);
-		_frameList.push_back(frame);
-	}
-	{
-		Frame* frame = new Frame();
-		frame->Init(_srcTexture, 32 * 2, 0, 32, 32, 0.2f);
-		_frameList.push_back(frame);
 	}
 
 	_curFrame = 0;
@@ -105,7 +98,10 @@ void Sprite::Update(float deltaTime)
 void Sprite::Render()
 {
 	if (_curFrame < _frameList.size())
+	{
+		_frameList[_curFrame]->SetPosition(_x, _y);
 		_frameList[_curFrame]->Render();
+	}
 }
 
 void Sprite::Reset()
@@ -127,4 +123,10 @@ void Sprite::Release()
 	}
 
 	_srcTexture->Release();
+}
+
+void Sprite::SetPosition(float x, float y)
+{
+	_x = x;
+	_y = y;
 }

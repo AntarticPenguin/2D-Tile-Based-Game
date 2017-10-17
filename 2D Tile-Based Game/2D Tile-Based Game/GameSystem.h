@@ -2,6 +2,7 @@
 #include <Windows.h>
 //#include <d3dx11.h>
 #include <d3dx9.h>
+#include <vector>
 
 #include "GameTimer.h"
 
@@ -59,7 +60,10 @@ private:
 
 	//Sprite & Texture
 private:
-	Sprite* _testSprite;
+	//Sprite* _testSprite;
+	//std::vector<Sprite*> _spriteList;
+	Sprite* _testTileMap[16][16];
+
 
 public:
 	bool InitDirect3D();

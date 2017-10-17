@@ -31,7 +31,9 @@ GameSystem::GameSystem()
 	_isFullScreen = false;
 	_clientWidth = 1280;
 	_clientHeight = 800;
-	_testSprite = NULL;
+	_frameDuration = 0.0f;
+	//_testSprite = NULL;
+	//_spriteList.clear();
 }
 
 GameSystem::~GameSystem()
@@ -44,12 +46,27 @@ GameSystem::~GameSystem()
 	RELEASE_COM(_d3dDeviceContext);
 	RELEASE_COM(_d3dDevice);
 	*/
-	if (NULL != _testSprite)
+	/*if (NULL != _testSprite)
 	{
 		_testSprite->Deinit();
 		delete _testSprite;
 		_testSprite = NULL;
+	}*/
+	/*for (int i = 0; i < _spriteList.size(); i++)
+	{
+		_spriteList[i]->Deinit();
+		delete _spriteList[i];
 	}
+	_spriteList.clear();*/
+	for (int y = 0; y < 16; y++)
+	{
+		for (int x = 0; x < 16; x++)
+		{
+			_testTileMap[x][y]->Deinit();
+			delete _testTileMap[x][y];
+		}
+	}
+
 	RELEASE_COM(_sprite);
 	RELEASE_COM(_device3d);
 }
@@ -129,8 +146,31 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	if (false == InitDirect3D())
 		return false;
 
-	_testSprite = new Sprite();
-	_testSprite->Init();
+	for (int y = 0; y < 16; y++)
+	{
+		for (int x = 0; x < 16; x++)
+		{
+			Sprite* sprite;
+			int randValue = rand() % 4;
+			switch (randValue)
+			{
+			case 0:
+				sprite = new Sprite(L"character_sprite.png", L"character_sprite01.json");
+				break;
+			case 1:
+				sprite = new Sprite(L"character_sprite.png", L"character_sprite02.json");
+				break;
+			case 2:
+				sprite = new Sprite(L"character_sprite.png", L"character_sprite03.json");
+				break;
+			case 3:
+				sprite = new Sprite(L"character_sprite.png", L"character_sprite04.json");
+				break;
+			}
+			sprite->Init();
+			_testTileMap[x][y] = sprite;
+		}
+	}
 
 	return true;
 }
@@ -175,7 +215,15 @@ int	GameSystem::Update()
 
 			_frameDuration += _gameTimer.GetDeltaTime();
 
-			_testSprite->Update(deltaTime);
+			//_testSprite->Update(deltaTime);
+			for (int y = 0; y < 16; y++)
+			{
+				for (int x = 0; x < 16; x++)
+				{
+					_testTileMap[x][y]->Update(deltaTime);
+				}
+			}
+			
 
 			float secPerFrame = 1.0f / 60.0f;
 			if (secPerFrame <= _frameDuration)
@@ -218,7 +266,24 @@ int	GameSystem::Update()
 				_sprite->Begin(D3DXSPRITE_ALPHABLEND);
 
 				{
-					_testSprite->Render();
+					float startX = 0.0f;
+					float startY = 0.0f;
+
+					//실제로 찍힐 위치
+					float posX = startX;
+					float posY = startY;
+					int tileSize = 32;
+					for (int y = 0; y < 16; y++)
+					{
+						for (int x = 0; x < 16; x++)
+						{
+							_testTileMap[x][y]->SetPosition(posX, posY);
+							_testTileMap[x][y]->Render();
+							posX += 32;
+						}
+						posX = startX;
+						posY += tileSize;
+					}
 				}
 
 				_sprite->End();
@@ -524,12 +589,24 @@ void GameSystem::CheckDeviceLost()
 		else if (D3DERR_DEVICENOTRESET == hr)	//복구가 가능한 상태
 		{
 			//복구
-			_testSprite->Release();
+			for (int y = 0; y < 16; y++)
+			{
+				for (int x = 0; x < 16; x++)
+				{
+					_testTileMap[x][y]->Release();
+				}
+			}
 
 			InitDirect3D();
 			hr = _device3d->Reset(&_d3dpp);
 
-			_testSprite->Reset();
+			for (int y = 0; y < 16; y++)
+			{
+				for (int x = 0; x < 16; x++)
+				{
+					_testTileMap[x][y]->Reset();
+				}
+			}
 		}
 	}
 }

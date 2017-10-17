@@ -13,14 +13,18 @@ private:
 	LPD3DXSPRITE _sprite;
 
 	Texture* _srcTexture;
+	LPCWSTR _textureFileName;
+	LPCWSTR _scriptFileName;
 
 private:
 	std::vector<Frame*> _frameList;
 	int _curFrame;
 	float _frameTime;
+	float _x;
+	float _y;
 
 public:
-	Sprite();
+	Sprite(LPCWSTR textureFileName, LPCWSTR scriptFileName);
 	~Sprite();
 
 public:
@@ -32,4 +36,6 @@ public:
 
 	void Reset();
 	void Release();
+
+	void SetPosition(float x, float y);
 };

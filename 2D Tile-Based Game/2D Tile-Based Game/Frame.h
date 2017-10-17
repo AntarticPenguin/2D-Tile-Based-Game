@@ -17,6 +17,9 @@ private:
 
 	float _frameDelay;
 
+	float _x;
+	float _y;
+
 public:
 	Frame();
 	~Frame();
@@ -29,4 +32,5 @@ public:
 	void Release();
 
 	float GetFrameDelay();
+	void SetPosition(float x, float y);
 };

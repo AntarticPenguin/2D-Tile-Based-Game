@@ -41,8 +41,7 @@ void Frame::Render()
 
 	//Sprite 출력 전 모양(위치, 크기, 회전) 조정
 	D3DXVECTOR2  spriteCenter = D3DXVECTOR2((float)_width / 2.0f, (float)_height / 2.0f);	//행렬계산용 Sprite 중심좌표
-	D3DXVECTOR2 translate = D3DXVECTOR2((float)GameSystem::GetInstance().GetClientWidth() / 2.0f - (float)_width / 2.0f,
-	(float)GameSystem::GetInstance().GetClientHeight() / 2.0f - (float)_height / 2.0f);		//위치
+	D3DXVECTOR2 translate = D3DXVECTOR2(_x - (float)_width / 2.0f, _y - (float)_height / 2.0f);		//위치
 	D3DXVECTOR2 scaling = D3DXVECTOR2(1.0f, 1.0f);	//크기
 
 	D3DXMATRIX matrix;
@@ -74,4 +73,10 @@ void Frame::Release()
 float Frame::GetFrameDelay()
 {
 	return _frameDelay;
+}
+
+void Frame::SetPosition(float x, float y)
+{
+	_x = x;
+	_y = y;
 }
