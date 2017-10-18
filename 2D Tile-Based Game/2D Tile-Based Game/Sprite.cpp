@@ -35,16 +35,14 @@ void Sprite::Init()
 	{
 		//파일을 읽어, 텍스트 정보를 파싱
 	
-		char inputBuffer[1000];
-		std::ifstream infile(_scriptFileName);
-
-		while (!infile.eof())
+		std::vector<std::string> scriptTextList = ResourceManager::GetInstance().LoadScript(_scriptFileName);
+		for (int i = 0; i < scriptTextList.size(); i++)
 		{
-			infile.getline(inputBuffer, 100);
+			std::string record = scriptTextList[i];
 			
 			Json::Value root;		//key, value 구조는 Tree로 구성되어있다
 			Json::Reader reader;
-			bool isSuccess = reader.parse(inputBuffer, root);
+			bool isSuccess = reader.parse(record, root);
 			if (isSuccess)
 			{
 				std::string texture = root["texture"].asString();

@@ -2,7 +2,7 @@
 #include <string>
 
 #include "GameSystem.h"
-#include "Sprite.h"
+#include "Map.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -11,12 +11,33 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		if (VK_ESCAPE == wParam)
 			DestroyWindow(hWnd);
+		
+		//Scroll test
+		if (VK_LEFT == wParam)
+		{
+			GameSystem::GetInstance().MapScrollTest(-10.0f, 0.0f);
+		}
+		if (VK_RIGHT == wParam)
+		{
+			GameSystem::GetInstance().MapScrollTest(10.0f, 0.0f);
+		}
+		if (VK_UP == wParam)
+		{
+			GameSystem::GetInstance().MapScrollTest(0.0f, -10.0f);
+		}
+		if (VK_DOWN == wParam)
+		{
+			GameSystem::GetInstance().MapScrollTest(0.0f, 10.0f);
+		}
+		return 0;
+	case WM_KEYUP:
+		GameSystem::GetInstance().MapScrollTest(0.0f, 0.0f);
 		return 0;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
 	case WM_LBUTTONDOWN:
-		MessageBox(0, L"Hello World!!!!!!!!!!!", L"Hello World", MB_OK);
+		//MessageBox(0, L"Hello World!!!!!!!!!!!", L"Hello World", MB_OK);
 		return 0;
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
@@ -32,8 +53,8 @@ GameSystem::GameSystem()
 	_clientWidth = 1280;
 	_clientHeight = 800;
 	_frameDuration = 0.0f;
-	//_testSprite = NULL;
-	//_spriteList.clear();
+
+	_tileMap = NULL;
 }
 
 GameSystem::~GameSystem()
@@ -46,25 +67,11 @@ GameSystem::~GameSystem()
 	RELEASE_COM(_d3dDeviceContext);
 	RELEASE_COM(_d3dDevice);
 	*/
-	/*if (NULL != _testSprite)
+	if (NULL != _tileMap)
 	{
-		_testSprite->Deinit();
-		delete _testSprite;
-		_testSprite = NULL;
-	}*/
-	/*for (int i = 0; i < _spriteList.size(); i++)
-	{
-		_spriteList[i]->Deinit();
-		delete _spriteList[i];
-	}
-	_spriteList.clear();*/
-	for (int y = 0; y < 16; y++)
-	{
-		for (int x = 0; x < 16; x++)
-		{
-			_testTileMap[x][y]->Deinit();
-			delete _testTileMap[x][y];
-		}
+		_tileMap->Deinit();
+		delete _tileMap;
+		_tileMap = NULL;
 	}
 
 	RELEASE_COM(_sprite);
@@ -146,31 +153,9 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	if (false == InitDirect3D())
 		return false;
 
-	for (int y = 0; y < 16; y++)
-	{
-		for (int x = 0; x < 16; x++)
-		{
-			Sprite* sprite;
-			int randValue = rand() % 4;
-			switch (randValue)
-			{
-			case 0:
-				sprite = new Sprite(L"character_sprite.png", L"character_sprite01.json");
-				break;
-			case 1:
-				sprite = new Sprite(L"character_sprite.png", L"character_sprite02.json");
-				break;
-			case 2:
-				sprite = new Sprite(L"character_sprite.png", L"character_sprite03.json");
-				break;
-			case 3:
-				sprite = new Sprite(L"character_sprite.png", L"character_sprite04.json");
-				break;
-			}
-			sprite->Init();
-			_testTileMap[x][y] = sprite;
-		}
-	}
+	
+	_tileMap = new Map(L"tileMap");
+	_tileMap->Init();
 
 	return true;
 }
@@ -215,14 +200,7 @@ int	GameSystem::Update()
 
 			_frameDuration += _gameTimer.GetDeltaTime();
 
-			//_testSprite->Update(deltaTime);
-			for (int y = 0; y < 16; y++)
-			{
-				for (int x = 0; x < 16; x++)
-				{
-					_testTileMap[x][y]->Update(deltaTime);
-				}
-			}
+			_tileMap->Update(deltaTime);
 			
 
 			float secPerFrame = 1.0f / 60.0f;
@@ -266,24 +244,7 @@ int	GameSystem::Update()
 				_sprite->Begin(D3DXSPRITE_ALPHABLEND);
 
 				{
-					float startX = 0.0f;
-					float startY = 0.0f;
-
-					//실제로 찍힐 위치
-					float posX = startX;
-					float posY = startY;
-					int tileSize = 32;
-					for (int y = 0; y < 16; y++)
-					{
-						for (int x = 0; x < 16; x++)
-						{
-							_testTileMap[x][y]->SetPosition(posX, posY);
-							_testTileMap[x][y]->Render();
-							posX += 32;
-						}
-						posX = startX;
-						posY += tileSize;
-					}
+					_tileMap->Render();
 				}
 
 				_sprite->End();
@@ -589,24 +550,17 @@ void GameSystem::CheckDeviceLost()
 		else if (D3DERR_DEVICENOTRESET == hr)	//복구가 가능한 상태
 		{
 			//복구
-			for (int y = 0; y < 16; y++)
-			{
-				for (int x = 0; x < 16; x++)
-				{
-					_testTileMap[x][y]->Release();
-				}
-			}
+			_tileMap->Release();
 
 			InitDirect3D();
 			hr = _device3d->Reset(&_d3dpp);
 
-			for (int y = 0; y < 16; y++)
-			{
-				for (int x = 0; x < 16; x++)
-				{
-					_testTileMap[x][y]->Reset();
-				}
-			}
+			_tileMap->Reset();
 		}
 	}
+}
+
+void GameSystem::MapScrollTest(float deltaX, float deltaY)
+{
+	_tileMap->Scroll(deltaX, deltaY);
 }

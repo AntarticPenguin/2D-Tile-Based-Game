@@ -9,7 +9,7 @@
 #define RELEASE_COM(x) { if(x){x->Release(); x = NULL;} }
 #define SAFE_DELETE(x) { if(x){delete x; x = NULL;} }
 
-class Sprite;
+class Map;
 
 class GameSystem
 {
@@ -60,14 +60,13 @@ private:
 
 	//Sprite & Texture
 private:
-	//Sprite* _testSprite;
-	//std::vector<Sprite*> _spriteList;
-	Sprite* _testTileMap[16][16];
+	Map* _tileMap;
 
 
 public:
 	bool InitDirect3D();
 	void CheckDeviceLost();
+	void MapScrollTest(float deltaX, float deltaY);
 
 	//Game
 private:
