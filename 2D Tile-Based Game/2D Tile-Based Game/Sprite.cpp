@@ -31,7 +31,7 @@ void Sprite::Init()
 
 	_srcTexture = ResourceManager::GetInstance().LoadTexture(_textureFileName);
 
-	//JSON TEST
+	//JSON PARSING
 	{
 		//파일을 읽어, 텍스트 정보를 파싱
 	
@@ -57,6 +57,23 @@ void Sprite::Init()
 				_frameList.push_back(frame);
 			}
 		}
+	}
+
+	_curFrame = 0;
+	_frameTime = 0.0f;
+}
+
+void Sprite::Init(int srcX, int srcY, int width, int height, float delay)
+{
+	_device3d = GameSystem::GetInstance().GetDevice();
+	_sprite = GameSystem::GetInstance().GetSprite();
+
+	_srcTexture = ResourceManager::GetInstance().LoadTexture(_textureFileName);
+
+	{
+		Frame* frame = new Frame();
+		frame->Init(_srcTexture, srcX, srcY, width, height, delay);
+		_frameList.push_back(frame);
 	}
 
 	_curFrame = 0;

@@ -29,6 +29,7 @@ public:
 
 public:
 	void Init();
+	void Init(int srcX, int srcY, int width, int height, float delay);
 	void Deinit();
 
 	void Update(float deltaTime);

@@ -233,7 +233,7 @@ int	GameSystem::Update()
 				_device3d->Clear(0,
 					NULL,
 					D3DCLEAR_TARGET,				//클리어 타겟(후면버퍼)
-					D3DCOLOR_XRGB(100, 100, 100),	//색상
+					D3DCOLOR_XRGB(0, 0, 0),	//색상
 					0.0f,							//깊이
 					0
 				);

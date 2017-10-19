@@ -1,3 +1,4 @@
+#include <fstream>
 #include "Map.h"
 #include "Sprite.h"
 
@@ -7,23 +8,90 @@ Map::Map(LPCWSTR fileName)
 	_startY = 0.0f;
 	_deltaX = 0.0f;
 	_deltaY = 0.0f;
+
+	_spriteList.clear();
 }
 
 Map::~Map()
 {
-	for (int y = 0; y < MAP_HEIGHT; y++)
+	for (int y = 0; y < _mapHeight; y++)
 	{
-		for (int x = 0; x < MAP_WIDTH; x++)
+		for (int x = 0; x < _mapWidth; x++)
 		{
-			_testTileMap[y][x]->Deinit();
-			delete _testTileMap[y][x];
+			_tileMap[y][x]->Deinit();
+			delete _tileMap[y][x];
 		}
 	}
 }
 
 void Map::Init()
 {
-	for (int y = 0; y < MAP_HEIGHT; y++)
+
+	//맵용 스프라이트 리스트 작업
+	//512 x 512 이미지를 32x32 크기의 타일로 쪼갬
+	//16 x 16 = 256개의 타일 생성
+	int srcX = 0;
+	int srcY = 0;
+	for (int y = 0; y < 16; y++)
+	{
+		for (int x = 0; x < 16; x++)
+		{
+			Sprite* sprite = new Sprite(L"MapSprite.png", L"MapSprite.json");
+			sprite->Init(srcX, srcY, 32, 32, 1.0f);
+			_spriteList.push_back(sprite);
+			srcX += 32;
+		}
+
+		srcX = 0;
+		srcY += 32;
+	}
+
+	//Load Map Script
+	{
+		char record[1000];
+		int line = 0;
+		std::ifstream infile("MapData.csv");
+		while (!infile.eof())
+		{
+			infile.getline(record, 100);
+			
+			char* token = strtok(record, ",");
+			switch (line)
+			{
+			case 0:
+				if (NULL != token)
+				{
+					token = strtok(NULL, ",");
+					_mapWidth = atoi(token);
+					token = strtok(NULL, ",");
+					_mapHeight = atoi(token);
+				}
+				break;
+			case 1:
+				break;
+			default:
+				break;
+			}
+			line++;
+		}
+	}
+
+	_mapHeight = 16;
+	_mapWidth = 16;
+
+	int index = 0;
+	for (int y = 0; y < _mapHeight; y++)
+	{
+		std::vector<Sprite*> rowList;
+		for (int x = 0; x < _mapWidth; x++)
+		{
+			//_tileMap[y][x] = _spriteList[index];
+			rowList.push_back(_spriteList[index]);
+			index++;
+		}
+		_tileMap.push_back(rowList);
+	}
+	/*for (int y = 0; y < MAP_HEIGHT; y++)
 	{
 		for (int x = 0; x < MAP_WIDTH; x++)
 		{
@@ -45,9 +113,9 @@ void Map::Init()
 				break;
 			}
 			sprite->Init();
-			_testTileMap[y][x] = sprite;
+			_tileMap[y][x] = sprite;
 		}
-	}
+	}*/
 }
 
 void Map::Deinit()
@@ -57,11 +125,11 @@ void Map::Deinit()
 
 void Map::Update(float deltaTime)
 {
-	for (int y = 0; y < MAP_HEIGHT; y++)
+	for (int y = 0; y < _mapHeight; y++)
 	{
-		for (int x = 0; x < MAP_WIDTH; x++)
+		for (int x = 0; x < _mapWidth; x++)
 		{
-			_testTileMap[y][x]->Update(deltaTime);
+			_tileMap[y][x]->Update(deltaTime);
 		}
 	}
 }
@@ -77,13 +145,13 @@ void Map::Render()
 	float posX = _startX;
 	float posY = _startY;
 	int tileSize = 32;
-	for (int y = 0; y < MAP_HEIGHT; y++)
+	for (int y = 0; y < _mapHeight; y++)
 	{
-		for (int x = 0; x < MAP_WIDTH; x++)
+		for (int x = 0; x < _mapWidth; x++)
 		{
-			_testTileMap[y][x]->SetPosition(posX, posY);
-			_testTileMap[y][x]->Render();
-			posX += 32;
+			_tileMap[y][x]->SetPosition(posX, posY);
+			_tileMap[y][x]->Render();
+			posX += tileSize;
 		}
 		posX = _startX;
 		posY += tileSize;
@@ -93,22 +161,22 @@ void Map::Render()
 
 void Map::Release() 
 {
-	for (int y = 0; y < MAP_HEIGHT; y++)
+	for (int y = 0; y < _mapHeight; y++)
 	{
-		for (int x = 0; x < MAP_WIDTH; x++)
+		for (int x = 0; x < _mapWidth; x++)
 		{
-			_testTileMap[y][x]->Release();
+			_tileMap[y][x]->Release();
 		}
 	}
 }
 
 void Map::Reset()
 {
-	for (int y = 0; y < MAP_HEIGHT; y++)
+	for (int y = 0; y < _mapHeight; y++)
 	{
-		for (int x = 0; x < MAP_WIDTH; x++)
+		for (int x = 0; x < _mapWidth; x++)
 		{
-			_testTileMap[y][x]->Reset();
+			_tileMap[y][x]->Reset();
 		}
 	}
 }
