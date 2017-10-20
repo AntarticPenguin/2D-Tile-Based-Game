@@ -48,12 +48,12 @@ void Map::Init()
 
 	//Load Map Script
 	{
-		char record[1000];
+		char record[1024];
 		int line = 0;
 		std::ifstream infile("MapData.csv");
 		while (!infile.eof())
 		{
-			infile.getline(record, 100);
+			infile.getline(record, 1024);
 			
 			char* token = strtok(record, ",");
 			switch (line)
@@ -70,52 +70,38 @@ void Map::Init()
 			case 1:
 				break;
 			default:
+				//Map Data
+				if(NULL != token)
+				{
+					std::vector<Sprite*> rowList;
+					for (int x = 0; x < _mapWidth; x++)
+					{
+						int index = atoi(token);
+						rowList.push_back(_spriteList[index]);
+						token = strtok(NULL, ",");
+					}
+					_tileMap.push_back(rowList);
+				}
 				break;
 			}
 			line++;
 		}
 	}
 
-	_mapHeight = 16;
+	/*_mapHeight = 16;
 	_mapWidth = 16;
-
 	int index = 0;
 	for (int y = 0; y < _mapHeight; y++)
 	{
 		std::vector<Sprite*> rowList;
 		for (int x = 0; x < _mapWidth; x++)
 		{
-			//_tileMap[y][x] = _spriteList[index];
 			rowList.push_back(_spriteList[index]);
 			index++;
 		}
 		_tileMap.push_back(rowList);
-	}
-	/*for (int y = 0; y < MAP_HEIGHT; y++)
-	{
-		for (int x = 0; x < MAP_WIDTH; x++)
-		{
-			Sprite* sprite;
-			int randValue = rand() % 4;
-			switch (randValue)
-			{
-			case 0:
-				sprite = new Sprite(L"character_sprite.png", L"character_sprite01.json");
-				break;
-			case 1:
-				sprite = new Sprite(L"character_sprite.png", L"character_sprite02.json");
-				break;
-			case 2:
-				sprite = new Sprite(L"character_sprite.png", L"character_sprite03.json");
-				break;
-			case 3:
-				sprite = new Sprite(L"character_sprite.png", L"character_sprite04.json");
-				break;
-			}
-			sprite->Init();
-			_tileMap[y][x] = sprite;
-		}
 	}*/
+	
 }
 
 void Map::Deinit()
