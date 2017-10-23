@@ -22,6 +22,9 @@
     <Filter Include="소스 파일\Game">
       <UniqueIdentifier>{a850d307-dc05-42f5-a7b6-bd76e042f9e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\System\ComponentSystem">
+      <UniqueIdentifier>{485b2029-5ade-44b6-8827-ee38c549c3cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -48,6 +51,15 @@
     <ClCompile Include="Map.cpp">
       <Filter>소스 파일\Game</Filter>
     </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>소스 파일\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentSystem.cpp">
+      <Filter>소스 파일\System\ComponentSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>소스 파일\System\ComponentSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -70,6 +82,15 @@
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>소스 파일\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>소스 파일\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentSystem.h">
+      <Filter>소스 파일\System\ComponentSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>소스 파일\System\ComponentSystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

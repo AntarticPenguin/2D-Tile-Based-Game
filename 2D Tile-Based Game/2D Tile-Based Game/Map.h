@@ -2,16 +2,13 @@
 #include <Windows.h>
 #include <vector>
 
-
-//#define MAP_HEIGHT 16
-//#define MAP_WIDTH 16
+#include "Component.h"
 
 class Sprite;
 
-class Map
+class Map : public Component
 {
 private:
-	//Sprite* _testTileMap[MAP_HEIGHT][MAP_WIDTH];
 	std::vector<std::vector<Sprite*>> _tileMap;
 	int _mapWidth;
 	int _mapHeight;
@@ -24,7 +21,7 @@ private:
 	std::vector<Sprite*> _spriteList;
 
 public:
-	Map(LPCWSTR fileName);
+	Map(LPCWSTR name);
 	~Map();
 
 public:

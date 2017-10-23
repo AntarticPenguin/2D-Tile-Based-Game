@@ -3,6 +3,7 @@
 
 #include "GameSystem.h"
 #include "Map.h"
+#include "Character.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -10,7 +11,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_KEYDOWN:
 		if (VK_ESCAPE == wParam)
+		{
+			ComponentSystem::GetInstance().RemoveAllComponents();
 			DestroyWindow(hWnd);
+		}
 		
 		//Scroll test
 		if (VK_LEFT == wParam)
@@ -55,6 +59,7 @@ GameSystem::GameSystem()
 	_frameDuration = 0.0f;
 
 	_tileMap = NULL;
+	_character = NULL;
 }
 
 GameSystem::~GameSystem()
@@ -67,11 +72,19 @@ GameSystem::~GameSystem()
 	RELEASE_COM(_d3dDeviceContext);
 	RELEASE_COM(_d3dDevice);
 	*/
+
 	if (NULL != _tileMap)
 	{
 		_tileMap->Deinit();
 		delete _tileMap;
 		_tileMap = NULL;
+	}
+
+	if (NULL != _character)
+	{
+		_character->Deinit();
+		delete _character;
+		_character = NULL;
 	}
 
 	RELEASE_COM(_sprite);
@@ -157,6 +170,9 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	_tileMap = new Map(L"tileMap");
 	_tileMap->Init();
 
+	_character = new Character(L"testCharacter");
+	_character->Init();
+
 	return true;
 }
 
@@ -166,15 +182,15 @@ int	GameSystem::Update()
 	/*
 	while (ret = GetMessage(&msg, 0, 0, 0))
 	{
-	if (-1 == ret)
-	{
-	break;
-	}
-	else
-	{
-	TranslateMessage(&msg);
-	DispatchMessage(&msg);
-	}
+		if (-1 == ret)
+		{
+			break;
+		}
+		else
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
 	}
 	*/
 
@@ -201,7 +217,7 @@ int	GameSystem::Update()
 			_frameDuration += _gameTimer.GetDeltaTime();
 
 			_tileMap->Update(deltaTime);
-			
+			_character->Update(deltaTime);
 
 			float secPerFrame = 1.0f / 60.0f;
 			if (secPerFrame <= _frameDuration)
@@ -245,6 +261,7 @@ int	GameSystem::Update()
 
 				{
 					_tileMap->Render();
+					_character->Render();
 				}
 
 				_sprite->End();
@@ -551,11 +568,13 @@ void GameSystem::CheckDeviceLost()
 		{
 			//º¹±¸
 			_tileMap->Release();
+			_character->Release();
 
 			InitDirect3D();
 			hr = _device3d->Reset(&_d3dpp);
 
 			_tileMap->Reset();
+			_character->Reset();
 		}
 	}
 }

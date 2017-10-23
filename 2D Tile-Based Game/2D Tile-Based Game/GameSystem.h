@@ -10,6 +10,7 @@
 #define SAFE_DELETE(x) { if(x){delete x; x = NULL;} }
 
 class Map;
+class Character;
 
 class GameSystem
 {
@@ -61,6 +62,7 @@ private:
 	//Sprite & Texture
 private:
 	Map* _tileMap;
+	Character* _character;
 
 
 public:
