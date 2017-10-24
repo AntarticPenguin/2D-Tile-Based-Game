@@ -1,7 +1,9 @@
-﻿  GameSystem.cpp
+﻿  TileCell.cpp
+  GameSystem.cpp
 d:\programmingfolder\2d-tile-based-game\2d tile-based game\2d tile-based game\gamesystem.cpp(215): warning C4996: 'swprintf': function has been changed to conform with the ISO C standard, adding an extra character count parameter. To use the traditional Microsoft version, set _CRT_NON_CONFORMING_SWPRINTFS.
   c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\corecrt_wstdio.h(1822): note: 'swprintf' 선언을 참조하십시오.
 d:\programmingfolder\2d-tile-based-game\2d tile-based game\2d tile-based game\gamesystem.cpp(227): warning C4996: 'swprintf': function has been changed to conform with the ISO C standard, adding an extra character count parameter. To use the traditional Microsoft version, set _CRT_NON_CONFORMING_SWPRINTFS.
   c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\corecrt_wstdio.h(1822): note: 'swprintf' 선언을 참조하십시오.
+  코드를 생성하고 있습니다...
   2D Tile-Based Game.vcxproj -> D:\ProgrammingFolder\2D-Tile-Based-Game\2D Tile-Based Game\Debug\2D Tile-Based Game.exe
   2D Tile-Based Game.vcxproj -> D:\ProgrammingFolder\2D-Tile-Based-Game\2D Tile-Based Game\Debug\2D Tile-Based Game.pdb (Partial PDB)

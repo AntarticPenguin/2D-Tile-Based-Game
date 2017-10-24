@@ -218,7 +218,7 @@ int	GameSystem::Update()
 			_frameDuration += _gameTimer.GetDeltaTime();
 
 			_tileMap->Update(deltaTime);
-			_character->Update(deltaTime);
+			//_character->Update(deltaTime);
 
 			float secPerFrame = 1.0f / 60.0f;
 			if (secPerFrame <= _frameDuration)
