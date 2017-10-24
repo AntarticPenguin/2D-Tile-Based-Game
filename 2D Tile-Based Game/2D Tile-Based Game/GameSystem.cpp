@@ -171,8 +171,8 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	_tileMap = new Map(L"tileMap");
 	_tileMap->Init();
 
-	_character = new Character(L"testCharacter");
-	_character->Init();
+	/*_character = new Character(L"testCharacter");
+	_character->Init();*/
 
 	return true;
 }
@@ -218,7 +218,7 @@ int	GameSystem::Update()
 			_frameDuration += _gameTimer.GetDeltaTime();
 
 			_tileMap->Update(deltaTime);
-			_character->Update(deltaTime);
+			//_character->Update(deltaTime);
 
 			float secPerFrame = 1.0f / 60.0f;
 			if (secPerFrame <= _frameDuration)
@@ -262,7 +262,7 @@ int	GameSystem::Update()
 
 				{
 					_tileMap->Render();
-					_character->Render();
+					//_character->Render();
 				}
 
 				_sprite->End();
@@ -569,13 +569,13 @@ void GameSystem::CheckDeviceLost()
 		{
 			//º¹±¸
 			_tileMap->Release();
-			_character->Release();
+			//_character->Release();
 
 			InitDirect3D();
 			hr = _device3d->Reset(&_d3dpp);
 
 			_tileMap->Reset();
-			_character->Reset();
+			//_character->Reset();
 		}
 	}
 }

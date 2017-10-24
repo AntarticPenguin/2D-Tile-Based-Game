@@ -1,4 +1,5 @@
-﻿  Map.cpp
+﻿  TileCell.cpp
+  Map.cpp
 c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\map.cpp(53): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\string.h(439): note: 'strtok' 선언을 참조하십시오.
 c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\map.cpp(59): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
@@ -9,5 +10,14 @@ c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-
   c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\string.h(439): note: 'strtok' 선언을 참조하십시오.
 c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\map.cpp(185): warning C4244: 'return': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\map.cpp(190): warning C4244: 'return': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  GameSystem.cpp
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\gamesystem.cpp(215): warning C4996: 'swprintf': function has been changed to conform with the ISO C standard, adding an extra character count parameter. To use the traditional Microsoft version, set _CRT_NON_CONFORMING_SWPRINTFS.
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\corecrt_wstdio.h(1822): note: 'swprintf' 선언을 참조하십시오.
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\gamesystem.cpp(227): warning C4996: 'swprintf': function has been changed to conform with the ISO C standard, adding an extra character count parameter. To use the traditional Microsoft version, set _CRT_NON_CONFORMING_SWPRINTFS.
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\corecrt_wstdio.h(1822): note: 'swprintf' 선언을 참조하십시오.
+  Character.cpp
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(30): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(31): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
   2D Tile-Based Game.vcxproj -> C:\Users\atents\Desktop\박평기\2D Tile-based Game\2D-Tile-Based-Game\2D Tile-Based Game\Debug\2D Tile-Based Game.exe
   2D Tile-Based Game.vcxproj -> C:\Users\atents\Desktop\박평기\2D Tile-based Game\2D-Tile-Based-Game\2D Tile-Based Game\Debug\2D Tile-Based Game.pdb (Partial PDB)

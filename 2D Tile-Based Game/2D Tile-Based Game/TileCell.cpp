@@ -1,5 +1,6 @@
 #include "TileCell.h"
 #include "Sprite.h"
+#include "Component.h"
 
 TileCell::TileCell()
 {
@@ -24,6 +25,11 @@ void TileCell::Update(float deltaTime)
 void TileCell::Render()
 {
 	_sprite->Render();
+
+	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+	{
+		(*itr)->Render();
+	}
 }
 
 void TileCell::Release()
