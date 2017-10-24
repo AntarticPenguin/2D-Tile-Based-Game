@@ -95,19 +95,13 @@ void Sprite::Deinit()
 
 void Sprite::Update(float deltaTime)
 {
-	/*
-		누적된 시간이 프레임 딜레이를 넘어가면
-			- 다음 프레임
-			- 누적된 시간 리셋
-	*/
 	_frameTime += deltaTime;
 
 	if (_frameList[_curFrame]->GetFrameDelay() <= _frameTime)
 	{
-		_frameTime = 0;
+		_frameTime = 0.0f;
 		_curFrame = (_curFrame + 1) % _frameList.size();
 	}
-	
 }
 
 void Sprite::Render()
