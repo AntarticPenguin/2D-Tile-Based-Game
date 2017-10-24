@@ -2,6 +2,7 @@
 #include <string>
 
 #include "GameSystem.h"
+#include "ComponentSystem.h"
 #include "Map.h"
 #include "Character.h"
 

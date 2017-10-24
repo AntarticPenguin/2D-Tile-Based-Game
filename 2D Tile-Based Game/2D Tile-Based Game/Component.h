@@ -1,14 +1,15 @@
 #pragma once
 #include <Windows.h>
+#include <string>
 
 class Component
 {
 protected:
-	LPCWSTR _name;
+	std::wstring _name;
 
 public:
 	Component() {}
-	Component(LPCWSTR name);
+	Component(std::wstring name);
 	virtual ~Component();
 
 public:

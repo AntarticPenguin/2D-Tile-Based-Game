@@ -1,6 +1,7 @@
 #include <fstream>
 #include "Map.h"
 #include "Sprite.h"
+#include "TileCell.h"
 
 Map::Map(LPCWSTR name) : Component(name)
 {
@@ -14,14 +15,7 @@ Map::Map(LPCWSTR name) : Component(name)
 
 Map::~Map()
 {
-	for (int y = 0; y < _mapHeight; y++)
-	{
-		for (int x = 0; x < _mapWidth; x++)
-		{
-			_tileMap[y][x]->Deinit();
-			delete _tileMap[y][x];
-		}
-	}
+
 }
 
 void Map::Init()
@@ -32,18 +26,19 @@ void Map::Init()
 	//16 x 16 = 256개의 타일 생성
 	int srcX = 0;
 	int srcY = 0;
+	_tileSize = 32;
 	for (int y = 0; y < 16; y++)
 	{
 		for (int x = 0; x < 16; x++)
 		{
 			Sprite* sprite = new Sprite(L"MapSprite.png", L"MapSprite.json");
-			sprite->Init(srcX, srcY, 32, 32, 1.0f);
+			sprite->Init(srcX, srcY, _tileSize, _tileSize, 1.0f);
 			_spriteList.push_back(sprite);
-			srcX += 32;
+			srcX += _tileSize;
 		}
 
 		srcX = 0;
-		srcY += 32;
+		srcY += _tileSize;
 	}
 
 	//Load Map Script
@@ -73,11 +68,13 @@ void Map::Init()
 				//Map Data
 				if(NULL != token)
 				{
-					std::vector<Sprite*> rowList;
+					std::vector<TileCell*> rowList;
 					for (int x = 0; x < _mapWidth; x++)
 					{
 						int index = atoi(token);
-						rowList.push_back(_spriteList[index]);
+						TileCell* tileCell = new TileCell();
+						tileCell->SetSprite(_spriteList[index]);
+						rowList.push_back(tileCell);
 						token = strtok(NULL, ",");
 					}
 					_tileMap.push_back(rowList);
@@ -88,25 +85,38 @@ void Map::Init()
 		}
 	}
 
-	/*_mapHeight = 16;
-	_mapWidth = 16;
-	int index = 0;
+
+	//임시
+	//찍는 시작 위치
+	_startX += _deltaX;
+	_startY += _deltaY;
+
+	//실제로 찍힐 위치
+	float posX = _startX;
+	float posY = _startY;
 	for (int y = 0; y < _mapHeight; y++)
 	{
-		std::vector<Sprite*> rowList;
 		for (int x = 0; x < _mapWidth; x++)
 		{
-			rowList.push_back(_spriteList[index]);
-			index++;
+			_tileMap[y][x]->SetPosition(posX, posY);
+			//_tileMap[y][x]->Render();
+			posX += _tileSize;
 		}
-		_tileMap.push_back(rowList);
-	}*/
-	
+		posX = _startX;
+		posY += _tileSize;
+	}
 }
 
 void Map::Deinit()
 {
-
+	for (int y = 0; y < _mapHeight; y++)
+	{
+		for (int x = 0; x < _mapWidth; x++)
+		{
+			_tileMap[y][x]->Deinit();
+			delete _tileMap[y][x];
+		}
+	}
 }
 
 void Map::Update(float deltaTime)
@@ -122,7 +132,6 @@ void Map::Update(float deltaTime)
 
 void Map::Render()
 {
-	
 	//찍는 시작 위치
 	_startX += _deltaX;
 	_startY += _deltaY;
@@ -130,19 +139,17 @@ void Map::Render()
 	//실제로 찍힐 위치
 	float posX = _startX;
 	float posY = _startY;
-	int tileSize = 32;
 	for (int y = 0; y < _mapHeight; y++)
 	{
 		for (int x = 0; x < _mapWidth; x++)
 		{
 			_tileMap[y][x]->SetPosition(posX, posY);
 			_tileMap[y][x]->Render();
-			posX += tileSize;
+			posX += _tileSize;
 		}
 		posX = _startX;
-		posY += tileSize;
-	}
-					
+		posY += _tileSize;
+	}			
 }
 
 void Map::Release() 
@@ -171,4 +178,19 @@ void Map::Scroll(float deltaX, float deltaY)
 {
 	_deltaX = deltaX;
 	_deltaY = deltaY;
+}
+
+int Map::GetPositionX(int tileX, int tileY)
+{
+	return _tileMap[tileY][tileX]->GetPositionX();
+}
+
+int Map::GetPositionY(int tileX, int tileY)
+{
+	return _tileMap[tileY][tileX]->GetPositionY();
+}
+
+void Map::SetTileComponent(int tileX, int tileY, Component* component)
+{
+	_tileMap[tileY][tileX]->AddComponent(component);
 }

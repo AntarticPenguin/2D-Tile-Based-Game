@@ -1,3 +1,5 @@
+#include "ComponentSystem.h"
+#include "Map.h"
 #include "Character.h"
 #include "Sprite.h"
 
@@ -22,12 +24,12 @@ void Character::Init()
 	_sprite->Init();
 
 	{
-		int mapTileSize = 32;
+		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"Map");
 		int tileX = 2;
 		int tileY = 2;
-
-		_x = tileX * mapTileSize;
-		_y = tileY * mapTileSize;
+		_x = map->GetPositionX(tileX, tileY);
+		_y = map->GetPositionY(tileX, tileY);
+		map->SetTileComponent(tileX, tileY, this);
 	}
 }
 
