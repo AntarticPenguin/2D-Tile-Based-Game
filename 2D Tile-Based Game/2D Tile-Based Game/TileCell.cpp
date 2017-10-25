@@ -20,6 +20,11 @@ void TileCell::Deinit()
 void TileCell::Update(float deltaTime)
 {
 	_sprite->Update(deltaTime);
+
+	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+	{
+		(*itr)->Update(deltaTime);
+	}
 }
 
 void TileCell::Render()

@@ -5,11 +5,11 @@
 class Component
 {
 protected:
-	std::wstring _name;
+	LPCWSTR _name;
 
 public:
 	Component() {}
-	Component(std::wstring name);
+	Component(LPCWSTR name);
 	virtual ~Component();
 
 public:

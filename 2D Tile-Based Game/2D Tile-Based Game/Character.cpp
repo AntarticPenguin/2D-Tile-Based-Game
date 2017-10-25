@@ -3,9 +3,10 @@
 #include "Character.h"
 #include "Sprite.h"
 
-Character::Character(LPCWSTR name) : Component(name)
+Character::Character(LPCWSTR name) : 
+	Component(name), _sprite(NULL), _x(0.0f), _y(0.0f)
 {
-	_sprite = NULL;
+
 }
 
 Character::~Character()
@@ -24,9 +25,9 @@ void Character::Init()
 	_sprite->Init();
 
 	{
-		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"Map");
-		int tileX = 2;
-		int tileY = 2;
+		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+		int tileX = 7;
+		int tileY = 3;
 		_x = map->GetPositionX(tileX, tileY);
 		_y = map->GetPositionY(tileX, tileY);
 		map->SetTileComponent(tileX, tileY, this);
