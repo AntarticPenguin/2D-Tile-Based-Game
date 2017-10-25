@@ -10,7 +10,6 @@ class Sprite;
 class Map : public Component
 {
 private:
-	//std::vector<std::vector<Sprite*>> _tileMap;
 	std::vector<std::vector<TileCell*>> _tileMap;
 	int _mapWidth;
 	int _mapHeight;
@@ -41,4 +40,5 @@ public:
 	int GetPositionY(int tileX, int tileY);
 
 	void SetTileComponent(int tileX, int tileY, Component* component);
+	void ResetTileComponent(int tileX, int tileY, Component* component);
 };

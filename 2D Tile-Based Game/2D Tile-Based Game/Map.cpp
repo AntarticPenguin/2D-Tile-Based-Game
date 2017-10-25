@@ -194,3 +194,8 @@ void Map::SetTileComponent(int tileX, int tileY, Component* component)
 {
 	_tileMap[tileY][tileX]->AddComponent(component);
 }
+
+void Map::ResetTileComponent(int tileX, int tileY, Component* component)
+{
+	_tileMap[tileY][tileX]->RemoveComponent(component);
+}
