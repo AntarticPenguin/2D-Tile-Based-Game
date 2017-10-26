@@ -211,9 +211,9 @@ int	GameSystem::Update()
 		{
 			_gameTimer.Update();
 			float deltaTime = _gameTimer.GetDeltaTime();
-			wchar_t timeCheck[256];
-			swprintf(timeCheck, L"DeltaTime: %f\n", deltaTime);
-			OutputDebugString(timeCheck);
+			//wchar_t timeCheck[256];
+			//swprintf(timeCheck, L"DeltaTime: %f\n", deltaTime);
+			//OutputDebugString(timeCheck);
 
 			_frameDuration += _gameTimer.GetDeltaTime();
 
@@ -223,9 +223,9 @@ int	GameSystem::Update()
 			float secPerFrame = 1.0f / 60.0f;
 			if (secPerFrame <= _frameDuration)
 			{
-				wchar_t timeCheck[256];
-				swprintf(timeCheck, L"FrameDuration: %f\n", _frameDuration);
-				OutputDebugString(timeCheck);
+				//wchar_t timeCheck[256];
+				//swprintf(timeCheck, L"FrameDuration: %f\n", _frameDuration);
+				//OutputDebugString(timeCheck);
 
 				_frameDuration = 0.0f;
 

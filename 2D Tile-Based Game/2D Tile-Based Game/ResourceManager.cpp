@@ -27,9 +27,9 @@ Texture* ResourceManager::LoadTexture(LPCWSTR fileName)
 	return texture;
 }
 
-vector<string> ResourceManager::LoadScript(LPCWSTR fileName)
+vector<string> ResourceManager::LoadScript(std::wstring fileName)
 {
-	map<LPCWSTR, vector<string>>::iterator iter = _scriptMap.find(fileName);
+	map<std::wstring, vector<string>>::iterator iter = _scriptMap.find(fileName);
 	if (iter != _scriptMap.end())	//끝까지 가지 않았다면 찾음
 	{
 		return iter->second;

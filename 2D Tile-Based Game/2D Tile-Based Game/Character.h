@@ -48,8 +48,8 @@ private:
 	eDirection _curDirection;
 
 public:
-	void UpdateAI(float deltaTime);
 	void InitMove();
+	void UpdateAI(float deltaTime);
 	void UpdateMove(float deltaTime);
 	void MoveStart(eDirection direction);
 };

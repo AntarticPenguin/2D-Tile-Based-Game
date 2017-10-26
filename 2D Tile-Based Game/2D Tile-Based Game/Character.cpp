@@ -4,7 +4,7 @@
 #include "Sprite.h"
 
 Character::Character(LPCWSTR name) :
-	Component(name), _x(0.0f), _y(0.0f), _tileX(0), _tileY(0)
+	Component(name), _x(0.0f), _y(0.0f), _tileX(5), _tileY(5)
 {
 	_spriteList.clear();
 	InitMove();
@@ -77,7 +77,6 @@ void Character::Deinit()
 void Character::Update(float deltaTime)
 {
 	_spriteList[(int)_curDirection]->Update(deltaTime);
-	
 	UpdateAI(deltaTime);
 	UpdateMove(deltaTime);
 }
@@ -104,6 +103,14 @@ void Character::Reset()
 	}
 }
 
+void Character::InitMove()
+{
+	_isMoving = false;
+	_moveTime = 0.5f;
+	_movingDuration = 0.0f;
+	_curDirection = eDirection::DOWN;
+}
+
 void Character::UpdateAI(float deltaTime)
 {
 	if (false == _isMoving)
@@ -111,14 +118,6 @@ void Character::UpdateAI(float deltaTime)
 		int direction = rand() % 4;
 		MoveStart((eDirection)direction);
 	}
-}
-
-void Character::InitMove()
-{
-	_isMoving = false;
-	_moveTime = 0.5f;
-	_movingDuration = 0.0f;
-	_curDirection = eDirection::DOWN;
 }
 
 void Character::UpdateMove(float deltaTime)

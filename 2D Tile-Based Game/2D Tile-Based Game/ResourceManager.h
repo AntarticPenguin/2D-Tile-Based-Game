@@ -22,9 +22,9 @@ public:
 
 	//Script
 private:
-	std::map<LPCWSTR, std::vector<std::string>> _scriptMap;
+	std::map<std::wstring, std::vector<std::string>> _scriptMap;
 public:
-	std::vector<std::string> LoadScript(LPCWSTR fileName);
+	std::vector<std::string> LoadScript(std::wstring fileName);
 
 private:
 	ResourceManager();
