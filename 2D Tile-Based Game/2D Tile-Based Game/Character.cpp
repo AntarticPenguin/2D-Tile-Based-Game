@@ -60,7 +60,7 @@ void Character::Init()
 		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
 		_x = map->GetPositionX(_tileX, _tileY);
 		_y = map->GetPositionY(_tileX, _tileY);
-		map->SetTileComponent(_tileX, _tileY, this);
+		map->SetTileComponent(_tileX, _tileY, this, false);
 	}
 }
 
@@ -103,10 +103,16 @@ void Character::Reset()
 	}
 }
 
+void Character::MoveDeltaPosition(float deltaX, float deltaY)
+{
+	_x += deltaX;
+	_y += deltaY;
+}
+
 void Character::InitMove()
 {
 	_isMoving = false;
-	_moveTime = 0.5f;
+	_moveTime = 1.0f;
 	_movingDuration = 0.0f;
 	_curDirection = eDirection::DOWN;
 }
@@ -129,10 +135,19 @@ void Character::UpdateMove(float deltaTime)
 	{
 		_movingDuration = 0.0f;
 		_isMoving = false;
+
+		//이동후 도착하면 타일의 정확한 위치에 찍어줘야 한다.
+		_x = _targetX;
+		_y = _targetY;
 	}
 	else
 	{
 		_movingDuration += deltaTime;
+
+		float moveDistanceX = _moveDistancePerTimeX * deltaTime;
+		float moveDistanceY = _moveDistancePerTimeY * deltaTime;
+		_x += moveDistanceX;
+		_y += moveDistanceY;
 	}
 }
 
@@ -155,8 +170,8 @@ void Character::MoveStart(eDirection direction)
 		break;
 	case eDirection::RIGHT: //right
 		_tileX++;
-		if (45 < _tileX)
-			_tileX = 45;
+		if (255 < _tileX)
+			_tileX = 255;
 		break;
 	case eDirection::UP: //up
 		_tileY--;
@@ -165,15 +180,26 @@ void Character::MoveStart(eDirection direction)
 		break;
 	case eDirection::DOWN: //down
 		_tileY++;
-		if (45 < _tileY)
-			_tileY = 45;
+		if (255 < _tileY)
+			_tileY = 255;
 		break;
 	}
 
-	_x = map->GetPositionX(_tileX, _tileY);
-	_y = map->GetPositionY(_tileX, _tileY);
+	//애니메이션 이동 보간
+	{
+		map->SetTileComponent(_tileX, _tileY, this, false);
 
-	map->SetTileComponent(_tileX, _tileY, this);
+		//이동거리 계산
+		_targetX = map->GetPositionX(_tileX, _tileY);
+		_targetY = map->GetPositionY(_tileX, _tileY);
+
+		float distanceX = _targetX - _x;		//절대값 필요없음.
+		float distanceY = _targetY - _y;
+
+		//단위이동시간
+		_moveDistancePerTimeX = distanceX / _moveTime;
+		_moveDistancePerTimeY = distanceY / _moveTime;
+	}
 
 	_isMoving = true;
 }

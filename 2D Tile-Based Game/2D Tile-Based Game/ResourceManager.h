@@ -16,9 +16,9 @@ public:
 
 	//Texture
 private:
-	std::map<LPCWSTR, Texture*> _textureMap;
+	std::map<std::wstring, Texture*> _textureMap;
 public:
-	Texture* LoadTexture(LPCWSTR fileName);
+	Texture* LoadTexture(std::wstring fileName);
 
 	//Script
 private:

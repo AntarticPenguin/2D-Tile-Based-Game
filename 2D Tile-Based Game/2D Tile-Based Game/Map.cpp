@@ -132,6 +132,7 @@ void Map::Update(float deltaTime)
 
 void Map::Render()
 {
+	/*
 	//찍는 시작 위치
 	_startX += _deltaX;
 	_startY += _deltaY;
@@ -149,7 +150,16 @@ void Map::Render()
 		}
 		posX = _startX;
 		posY += _tileSize;
-	}			
+	}
+	*/
+	for (int y = 0; y < _mapHeight; y++)
+	{
+		for (int x = 0; x < _mapWidth; x++)
+		{
+			_tileMap[y][x]->MoveDeltaPosition(_deltaX, _deltaY);
+			_tileMap[y][x]->Render();
+		}
+	}
 }
 
 void Map::Release() 
@@ -190,9 +200,9 @@ int Map::GetPositionY(int tileX, int tileY)
 	return _tileMap[tileY][tileX]->GetPositionY();
 }
 
-void Map::SetTileComponent(int tileX, int tileY, Component* component)
+void Map::SetTileComponent(int tileX, int tileY, Component* component, bool isRender)
 {
-	_tileMap[tileY][tileX]->AddComponent(component);
+	_tileMap[tileY][tileX]->AddComponent(component, isRender);
 }
 
 void Map::ResetTileComponent(int tileX, int tileY, Component* component)

@@ -11,25 +11,25 @@ ResourceManager& ResourceManager::GetInstance()
 	return *_instance;
 }
 
-Texture* ResourceManager::LoadTexture(LPCWSTR fileName)
+Texture* ResourceManager::LoadTexture(std::wstring fileName)
 {
-	map<LPCWSTR, Texture*>::iterator iter = _textureMap.find(fileName);
+	map<std::wstring, Texture*>::iterator iter = _textureMap.find(fileName);
 	if (iter != _textureMap.end())	//끝까지 가지 않았다면 찾음
 	{
 		return iter->second;
 	}
 
 	Texture* texture = new Texture();
-	texture->Init(fileName);
+	texture->Init(fileName.c_str());
 
 	_textureMap[fileName] = texture;
 
 	return texture;
 }
 
-vector<string> ResourceManager::LoadScript(std::wstring fileName)
+vector<string> ResourceManager::LoadScript(wstring fileName)
 {
-	map<std::wstring, vector<string>>::iterator iter = _scriptMap.find(fileName);
+	map<wstring, vector<string>>::iterator iter = _scriptMap.find(fileName);
 	if (iter != _scriptMap.end())	//끝까지 가지 않았다면 찾음
 	{
 		return iter->second;

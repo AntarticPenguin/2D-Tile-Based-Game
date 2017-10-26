@@ -13,6 +13,7 @@ private:
 	float _posY;
 
 	std::list<Component*> _componentList;
+	std::list<Component*> _renderList;
 
 public:
 	TileCell();
@@ -31,6 +32,7 @@ public:
 	float GetPositionX();
 	float GetPositionY();
 
-	void AddComponent(Component* component);
+	void AddComponent(Component* component, bool isRender);
 	void RemoveComponent(Component* component);
+	void MoveDeltaPosition(float deltaX, float deltaY);
 };

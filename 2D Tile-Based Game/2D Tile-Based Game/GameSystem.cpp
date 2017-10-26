@@ -262,7 +262,7 @@ int	GameSystem::Update()
 
 				{
 					_tileMap->Render();
-					//_character->Render();
+					_character->Render();
 				}
 
 				_sprite->End();

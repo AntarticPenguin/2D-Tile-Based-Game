@@ -30,6 +30,10 @@ public:
 	void Release();
 	void Reset();
 
+	//Transform
+public:
+	void MoveDeltaPosition(float deltaX, float deltaY);
+
 	//Move
 public:
 	enum eDirection
@@ -44,6 +48,12 @@ private:
 	float _moveTime;
 	float _movingDuration;
 	bool _isMoving;
+
+	float _targetX;
+	float _targetY;
+
+	float _moveDistancePerTimeX;
+	float _moveDistancePerTimeY;
 
 	eDirection _curDirection;
 

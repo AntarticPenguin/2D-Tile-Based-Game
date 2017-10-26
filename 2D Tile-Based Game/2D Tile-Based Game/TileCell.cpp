@@ -26,7 +26,7 @@ void TileCell::Render()
 {
 	_sprite->Render();
 
-	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+	for (std::list<Component*>::iterator itr = _renderList.begin(); itr != _renderList.end(); itr++)
 	{
 		(*itr)->Render();
 	}
@@ -47,6 +47,7 @@ void TileCell::SetPosition(float posX, float posY)
 	_posX = posX;
 	_posY = posY;
 	_sprite->SetPosition(posX, posY);
+
 }
 
 void TileCell::SetSprite(Sprite* sprite)
@@ -64,12 +65,30 @@ float TileCell::GetPositionY()
 	return _posY;
 }
 
-void TileCell::AddComponent(Component* component)
+void TileCell::AddComponent(Component* component, bool isRender)
 {
 	_componentList.push_back(component);
+
+	if (isRender)
+	{
+		_renderList.push_back(component);
+	}
 }
 
 void TileCell::RemoveComponent(Component* component)
 {
 	_componentList.remove(component);
+	_renderList.remove(component);
+}
+
+void TileCell::MoveDeltaPosition(float deltaX, float deltaY)
+{
+	_posX += deltaX;
+	_posY += deltaY;
+	_sprite->SetPosition(_posX, _posY);
+
+	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+	{
+		(*itr)->MoveDeltaPosition(_posX, _posY);
+	}
 }

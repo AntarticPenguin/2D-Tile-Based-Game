@@ -39,6 +39,6 @@ public:
 	int GetPositionX(int tileX, int tileY);
 	int GetPositionY(int tileX, int tileY);
 
-	void SetTileComponent(int tileX, int tileY, Component* component);
+	void SetTileComponent(int tileX, int tileY, Component* component, bool isRender);
 	void ResetTileComponent(int tileX, int tileY, Component* component);
 };

@@ -19,4 +19,7 @@ public:
 	virtual void Render() = 0;
 	virtual void Release() = 0;
 	virtual void Reset() = 0;
+
+public:
+	virtual void MoveDeltaPosition(float deltaX, float deltaY) {}
 };
