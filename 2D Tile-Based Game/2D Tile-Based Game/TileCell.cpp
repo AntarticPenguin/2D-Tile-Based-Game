@@ -89,6 +89,6 @@ void TileCell::MoveDeltaPosition(float deltaX, float deltaY)
 
 	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
 	{
-		(*itr)->MoveDeltaPosition(_posX, _posY);
+		(*itr)->MoveDeltaPosition(deltaX, deltaY);
 	}
 }

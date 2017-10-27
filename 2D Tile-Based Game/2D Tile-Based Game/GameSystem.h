@@ -75,6 +75,22 @@ private:
 	GameTimer _gameTimer;
 	float _frameDuration;
 
+	//Input
+public:
+	enum eKeyState
+	{
+		KEY_DOWN,
+		KEY_UP,
+	};
+
+private:
+	eKeyState _eKeyState[256];
+
+public:
+	void InitInput();
+	void KeyDown(unsigned int keyCode);
+	void KeyUp(unsigned int keyCode);
+
 	//Initializer & Destroyer
 private:
 	GameSystem();

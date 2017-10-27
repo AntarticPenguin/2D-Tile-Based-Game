@@ -20,13 +20,6 @@ void Character::Init()
 	WCHAR textureFileName[256];
 	WCHAR scriptFileName[256];
 
-	/*
-	wsprintf(textureFileName, L"%s.png", _name);
-	wsprintf(scriptFileName, L"%s.json", _name);
-
-	_sprite = new Sprite(textureFileName, scriptFileName);
-	_sprite->Init();
-	*/
 	{
 		wsprintf(textureFileName, L"%s.png", _name);
 		wsprintf(scriptFileName, L"%s_left.json", _name);
@@ -119,11 +112,7 @@ void Character::InitMove()
 
 void Character::UpdateAI(float deltaTime)
 {
-	if (false == _isMoving)
-	{
-		int direction = rand() % 4;
-		MoveStart((eDirection)direction);
-	}
+
 }
 
 void Character::UpdateMove(float deltaTime)
@@ -137,8 +126,11 @@ void Character::UpdateMove(float deltaTime)
 		_isMoving = false;
 
 		//이동후 도착하면 타일의 정확한 위치에 찍어줘야 한다.
-		_x = _targetX;
-		_y = _targetY;
+		//_x = _targetX;
+		//_y = _targetY;
+		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+		_x = map->GetPositionX(_tileX, _tileY);
+		_y = map->GetPositionY(_tileX, _tileY);
 	}
 	else
 	{

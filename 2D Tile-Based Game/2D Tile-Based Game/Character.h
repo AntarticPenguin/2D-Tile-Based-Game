@@ -44,7 +44,7 @@ public:
 		DOWN,
 	};
 
-private:
+protected:
 	float _moveTime;
 	float _movingDuration;
 	bool _isMoving;
@@ -59,7 +59,7 @@ private:
 
 public:
 	void InitMove();
-	void UpdateAI(float deltaTime);
+	virtual void UpdateAI(float deltaTime);
 	void UpdateMove(float deltaTime);
 	void MoveStart(eDirection direction);
 };

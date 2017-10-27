@@ -4,13 +4,16 @@
 #include "GameSystem.h"
 #include "ComponentSystem.h"
 #include "Map.h"
-#include "Character.h"
+//#include "Character.h"
+#include "Player.h"
+#include "NPC.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
 	case WM_KEYDOWN:
+		GameSystem::GetInstance().KeyDown(wParam);
 		if (VK_ESCAPE == wParam)
 		{
 			ComponentSystem::GetInstance().RemoveAllComponents();
@@ -18,7 +21,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 		
 		//Scroll test
-		if (VK_LEFT == wParam)
+		/*if (VK_LEFT == wParam)
 		{
 			GameSystem::GetInstance().MapScrollTest(-10.0f, 0.0f);
 		}
@@ -33,10 +36,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		if (VK_DOWN == wParam)
 		{
 			GameSystem::GetInstance().MapScrollTest(0.0f, 10.0f);
-		}
+		}*/
 		return 0;
 	case WM_KEYUP:
-		GameSystem::GetInstance().MapScrollTest(0.0f, 0.0f);
+		//GameSystem::GetInstance().MapScrollTest(0.0f, 0.0f);
+		GameSystem::GetInstance().KeyUp(wParam);
 		return 0;
 	case WM_DESTROY:
 		PostQuitMessage(0);
@@ -167,11 +171,13 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	if (false == InitDirect3D())
 		return false;
 
+	InitInput();
 	
 	_tileMap = new Map(L"tileMap");
 	_tileMap->Init();
 
-	_character = new Character(L"testCharacter");
+	//_character = new Character(L"testCharacter");
+	_character = new Player(L"npc");
 	_character->Init();
 
 	return true;
@@ -569,13 +575,13 @@ void GameSystem::CheckDeviceLost()
 		{
 			//º¹±¸
 			_tileMap->Release();
-			//_character->Release();
+			_character->Release();
 
 			InitDirect3D();
 			hr = _device3d->Reset(&_d3dpp);
 
 			_tileMap->Reset();
-			//_character->Reset();
+			_character->Reset();
 		}
 	}
 }
@@ -583,4 +589,20 @@ void GameSystem::CheckDeviceLost()
 void GameSystem::MapScrollTest(float deltaX, float deltaY)
 {
 	_tileMap->Scroll(deltaX, deltaY);
+}
+
+void GameSystem::InitInput()
+{
+	for (int i = 0; i < 256; i++)
+		_eKeyState[i] = eKeyState::KEY_UP;
+}
+
+void GameSystem::KeyDown(unsigned int keyCode)
+{
+	_eKeyState[keyCode] = eKeyState::KEY_DOWN;
+}
+
+void GameSystem::KeyUp(unsigned int keyCode)
+{
+	_eKeyState[keyCode] = eKeyState::KEY_UP;
 }
