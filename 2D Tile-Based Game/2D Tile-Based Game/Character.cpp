@@ -7,7 +7,7 @@ Character::Character(LPCWSTR name) :
 	Component(name), _x(0.0f), _y(0.0f), _tileX(5), _tileY(5)
 {
 	_spriteList.clear();
-	InitMove();
+	_moveTime = 1.0f;
 }
 
 Character::~Character()
@@ -55,6 +55,8 @@ void Character::Init()
 		_y = map->GetPositionY(_tileX, _tileY);
 		map->SetTileComponent(_tileX, _tileY, this, false);
 	}
+
+	InitMove();
 }
 
 void Character::Deinit()
@@ -105,7 +107,6 @@ void Character::MoveDeltaPosition(float deltaX, float deltaY)
 void Character::InitMove()
 {
 	_isMoving = false;
-	_moveTime = 1.0f;
 	_movingDuration = 0.0f;
 	_curDirection = eDirection::DOWN;
 }
@@ -126,8 +127,6 @@ void Character::UpdateMove(float deltaTime)
 		_isMoving = false;
 
 		//이동후 도착하면 타일의 정확한 위치에 찍어줘야 한다.
-		//_x = _targetX;
-		//_y = _targetY;
 		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
 		_x = map->GetPositionX(_tileX, _tileY);
 		_y = map->GetPositionY(_tileX, _tileY);

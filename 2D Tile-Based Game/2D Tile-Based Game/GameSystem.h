@@ -62,7 +62,8 @@ private:
 	//Sprite & Texture
 private:
 	Map* _tileMap;
-	Character* _character;
+	Character* _player;
+	Character* _npc;
 
 
 public:
@@ -90,6 +91,8 @@ public:
 	void InitInput();
 	void KeyDown(unsigned int keyCode);
 	void KeyUp(unsigned int keyCode);
+
+	bool IsKeyDown(unsigned int keyCode);
 
 	//Initializer & Destroyer
 private:

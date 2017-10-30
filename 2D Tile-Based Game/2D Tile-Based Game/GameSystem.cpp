@@ -4,7 +4,6 @@
 #include "GameSystem.h"
 #include "ComponentSystem.h"
 #include "Map.h"
-//#include "Character.h"
 #include "Player.h"
 #include "NPC.h"
 
@@ -13,12 +12,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	switch (msg)
 	{
 	case WM_KEYDOWN:
-		GameSystem::GetInstance().KeyDown(wParam);
 		if (VK_ESCAPE == wParam)
 		{
 			ComponentSystem::GetInstance().RemoveAllComponents();
 			DestroyWindow(hWnd);
 		}
+		GameSystem::GetInstance().KeyDown(wParam);
 		
 		//Scroll test
 		/*if (VK_LEFT == wParam)
@@ -64,7 +63,8 @@ GameSystem::GameSystem()
 	_frameDuration = 0.0f;
 
 	_tileMap = NULL;
-	_character = NULL;
+	_player = NULL;
+	_npc = NULL;
 }
 
 GameSystem::~GameSystem()
@@ -77,20 +77,6 @@ GameSystem::~GameSystem()
 	RELEASE_COM(_d3dDeviceContext);
 	RELEASE_COM(_d3dDevice);
 	*/
-
-	if (NULL != _tileMap)
-	{
-		_tileMap->Deinit();
-		delete _tileMap;
-		_tileMap = NULL;
-	}
-
-	if (NULL != _character)
-	{
-		_character->Deinit();
-		delete _character;
-		_character = NULL;
-	}
 
 	RELEASE_COM(_sprite);
 	RELEASE_COM(_device3d);
@@ -177,8 +163,11 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	_tileMap->Init();
 
 	//_character = new Character(L"testCharacter");
-	_character = new Player(L"npc");
-	_character->Init();
+	_player = new Player(L"npc");
+	_player->Init();
+
+	_npc = new NPC(L"npc");
+	_npc->Init();
 
 	return true;
 }
@@ -224,7 +213,8 @@ int	GameSystem::Update()
 			_frameDuration += _gameTimer.GetDeltaTime();
 
 			_tileMap->Update(deltaTime);
-			_character->Update(deltaTime);
+			_player->Update(deltaTime);
+			_npc->Update(deltaTime);
 
 			float secPerFrame = 1.0f / 60.0f;
 			if (secPerFrame <= _frameDuration)
@@ -268,7 +258,8 @@ int	GameSystem::Update()
 
 				{
 					_tileMap->Render();
-					_character->Render();
+					_player->Render();
+					_npc->Render();
 				}
 
 				_sprite->End();
@@ -575,13 +566,15 @@ void GameSystem::CheckDeviceLost()
 		{
 			//º¹±¸
 			_tileMap->Release();
-			_character->Release();
+			_player->Release();
+			_npc->Release();
 
 			InitDirect3D();
 			hr = _device3d->Reset(&_d3dpp);
 
 			_tileMap->Reset();
-			_character->Reset();
+			_player->Reset();
+			_npc->Reset();
 		}
 	}
 }
@@ -605,4 +598,9 @@ void GameSystem::KeyDown(unsigned int keyCode)
 void GameSystem::KeyUp(unsigned int keyCode)
 {
 	_eKeyState[keyCode] = eKeyState::KEY_UP;
+}
+
+bool GameSystem::IsKeyDown(unsigned int keyCode)
+{
+	return (eKeyState::KEY_DOWN == _eKeyState[keyCode]);
 }

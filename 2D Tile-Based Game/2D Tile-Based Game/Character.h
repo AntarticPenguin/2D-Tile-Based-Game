@@ -59,7 +59,10 @@ protected:
 
 public:
 	void InitMove();
-	virtual void UpdateAI(float deltaTime);
-	void UpdateMove(float deltaTime);
+	virtual void UpdateMove(float deltaTime);
 	void MoveStart(eDirection direction);
+
+	//AI
+public:
+	virtual void UpdateAI(float deltaTime);
 };
