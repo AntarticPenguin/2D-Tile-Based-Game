@@ -41,11 +41,11 @@ void Map::Init()
 		srcY += _tileSize;
 	}
 
-	//Load Map Script
+	//Load Map Script 1Ãþ
 	{
 		char record[1024];
 		int line = 0;
-		std::ifstream infile("MapData.csv");
+		std::ifstream infile("MapData_layer1.csv");
 		while (!infile.eof())
 		{
 			infile.getline(record, 1024);
@@ -73,11 +73,56 @@ void Map::Init()
 					{
 						int index = atoi(token);
 						TileCell* tileCell = new TileCell();
-						tileCell->SetSprite(_spriteList[index]);
+						//tileCell->SetSprite(_spriteList[index]);
+						WCHAR componentName[256];
+						wsprintf(componentName, L"map_layer_01_%d_%d", line, x);
+						TileObject* tileObject = new TileObject(componentName, _spriteList[index]);
+						tileCell->AddComponent(tileObject, true);
 						rowList.push_back(tileCell);
 						token = strtok(NULL, ",");
 					}
 					_tileMap.push_back(rowList);
+				}
+				break;
+			}
+			line++;
+		}
+	}
+
+	//1Ãþ(¹Ù´Ú)À» ±â¹ÝÀ¸·Î 2ÃþÀ» ·Îµå
+	{
+		char record[1024];
+		int line = 0;
+		int row = 0;
+		std::ifstream infile("MapData_layer2.csv");
+		while (!infile.eof())
+		{
+			infile.getline(record, 1024);
+
+			char* token = strtok(record, ",");
+			switch (line)
+			{
+			case 0:
+				break;
+			case 1:
+				break;
+			default:
+				//Map Data
+				if (NULL != token)
+				{
+					std::vector<TileCell*> rowList = _tileMap[row];
+					for (int x = 0; x < _mapWidth; x++)
+					{
+						int index = atoi(token);
+						if (0 <= index)
+						{
+							TileCell* tileCell = rowList[x];
+							tileCell->SetSprite(_spriteList[index]);
+						}
+						token = strtok(NULL, ",");
+					}
+					//_tileMap.push_back(rowList);
+					row++;
 				}
 				break;
 			}
@@ -125,6 +170,7 @@ void Map::Update(float deltaTime)
 	{
 		for (int x = 0; x < _mapWidth; x++)
 		{
+			_tileMap[y][x]->MoveDeltaPosition(_deltaX, _deltaY);
 			_tileMap[y][x]->Update(deltaTime);
 		}
 	}
@@ -132,31 +178,11 @@ void Map::Update(float deltaTime)
 
 void Map::Render()
 {
-	/*
-	//Âï´Â ½ÃÀÛ À§Ä¡
-	_startX += _deltaX;
-	_startY += _deltaY;
-
-	//½ÇÁ¦·Î ÂïÈú À§Ä¡
-	float posX = _startX;
-	float posY = _startY;
 	for (int y = 0; y < _mapHeight; y++)
 	{
 		for (int x = 0; x < _mapWidth; x++)
 		{
-			_tileMap[y][x]->SetPosition(posX, posY);
-			_tileMap[y][x]->Render();
-			posX += _tileSize;
-		}
-		posX = _startX;
-		posY += _tileSize;
-	}
-	*/
-	for (int y = 0; y < _mapHeight; y++)
-	{
-		for (int x = 0; x < _mapWidth; x++)
-		{
-			_tileMap[y][x]->MoveDeltaPosition(_deltaX, _deltaY);
+			//_tileMap[y][x]->MoveDeltaPosition(_deltaX, _deltaY);
 			_tileMap[y][x]->Render();
 		}
 	}

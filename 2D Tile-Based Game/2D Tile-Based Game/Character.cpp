@@ -161,8 +161,8 @@ void Character::MoveStart(eDirection direction)
 		break;
 	case eDirection::RIGHT: //right
 		_tileX++;
-		if (255 < _tileX)
-			_tileX = 255;
+		if (49 < _tileX)
+			_tileX = 49;
 		break;
 	case eDirection::UP: //up
 		_tileY--;
@@ -171,8 +171,8 @@ void Character::MoveStart(eDirection direction)
 		break;
 	case eDirection::DOWN: //down
 		_tileY++;
-		if (255 < _tileY)
-			_tileY = 255;
+		if (49 < _tileY)
+			_tileY = 49;
 		break;
 	}
 

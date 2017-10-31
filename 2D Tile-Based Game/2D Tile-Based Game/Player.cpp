@@ -1,5 +1,6 @@
 #include "GameSystem.h"
 #include "ComponentSystem.h"
+#include "Map.h"
 #include "Player.h"
 
 Player::Player(LPCWSTR name) :
@@ -50,6 +51,7 @@ void Player::UpdateMove(float deltaTime)
 		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
 		//_x = map->GetPositionX(_tileX, _tileY);
 		//_y = map->GetPositionY(_tileX, _tileY);
+		map->Scroll(0.0f, 0.0f);
 	}
 	else
 	{
@@ -59,5 +61,12 @@ void Player::UpdateMove(float deltaTime)
 		float moveDistanceY = _moveDistancePerTimeY * deltaTime;
 		//_x += moveDistanceX;
 		//_y += moveDistanceY;
+		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+		map->Scroll(-moveDistanceX, -moveDistanceY);
 	}
+}
+
+void Player::MoveDeltaPosition(float deltaX, float deltaY)
+{
+
 }
