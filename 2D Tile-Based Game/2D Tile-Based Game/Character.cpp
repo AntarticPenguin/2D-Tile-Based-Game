@@ -150,8 +150,34 @@ void Character::MoveStart(eDirection direction)
 	_curDirection = direction;
 
 	Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
-	map->ResetTileComponent(_tileX, _tileY, this);
 
+	//충돌체크 : 타일 위의 컴포넌트를 리셋하기 전에 충돌 여부 체크
+	int newTileX = _tileX;
+	int newTileY = _tileY;
+	switch (direction)
+	{
+	case eDirection::LEFT:	//left
+		newTileX--;
+		break;
+	case eDirection::RIGHT: //right
+		newTileX++;
+		break;
+	case eDirection::UP: //up
+		newTileY--;
+		break;
+	case eDirection::DOWN: //down
+		newTileY++;
+		break;
+	}
+
+	if (false == map->CanMoveTileMap(newTileX, newTileY))
+		return;
+
+	map->ResetTileComponent(_tileX, _tileY, this);
+	_tileX = newTileX;
+	_tileY = newTileY;
+
+	/*
 	switch (direction)
 	{
 	case eDirection::LEFT:	//left
@@ -175,6 +201,7 @@ void Character::MoveStart(eDirection direction)
 			_tileY = 49;
 		break;
 	}
+	*/
 
 	//애니메이션 이동 보간
 	{

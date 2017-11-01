@@ -165,9 +165,11 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	//_character = new Character(L"testCharacter");
 	_player = new Player(L"npc");
 	_player->Init();
+	_player->SetCanMove(false);
 
 	_npc = new NPC(L"npc");
 	_npc->Init();
+	_npc->SetCanMove(false);
 
 	return true;
 }

@@ -7,8 +7,6 @@ class Sprite;
 class TileCell
 {
 private:
-	Sprite* _sprite;
-	
 	float _posX;
 	float _posY;
 
@@ -27,7 +25,6 @@ public:
 	void Reset();
 
 	void SetPosition(float posX, float posY);
-	void SetSprite(Sprite* sprite);
 
 	float GetPositionX();
 	float GetPositionY();
@@ -35,4 +32,6 @@ public:
 	void AddComponent(Component* component, bool isRender);
 	void RemoveComponent(Component* component);
 	void MoveDeltaPosition(float deltaX, float deltaY);
+
+	bool CanMove();
 };

@@ -2,6 +2,7 @@
 #include "Map.h"
 #include "Sprite.h"
 #include "TileCell.h"
+#include "TileObject.h"
 
 Map::Map(LPCWSTR name) : Component(name)
 {
@@ -73,10 +74,11 @@ void Map::Init()
 					{
 						int index = atoi(token);
 						TileCell* tileCell = new TileCell();
-						//tileCell->SetSprite(_spriteList[index]);
+
 						WCHAR componentName[256];
 						wsprintf(componentName, L"map_layer_01_%d_%d", line, x);
 						TileObject* tileObject = new TileObject(componentName, _spriteList[index]);
+
 						tileCell->AddComponent(tileObject, true);
 						rowList.push_back(tileCell);
 						token = strtok(NULL, ",");
@@ -117,7 +119,13 @@ void Map::Init()
 						if (0 <= index)
 						{
 							TileCell* tileCell = rowList[x];
-							tileCell->SetSprite(_spriteList[index]);
+
+							WCHAR componentName[256];
+							wsprintf(componentName, L"map_layer_02_%d_%d", line, x);
+							TileObject* tileObject = new TileObject(componentName, _spriteList[index]);
+							tileObject->SetCanMove(false);
+
+							tileCell->AddComponent(tileObject, true);
 						}
 						token = strtok(NULL, ",");
 					}
@@ -234,4 +242,18 @@ void Map::SetTileComponent(int tileX, int tileY, Component* component, bool isRe
 void Map::ResetTileComponent(int tileX, int tileY, Component* component)
 {
 	_tileMap[tileY][tileX]->RemoveComponent(component);
+}
+
+bool Map::CanMoveTileMap(int tileX, int tileY)
+{
+	if (tileX < 0)
+		return false;
+	if (_mapWidth <= tileX)
+		return false;
+	if (tileY < 0)
+		return false;
+	if (_mapHeight <= tileY)
+		return false;
+
+	return _tileMap[tileY][tileX]->CanMove();
 }

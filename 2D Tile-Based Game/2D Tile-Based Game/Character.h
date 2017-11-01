@@ -32,7 +32,7 @@ public:
 
 	//Transform
 public:
-	virtual void MoveDeltaPosition(float deltaX, float deltaY);
+	void MoveDeltaPosition(float deltaX, float deltaY);
 
 	//Move
 public:
