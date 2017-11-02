@@ -7,6 +7,8 @@ Player::Player(LPCWSTR name) :
 	Character(name)
 {
 	_moveTime = 0.2f;
+	_tileX = 32;
+	_tileY = 15;
 }
 
 Player::~Player()
@@ -49,8 +51,6 @@ void Player::UpdateMove(float deltaTime)
 
 		//이동후 도착하면 타일의 정확한 위치에 찍어줘야 한다.
 		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
-		//_x = map->GetPositionX(_tileX, _tileY);
-		//_y = map->GetPositionY(_tileX, _tileY);
 		map->Scroll(0.0f, 0.0f);
 	}
 	else
@@ -59,8 +59,6 @@ void Player::UpdateMove(float deltaTime)
 
 		float moveDistanceX = _moveDistancePerTimeX * deltaTime;
 		float moveDistanceY = _moveDistancePerTimeY * deltaTime;
-		//_x += moveDistanceX;
-		//_y += moveDistanceY;
 		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
 		map->Scroll(-moveDistanceX, -moveDistanceY);
 	}

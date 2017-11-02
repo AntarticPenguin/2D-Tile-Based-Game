@@ -4,10 +4,13 @@
 #include "Sprite.h"
 
 Character::Character(LPCWSTR name) :
-	Component(name), _x(0.0f), _y(0.0f), _tileX(5), _tileY(5)
+	Component(name), _x(0.0f), _y(0.0f)
 {
 	_spriteList.clear();
 	_moveTime = 1.0f;
+
+	_tileX = 10;
+	_tileY = 10;
 }
 
 Character::~Character()
@@ -176,32 +179,6 @@ void Character::MoveStart(eDirection direction)
 	map->ResetTileComponent(_tileX, _tileY, this);
 	_tileX = newTileX;
 	_tileY = newTileY;
-
-	/*
-	switch (direction)
-	{
-	case eDirection::LEFT:	//left
-		_tileX--;
-		if (_tileX < 0)
-			_tileX = 0;
-		break;
-	case eDirection::RIGHT: //right
-		_tileX++;
-		if (49 < _tileX)
-			_tileX = 49;
-		break;
-	case eDirection::UP: //up
-		_tileY--;
-		if (_tileY < 0)
-			_tileY = 0;
-		break;
-	case eDirection::DOWN: //down
-		_tileY++;
-		if (49 < _tileY)
-			_tileY = 49;
-		break;
-	}
-	*/
 
 	//애니메이션 이동 보간
 	{

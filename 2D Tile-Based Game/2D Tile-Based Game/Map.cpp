@@ -1,4 +1,6 @@
 #include <fstream>
+
+#include "GameSystem.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "TileCell.h"
@@ -21,7 +23,6 @@ Map::~Map()
 
 void Map::Init()
 {
-
 	//맵용 스프라이트 리스트 작업
 	//512 x 512 이미지를 32x32 크기의 타일로 쪼갬
 	//16 x 16 = 256개의 타일 생성
@@ -138,8 +139,7 @@ void Map::Init()
 		}
 	}
 
-
-	//임시
+	/*
 	//찍는 시작 위치
 	_startX += _deltaX;
 	_startY += _deltaY;
@@ -152,12 +152,12 @@ void Map::Init()
 		for (int x = 0; x < _mapWidth; x++)
 		{
 			_tileMap[y][x]->SetPosition(posX, posY);
-			//_tileMap[y][x]->Render();
 			posX += _tileSize;
 		}
 		posX = _startX;
 		posY += _tileSize;
 	}
+	*/
 }
 
 void Map::Deinit()
@@ -190,7 +190,6 @@ void Map::Render()
 	{
 		for (int x = 0; x < _mapWidth; x++)
 		{
-			//_tileMap[y][x]->MoveDeltaPosition(_deltaX, _deltaY);
 			_tileMap[y][x]->Render();
 		}
 	}
@@ -256,4 +255,49 @@ bool Map::CanMoveTileMap(int tileX, int tileY)
 		return false;
 
 	return _tileMap[tileY][tileX]->CanMove();
+}
+
+void Map::InitViewer(Component* component)
+{
+	Component* _viewer = component;
+
+	//그릴 영역(타일 개수)
+	//최소 최대 x,y를 구함
+	//최소 x,y = 뷰어의 현재 타일 x,y의 위치 - (중심축 / 타일사이즈) - 1
+	//최대 x,y = 뷰어의 현재 타일 x,y의 위치 + (중심축 / 타일사이즈) + 1
+	int midX = GameSystem::GetInstance().GetClientWidth() / 2;
+	int midY = GameSystem::GetInstance().GetClientHeight() / 2;
+
+	int minX = _viewer->GetTileX() - (midX / _tileSize) - 1;
+	int maxX = _viewer->GetTileX() + (midX / _tileSize) + 1;
+	int minY = _viewer->GetTileY() - (midY / _tileSize) - 1;
+	int maxY = _viewer->GetTileY() + (midY / _tileSize) + 1;
+
+	//예외처리(범위 밖으로 벗어났을 경우)
+	if (minX < 0)
+		minX = 0;
+	if (_mapWidth <= maxX)
+		maxX = _mapWidth - 1;
+	if (minY < 0)
+		minY = 0;
+	if (_mapHeight <= maxY)
+		maxY = _mapHeight - 1;
+
+	//뷰어의 위치를 기준으로 시작 픽셀 위치를 계산(startX, startY)
+	_startX = (-_viewer->GetTileX() * _tileSize) + midX - _tileSize / 2;
+	_startY = (-_viewer->GetTileY() * _tileSize) + midY - _tileSize / 2;
+
+	//해당위치에 타일을 그린다
+	float posX = _startX;
+	float posY = _startY;
+	for (int y = 0; y < _mapHeight; y++)
+	{
+		for (int x = 0; x < _mapWidth; x++)
+		{
+			_tileMap[y][x]->SetPosition(posX, posY);
+			posX += _tileSize;
+		}
+		posX = _startX;
+		posY += _tileSize;
+	}
 }

@@ -15,9 +15,6 @@ private:
 	float _x;
 	float _y;
 
-	int _tileX;
-	int _tileY;
-
 public:
 	Character(LPCWSTR name);
 	~Character();

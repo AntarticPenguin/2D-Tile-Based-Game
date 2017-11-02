@@ -18,27 +18,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			DestroyWindow(hWnd);
 		}
 		GameSystem::GetInstance().KeyDown(wParam);
-		
-		//Scroll test
-		/*if (VK_LEFT == wParam)
-		{
-			GameSystem::GetInstance().MapScrollTest(-10.0f, 0.0f);
-		}
-		if (VK_RIGHT == wParam)
-		{
-			GameSystem::GetInstance().MapScrollTest(10.0f, 0.0f);
-		}
-		if (VK_UP == wParam)
-		{
-			GameSystem::GetInstance().MapScrollTest(0.0f, -10.0f);
-		}
-		if (VK_DOWN == wParam)
-		{
-			GameSystem::GetInstance().MapScrollTest(0.0f, 10.0f);
-		}*/
 		return 0;
 	case WM_KEYUP:
-		//GameSystem::GetInstance().MapScrollTest(0.0f, 0.0f);
 		GameSystem::GetInstance().KeyUp(wParam);
 		return 0;
 	case WM_DESTROY:
@@ -162,14 +143,15 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	_tileMap = new Map(L"tileMap");
 	_tileMap->Init();
 
-	//_character = new Character(L"testCharacter");
 	_player = new Player(L"npc");
-	_player->Init();
 	_player->SetCanMove(false);
+	_player->Init();
 
 	_npc = new NPC(L"npc");
-	_npc->Init();
 	_npc->SetCanMove(false);
+	_npc->Init();
+
+	_tileMap->InitViewer(_player);
 
 	return true;
 }
