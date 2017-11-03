@@ -7,8 +7,8 @@ Player::Player(LPCWSTR name) :
 	Character(name)
 {
 	_moveTime = 0.2f;
-	_tileX = 32;
-	_tileY = 15;
+	_tileX = 1;
+	_tileY = 1;
 }
 
 Player::~Player()

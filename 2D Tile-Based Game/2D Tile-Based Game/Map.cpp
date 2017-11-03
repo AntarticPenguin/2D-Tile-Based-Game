@@ -282,7 +282,7 @@ void Map::InitViewer(Component* component)
 		minY = 0;
 	if (_mapHeight <= maxY)
 		maxY = _mapHeight - 1;
-
+	
 	//뷰어의 위치를 기준으로 시작 픽셀 위치를 계산(startX, startY)
 	_startX = (-_viewer->GetTileX() * _tileSize) + midX - _tileSize / 2;
 	_startY = (-_viewer->GetTileY() * _tileSize) + midY - _tileSize / 2;
@@ -300,4 +300,25 @@ void Map::InitViewer(Component* component)
 		posX = _startX;
 		posY += _tileSize;
 	}
+	
+	
+	/*
+	//찍는 시작 위치
+	_startX += _deltaX;
+	_startY += _deltaY;
+
+	//실제로 찍힐 위치
+	float posX = _startX;
+	float posY = _startY;
+	for (int y = 0; y < _mapHeight; y++)
+	{
+		for (int x = 0; x < _mapWidth; x++)
+		{
+			_tileMap[y][x]->SetPosition(posX, posY);
+			posX += _tileSize;
+		}
+		posX = _startX;
+		posY += _tileSize;
+	}
+	*/
 }

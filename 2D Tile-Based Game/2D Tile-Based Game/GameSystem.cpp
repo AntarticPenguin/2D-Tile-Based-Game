@@ -145,13 +145,13 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 
 	_player = new Player(L"npc");
 	_player->SetCanMove(false);
-	_player->Init();
 
 	_npc = new NPC(L"npc");
 	_npc->SetCanMove(false);
 	_npc->Init();
 
 	_tileMap->InitViewer(_player);
+	_player->Init();
 
 	return true;
 }
