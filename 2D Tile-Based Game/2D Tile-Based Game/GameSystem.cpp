@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "NPC.h"
+#include "Monster.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -42,10 +43,6 @@ GameSystem::GameSystem()
 	_clientWidth = 1600;
 	_clientHeight = 900;
 	_frameDuration = 0.0f;
-
-	_tileMap = NULL;
-	_player = NULL;
-	_npc = NULL;
 }
 
 GameSystem::~GameSystem()
@@ -140,18 +137,26 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 
 	InitInput();
 	
-	_tileMap = new Map(L"tileMap");
-	_tileMap->Init();
+	_componentList.clear();
 
-	_player = new Player(L"npc");
-	_player->SetCanMove(false);
-	_player->Init();
+	Map* tileMap = new Map(L"tileMap");
+	_componentList.push_back(tileMap);
 
-	_npc = new NPC(L"npc");
-	_npc->SetCanMove(false);
-	_npc->Init();
+	Player* player = new Player(L"Player", L"Player");
+	_componentList.push_back(player);
 
-	_tileMap->InitViewer(_player);
+	NPC* npc = new NPC(L"Npc", L"Npc");
+	_componentList.push_back(npc);
+
+	Monster* monster = new Monster(L"Npc", L"character_sprite2");
+	_componentList.push_back(monster);
+
+	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+	{
+		(*itr)->Init();
+	}
+	
+	tileMap->InitViewer(player);
 
 	return true;
 }
@@ -196,9 +201,10 @@ int	GameSystem::Update()
 
 			_frameDuration += _gameTimer.GetDeltaTime();
 
-			_tileMap->Update(deltaTime);
-			_player->Update(deltaTime);
-			_npc->Update(deltaTime);
+			for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+			{
+				(*itr)->Update(deltaTime);
+			}
 
 			float secPerFrame = 1.0f / 60.0f;
 			if (secPerFrame <= _frameDuration)
@@ -241,9 +247,10 @@ int	GameSystem::Update()
 				_sprite->Begin(D3DXSPRITE_ALPHABLEND);
 
 				{
-					_tileMap->Render();
-					_player->Render();
-					_npc->Render();
+					for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+					{
+						(*itr)->Render();
+					}
 				}
 
 				_sprite->End();
@@ -549,23 +556,20 @@ void GameSystem::CheckDeviceLost()
 		else if (D3DERR_DEVICENOTRESET == hr)	//복구가 가능한 상태
 		{
 			//복구
-			_tileMap->Release();
-			_player->Release();
-			_npc->Release();
+			for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+			{
+				(*itr)->Release();
+			}
 
 			InitDirect3D();
 			hr = _device3d->Reset(&_d3dpp);
 
-			_tileMap->Reset();
-			_player->Reset();
-			_npc->Reset();
+			for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+			{
+				(*itr)->Reset();
+			}
 		}
 	}
-}
-
-void GameSystem::MapScrollTest(float deltaX, float deltaY)
-{
-	_tileMap->Scroll(deltaX, deltaY);
 }
 
 void GameSystem::InitInput()

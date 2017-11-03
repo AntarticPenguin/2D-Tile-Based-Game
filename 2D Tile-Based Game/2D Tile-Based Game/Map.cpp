@@ -79,6 +79,7 @@ void Map::Init()
 						WCHAR componentName[256];
 						wsprintf(componentName, L"map_layer_01_%d_%d", line, x);
 						TileObject* tileObject = new TileObject(componentName, _spriteList[index]);
+						tileObject->SetCanMove(true);
 
 						tileCell->AddComponent(tileObject, true);
 						rowList.push_back(tileCell);
@@ -124,7 +125,7 @@ void Map::Init()
 							WCHAR componentName[256];
 							wsprintf(componentName, L"map_layer_02_%d_%d", line, x);
 							TileObject* tileObject = new TileObject(componentName, _spriteList[index]);
-							tileObject->SetCanMove(false);
+							//tileObject->SetCanMove(false);
 
 							tileCell->AddComponent(tileObject, true);
 						}
@@ -138,26 +139,6 @@ void Map::Init()
 			line++;
 		}
 	}
-
-	/*
-	//찍는 시작 위치
-	_startX += _deltaX;
-	_startY += _deltaY;
-
-	//실제로 찍힐 위치
-	float posX = _startX;
-	float posY = _startY;
-	for (int y = 0; y < _mapHeight; y++)
-	{
-		for (int x = 0; x < _mapWidth; x++)
-		{
-			_tileMap[y][x]->SetPosition(posX, posY);
-			posX += _tileSize;
-		}
-		posX = _startX;
-		posY += _tileSize;
-	}
-	*/
 }
 
 void Map::Deinit()
@@ -186,9 +167,31 @@ void Map::Update(float deltaTime)
 
 void Map::Render()
 {
-	for (int y = 0; y < _mapHeight; y++)
+	//그릴 영역(타일 개수)
+	//최소 최대 x,y를 구함
+	//최소 x,y = 뷰어의 현재 타일 x,y의 위치 - (중심축 / 타일사이즈) - 1
+	//최대 x,y = 뷰어의 현재 타일 x,y의 위치 + (중심축 / 타일사이즈) + 1(잘리는)
+	int midX = GameSystem::GetInstance().GetClientWidth() / 2;
+	int midY = GameSystem::GetInstance().GetClientHeight() / 2;
+
+	int minX = _viewer->GetTileX() - (midX / _tileSize) - 2;
+	int maxX = _viewer->GetTileX() + (midX / _tileSize) + 2;
+	int minY = _viewer->GetTileY() - (midY / _tileSize) - 2;
+	int maxY = _viewer->GetTileY() + (midY / _tileSize) + 2;
+
+	//예외처리(범위 밖으로 벗어났을 경우)
+	if (minX < 0)
+		minX = 0;
+	if (_mapWidth <= maxX)
+		maxX = _mapWidth;
+	if (minY < 0)
+		minY = 0;
+	if (_mapHeight <= maxY)
+		maxY = _mapHeight;
+
+	for (int y = minY; y < maxY; y++)
 	{
-		for (int x = 0; x < _mapWidth; x++)
+		for (int x = minX; x < maxX; x++)
 		{
 			_tileMap[y][x]->Render();
 		}
@@ -259,29 +262,10 @@ bool Map::CanMoveTileMap(int tileX, int tileY)
 
 void Map::InitViewer(Component* component)
 {
-	Component* _viewer = component;
+	_viewer = component;
 
-	//그릴 영역(타일 개수)
-	//최소 최대 x,y를 구함
-	//최소 x,y = 뷰어의 현재 타일 x,y의 위치 - (중심축 / 타일사이즈) - 1
-	//최대 x,y = 뷰어의 현재 타일 x,y의 위치 + (중심축 / 타일사이즈) + 1
 	int midX = GameSystem::GetInstance().GetClientWidth() / 2;
 	int midY = GameSystem::GetInstance().GetClientHeight() / 2;
-
-	int minX = _viewer->GetTileX() - (midX / _tileSize) - 1;
-	int maxX = _viewer->GetTileX() + (midX / _tileSize) + 1;
-	int minY = _viewer->GetTileY() - (midY / _tileSize) - 1;
-	int maxY = _viewer->GetTileY() + (midY / _tileSize) + 1;
-
-	//예외처리(범위 밖으로 벗어났을 경우)
-	if (minX < 0)
-		minX = 0;
-	if (_mapWidth <= maxX)
-		maxX = _mapWidth - 1;
-	if (minY < 0)
-		minY = 0;
-	if (_mapHeight <= maxY)
-		maxY = _mapHeight - 1;
 
 	//뷰어의 위치를 기준으로 시작 픽셀 위치를 계산(startX, startY)
 	_startX = (-_viewer->GetTileX() * _tileSize) + midX - _tileSize / 2;

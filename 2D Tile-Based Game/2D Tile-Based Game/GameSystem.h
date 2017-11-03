@@ -3,14 +3,14 @@
 //#include <d3dx11.h>
 #include <d3dx9.h>
 #include <vector>
+#include <list>
 
 #include "GameTimer.h"
 
 #define RELEASE_COM(x) { if(x){x->Release(); x = NULL;} }
 #define SAFE_DELETE(x) { if(x){delete x; x = NULL;} }
 
-class Map;
-class Character;
+class Component;
 
 class GameSystem
 {
@@ -61,15 +61,18 @@ private:
 
 	//Sprite & Texture
 private:
+	/*
 	Map* _tileMap;
 	Character* _player;
 	Character* _npc;
+	Character* _monster;
+	*/
+	std::list<Component*> _componentList;
 
 
 public:
 	bool InitDirect3D();
 	void CheckDeviceLost();
-	void MapScrollTest(float deltaX, float deltaY);
 
 	//Game
 private:
