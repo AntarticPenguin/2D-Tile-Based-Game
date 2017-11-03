@@ -142,12 +142,18 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	Map* tileMap = new Map(L"tileMap");
 	_componentList.push_back(tileMap);
 
+<<<<<<< HEAD
 	Player* player = new Player(L"Player", L"Player");
 	_componentList.push_back(player);
+=======
+	_player = new Player(L"npc");
+	_player->SetCanMove(false);
+>>>>>>> bcf162d76dc561bd9a88489097c6f51d5c4b566b
 
 	NPC* npc = new NPC(L"Npc", L"Npc");
 	_componentList.push_back(npc);
 
+<<<<<<< HEAD
 	Monster* monster = new Monster(L"Npc", L"character_sprite2");
 	_componentList.push_back(monster);
 
@@ -157,6 +163,10 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	}
 	
 	tileMap->InitViewer(player);
+=======
+	_tileMap->InitViewer(_player);
+	_player->Init();
+>>>>>>> bcf162d76dc561bd9a88489097c6f51d5c4b566b
 
 	return true;
 }
