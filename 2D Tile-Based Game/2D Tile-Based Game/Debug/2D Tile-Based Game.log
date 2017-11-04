@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 0aafdd7... Merge branch 'master'
 ﻿  Component.cpp
@@ -15,6 +16,9 @@
 =======
 ﻿  Map.cpp
 >>>>>>> parent of 09a4751... 171103 카메라이동/리팩토링
+=======
+﻿  Map.cpp
+>>>>>>> parent of 09a4751... 171103 카메라이동/리팩토링
 c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\map.cpp(55): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\string.h(439): note: 'strtok' 선언을 참조하십시오.
 c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\map.cpp(61): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
@@ -24,9 +28,13 @@ c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 0aafdd7... Merge branch 'master'
 c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\map.cpp(86): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+=======
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\map.cpp(85): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+>>>>>>> parent of 09a4751... 171103 카메라이동/리팩토링
 =======
 c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\map.cpp(85): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 >>>>>>> parent of 09a4751... 171103 카메라이동/리팩토링

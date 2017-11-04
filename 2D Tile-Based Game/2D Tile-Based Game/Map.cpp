@@ -271,7 +271,10 @@ void Map::InitViewer(Component* component)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 09a4751... 171103 ì¹´ë©”ë¼ì´ë™/ë¦¬íŒ©í† ë§
 =======
 >>>>>>> parent of 09a4751... 171103 ì¹´ë©”ë¼ì´ë™/ë¦¬íŒ©í† ë§
 	int minX = _viewer->GetTileX() - (midX / _tileSize) - 1;
@@ -289,6 +292,7 @@ void Map::InitViewer(Component* component)
 	if (_mapHeight <= maxY)
 		maxY = _mapHeight - 1;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
 >>>>>>> bcf162d76dc561bd9a88489097c6f51d5c4b566b
 =======
@@ -296,6 +300,9 @@ void Map::InitViewer(Component* component)
 >>>>>>> parent of 09a4751... 171103 ì¹´ë©”ë¼ì´ë™/ë¦¬íŒ©í† ë§
 =======
 >>>>>>> parent of 0aafdd7... Merge branch 'master'
+=======
+
+>>>>>>> parent of 09a4751... 171103 ì¹´ë©”ë¼ì´ë™/ë¦¬íŒ©í† ë§
 	//ºä¾îÀÇ À§Ä¡¸¦ ±âÁØÀ¸·Î ½ÃÀÛ ÇÈ¼¿ À§Ä¡¸¦ °è»ê(startX, startY)
 	_startX = (-_viewer->GetTileX() * _tileSize) + midX - _tileSize / 2;
 	_startY = (-_viewer->GetTileY() * _tileSize) + midY - _tileSize / 2;
