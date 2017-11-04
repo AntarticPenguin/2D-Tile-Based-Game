@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "NPC.h"
+#include "Monster.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -42,10 +43,6 @@ GameSystem::GameSystem()
 	_clientWidth = 1600;
 	_clientHeight = 900;
 	_frameDuration = 0.0f;
-
-	_tileMap = NULL;
-	_player = NULL;
-	_npc = NULL;
 }
 
 GameSystem::~GameSystem()
@@ -140,44 +137,17 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 
 	InitInput();
 	
-	_tileMap = new Map(L"tileMap");
-	_tileMap->Init();
+	_componentList.clear();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+	Map* tileMap = new Map(L"tileMap");
+	_componentList.push_back(tileMap);
+
 	Player* player = new Player(L"Player", L"Player");
 	_componentList.push_back(player);
-=======
-	_player = new Player(L"npc");
-	_player->SetCanMove(false);
->>>>>>> bcf162d76dc561bd9a88489097c6f51d5c4b566b
-=======
-	_player = new Player(L"npc");
-	_player->SetCanMove(false);
-	_player->Init();
->>>>>>> parent of 09a4751... 171103 ì¹´ë©”ë¼ì´ë™/ë¦¬íŒ©í† ë§
-=======
-	Player* player = new Player(L"Player", L"Player");
-	_componentList.push_back(player);
->>>>>>> parent of 0aafdd7... Merge branch 'master'
-=======
-	_player = new Player(L"npc");
-	_player->SetCanMove(false);
-	_player->Init();
->>>>>>> parent of 09a4751... 171103 ì¹´ë©”ë¼ì´ë™/ë¦¬íŒ©í† ë§
 
-	_npc = new NPC(L"npc");
-	_npc->SetCanMove(false);
-	_npc->Init();
+	NPC* npc = new NPC(L"Npc", L"Npc");
+	_componentList.push_back(npc);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of 0aafdd7... Merge branch 'master'
 	Monster* monster = new Monster(L"Npc", L"character_sprite2");
 	_componentList.push_back(monster);
 
@@ -187,19 +157,6 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	}
 	
 	tileMap->InitViewer(player);
-<<<<<<< HEAD
-=======
-	_tileMap->InitViewer(_player);
-	_player->Init();
->>>>>>> bcf162d76dc561bd9a88489097c6f51d5c4b566b
-=======
-	_tileMap->InitViewer(_player);
->>>>>>> parent of 09a4751... 171103 ì¹´ë©”ë¼ì´ë™/ë¦¬íŒ©í† ë§
-=======
->>>>>>> parent of 0aafdd7... Merge branch 'master'
-=======
-	_tileMap->InitViewer(_player);
->>>>>>> parent of 09a4751... 171103 ì¹´ë©”ë¼ì´ë™/ë¦¬íŒ©í† ë§
 
 	return true;
 }
@@ -244,9 +201,10 @@ int	GameSystem::Update()
 
 			_frameDuration += _gameTimer.GetDeltaTime();
 
-			_tileMap->Update(deltaTime);
-			_player->Update(deltaTime);
-			_npc->Update(deltaTime);
+			for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+			{
+				(*itr)->Update(deltaTime);
+			}
 
 			float secPerFrame = 1.0f / 60.0f;
 			if (secPerFrame <= _frameDuration)
@@ -289,9 +247,10 @@ int	GameSystem::Update()
 				_sprite->Begin(D3DXSPRITE_ALPHABLEND);
 
 				{
-					_tileMap->Render();
-					_player->Render();
-					_npc->Render();
+					for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+					{
+						(*itr)->Render();
+					}
 				}
 
 				_sprite->End();
@@ -597,23 +556,20 @@ void GameSystem::CheckDeviceLost()
 		else if (D3DERR_DEVICENOTRESET == hr)	//º¹±¸°¡ °¡´ÉÇÑ »óÅÂ
 		{
 			//º¹±¸
-			_tileMap->Release();
-			_player->Release();
-			_npc->Release();
+			for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+			{
+				(*itr)->Release();
+			}
 
 			InitDirect3D();
 			hr = _device3d->Reset(&_d3dpp);
 
-			_tileMap->Reset();
-			_player->Reset();
-			_npc->Reset();
+			for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+			{
+				(*itr)->Reset();
+			}
 		}
 	}
-}
-
-void GameSystem::MapScrollTest(float deltaX, float deltaY)
-{
-	_tileMap->Scroll(deltaX, deltaY);
 }
 
 void GameSystem::InitInput()

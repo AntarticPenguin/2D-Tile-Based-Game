@@ -4,10 +4,6 @@
 class NPC : public Character
 {
 public:
-	NPC(LPCWSTR name);
+	NPC(LPCWSTR name, LPCWSTR spriteFileName);
 	~NPC();
-
-	//AI
-public:
-	void UpdateAI(float deltaTime);
 };
