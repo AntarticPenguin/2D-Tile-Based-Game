@@ -12,7 +12,7 @@ protected:
 	int _tileY;
 
 public:
-	Component()	{ _canMove = false; }
+	Component()	{ _canMove = true; }
 	Component(LPCWSTR name);
 	virtual ~Component();
 

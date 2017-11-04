@@ -79,7 +79,6 @@ void Map::Init()
 						WCHAR componentName[256];
 						wsprintf(componentName, L"map_layer_01_%d_%d", line, x);
 						TileObject* tileObject = new TileObject(componentName, _spriteList[index]);
-						tileObject->SetCanMove(true);
 
 						tileCell->AddComponent(tileObject, true);
 						rowList.push_back(tileCell);
@@ -125,7 +124,7 @@ void Map::Init()
 							WCHAR componentName[256];
 							wsprintf(componentName, L"map_layer_02_%d_%d", line, x);
 							TileObject* tileObject = new TileObject(componentName, _spriteList[index]);
-							//tileObject->SetCanMove(false);
+							tileObject->SetCanMove(false);
 
 							tileCell->AddComponent(tileObject, true);
 						}
@@ -139,6 +138,26 @@ void Map::Init()
 			line++;
 		}
 	}
+
+	/*
+	//Âï´Â ½ÃÀÛ À§Ä¡
+	_startX += _deltaX;
+	_startY += _deltaY;
+
+	//½ÇÁ¦·Î ÂïÈú À§Ä¡
+	float posX = _startX;
+	float posY = _startY;
+	for (int y = 0; y < _mapHeight; y++)
+	{
+		for (int x = 0; x < _mapWidth; x++)
+		{
+			_tileMap[y][x]->SetPosition(posX, posY);
+			posX += _tileSize;
+		}
+		posX = _startX;
+		posY += _tileSize;
+	}
+	*/
 }
 
 void Map::Deinit()
@@ -167,31 +186,9 @@ void Map::Update(float deltaTime)
 
 void Map::Render()
 {
-	//±×¸± ¿µ¿ª(Å¸ÀÏ °³¼ö)
-	//ÃÖ¼Ò ÃÖ´ë x,y¸¦ ±¸ÇÔ
-	//ÃÖ¼Ò x,y = ºä¾îÀÇ ÇöÀç Å¸ÀÏ x,yÀÇ À§Ä¡ - (Áß½ÉÃà / Å¸ÀÏ»çÀÌÁî) - 1
-	//ÃÖ´ë x,y = ºä¾îÀÇ ÇöÀç Å¸ÀÏ x,yÀÇ À§Ä¡ + (Áß½ÉÃà / Å¸ÀÏ»çÀÌÁî) + 1(Àß¸®´Â)
-	int midX = GameSystem::GetInstance().GetClientWidth() / 2;
-	int midY = GameSystem::GetInstance().GetClientHeight() / 2;
-
-	int minX = _viewer->GetTileX() - (midX / _tileSize) - 2;
-	int maxX = _viewer->GetTileX() + (midX / _tileSize) + 2;
-	int minY = _viewer->GetTileY() - (midY / _tileSize) - 2;
-	int maxY = _viewer->GetTileY() + (midY / _tileSize) + 2;
-
-	//¿¹¿ÜÃ³¸®(¹üÀ§ ¹ÛÀ¸·Î ¹ş¾î³µÀ» °æ¿ì)
-	if (minX < 0)
-		minX = 0;
-	if (_mapWidth <= maxX)
-		maxX = _mapWidth;
-	if (minY < 0)
-		minY = 0;
-	if (_mapHeight <= maxY)
-		maxY = _mapHeight;
-
-	for (int y = minY; y < maxY; y++)
+	for (int y = 0; y < _mapHeight; y++)
 	{
-		for (int x = minX; x < maxX; x++)
+		for (int x = 0; x < _mapWidth; x++)
 		{
 			_tileMap[y][x]->Render();
 		}
@@ -262,13 +259,20 @@ bool Map::CanMoveTileMap(int tileX, int tileY)
 
 void Map::InitViewer(Component* component)
 {
-	_viewer = component;
+	Component* _viewer = component;
 
+	//±×¸± ¿µ¿ª(Å¸ÀÏ °³¼ö)
+	//ÃÖ¼Ò ÃÖ´ë x,y¸¦ ±¸ÇÔ
+	//ÃÖ¼Ò x,y = ºä¾îÀÇ ÇöÀç Å¸ÀÏ x,yÀÇ À§Ä¡ - (Áß½ÉÃà / Å¸ÀÏ»çÀÌÁî) - 1
+	//ÃÖ´ë x,y = ºä¾îÀÇ ÇöÀç Å¸ÀÏ x,yÀÇ À§Ä¡ + (Áß½ÉÃà / Å¸ÀÏ»çÀÌÁî) + 1
 	int midX = GameSystem::GetInstance().GetClientWidth() / 2;
 	int midY = GameSystem::GetInstance().GetClientHeight() / 2;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 09a4751... 171103 ì¹´ë©”ë¼ì´ë™/ë¦¬íŒ©í† ë§
 	int minX = _viewer->GetTileX() - (midX / _tileSize) - 1;
 	int maxX = _viewer->GetTileX() + (midX / _tileSize) + 1;
 	int minY = _viewer->GetTileY() - (midY / _tileSize) - 1;
@@ -283,8 +287,12 @@ void Map::InitViewer(Component* component)
 		minY = 0;
 	if (_mapHeight <= maxY)
 		maxY = _mapHeight - 1;
+<<<<<<< HEAD
 	
 >>>>>>> bcf162d76dc561bd9a88489097c6f51d5c4b566b
+=======
+
+>>>>>>> parent of 09a4751... 171103 ì¹´ë©”ë¼ì´ë™/ë¦¬íŒ©í† ë§
 	//ºä¾îÀÇ À§Ä¡¸¦ ±âÁØÀ¸·Î ½ÃÀÛ ÇÈ¼¿ À§Ä¡¸¦ °è»ê(startX, startY)
 	_startX = (-_viewer->GetTileX() * _tileSize) + midX - _tileSize / 2;
 	_startY = (-_viewer->GetTileY() * _tileSize) + midY - _tileSize / 2;

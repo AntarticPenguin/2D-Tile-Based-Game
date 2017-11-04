@@ -1,7 +1,7 @@
 #include "NPC.h"
 
-NPC::NPC(LPCWSTR name, LPCWSTR spriteFileName) :
-	Character(name, spriteFileName)
+NPC::NPC(LPCWSTR name) :
+	Character(name)
 {
 
 }
@@ -9,4 +9,13 @@ NPC::NPC(LPCWSTR name, LPCWSTR spriteFileName) :
 NPC::~NPC()
 {
 
+}
+
+void NPC::UpdateAI(float deltaTime)
+{
+	if (false == _isMoving)
+	{
+		int direction = rand() % 4;
+		MoveStart((eDirection)direction);
+	}
 }

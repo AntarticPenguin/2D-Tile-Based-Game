@@ -21,8 +21,6 @@ private:
 
 	int _tileSize;
 
-	Component* _viewer;
-
 	std::vector<Sprite*> _spriteList;
 
 public:

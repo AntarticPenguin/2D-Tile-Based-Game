@@ -3,8 +3,8 @@
 #include "Map.h"
 #include "Player.h"
 
-Player::Player(LPCWSTR name, LPCWSTR spriteFileName) :
-	Character(name, spriteFileName)
+Player::Player(LPCWSTR name) :
+	Character(name)
 {
 	_moveTime = 0.2f;
 	_tileX = 1;
