@@ -270,6 +270,7 @@ void Map::InitViewer(Component* component)
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> parent of 09a4751... 171103 ì¹´ë©”ë¼ì´ë™/ë¦¬íŒ©í† ë§
@@ -293,6 +294,8 @@ void Map::InitViewer(Component* component)
 =======
 
 >>>>>>> parent of 09a4751... 171103 ì¹´ë©”ë¼ì´ë™/ë¦¬íŒ©í† ë§
+=======
+>>>>>>> parent of 0aafdd7... Merge branch 'master'
 	//ºä¾îÀÇ À§Ä¡¸¦ ±âÁØÀ¸·Î ½ÃÀÛ ÇÈ¼¿ À§Ä¡¸¦ °è»ê(startX, startY)
 	_startX = (-_viewer->GetTileX() * _tileSize) + midX - _tileSize / 2;
 	_startY = (-_viewer->GetTileY() * _tileSize) + midY - _tileSize / 2;
@@ -310,25 +313,4 @@ void Map::InitViewer(Component* component)
 		posX = _startX;
 		posY += _tileSize;
 	}
-	
-	
-	/*
-	//Âï´Â ½ÃÀÛ À§Ä¡
-	_startX += _deltaX;
-	_startY += _deltaY;
-
-	//½ÇÁ¦·Î ÂïÈú À§Ä¡
-	float posX = _startX;
-	float posY = _startY;
-	for (int y = 0; y < _mapHeight; y++)
-	{
-		for (int x = 0; x < _mapWidth; x++)
-		{
-			_tileMap[y][x]->SetPosition(posX, posY);
-			posX += _tileSize;
-		}
-		posX = _startX;
-		posY += _tileSize;
-	}
-	*/
 }

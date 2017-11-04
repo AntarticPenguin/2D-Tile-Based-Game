@@ -145,6 +145,7 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	Player* player = new Player(L"Player", L"Player");
 	_componentList.push_back(player);
 =======
@@ -156,6 +157,10 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	_player->SetCanMove(false);
 	_player->Init();
 >>>>>>> parent of 09a4751... 171103 카메라이동/리팩토링
+=======
+	Player* player = new Player(L"Player", L"Player");
+	_componentList.push_back(player);
+>>>>>>> parent of 0aafdd7... Merge branch 'master'
 
 	_npc = new NPC(L"npc");
 	_npc->SetCanMove(false);
@@ -163,6 +168,9 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 0aafdd7... Merge branch 'master'
 	Monster* monster = new Monster(L"Npc", L"character_sprite2");
 	_componentList.push_back(monster);
 
@@ -172,6 +180,7 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	}
 	
 	tileMap->InitViewer(player);
+<<<<<<< HEAD
 =======
 	_tileMap->InitViewer(_player);
 	_player->Init();
@@ -179,6 +188,8 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 =======
 	_tileMap->InitViewer(_player);
 >>>>>>> parent of 09a4751... 171103 카메라이동/리팩토링
+=======
+>>>>>>> parent of 0aafdd7... Merge branch 'master'
 
 	return true;
 }
