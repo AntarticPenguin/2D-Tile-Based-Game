@@ -50,8 +50,10 @@ void Player::UpdateMove(float deltaTime)
 		_isMoving = false;
 
 		//이동후 도착하면 타일의 정확한 위치에 찍어줘야 한다.
-		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
-		map->Scroll(0.0f, 0.0f);
+		//Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+		//map->Scroll(0.0f, 0.0f);
+		_moveDistancePerTimeX = 0.0f;
+		_moveDistancePerTimeY = 0.0f;
 	}
 	else
 	{
@@ -59,8 +61,8 @@ void Player::UpdateMove(float deltaTime)
 
 		float moveDistanceX = _moveDistancePerTimeX * deltaTime;
 		float moveDistanceY = _moveDistancePerTimeY * deltaTime;
-		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
-		map->Scroll(-moveDistanceX, -moveDistanceY);
+		//Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+		//map->Scroll(-moveDistanceX, -moveDistanceY);
 	}
 }
 

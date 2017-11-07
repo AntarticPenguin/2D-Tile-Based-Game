@@ -145,15 +145,19 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	Player* player = new Player(L"Player", L"Player", L"Player");	//(컴포넌트이름, 스크립트 이름, 스프라이트이름)
 	_componentList.push_back(player);
 
-	for (int i = 0; i < 10; i++)
+	/*for (int i = 0; i < 100; i++)
 	{
 		WCHAR name[256];
 		wsprintf(name, L"npc_%d", i);
 		NPC* npc = new NPC(name, L"npc", L"Npc");
 		_componentList.push_back(npc);
 	}
+	*/
 
-	for (int i = 0; i < 50; i++)
+	NPC* npc = new NPC(L"npc1", L"npc", L"Npc");
+	_componentList.push_back(npc);
+
+	for (int i = 0; i < 100; i++)
 	{
 		WCHAR name[256];
 		wsprintf(name, L"monster_%d", i);
@@ -166,7 +170,8 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 		(*itr)->Init();
 	}
 	
-	tileMap->InitViewer(player);
+	//tileMap->InitViewer(player);
+	tileMap->InitViewer(npc);
 
 	return true;
 }

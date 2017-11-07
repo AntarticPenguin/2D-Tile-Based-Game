@@ -11,8 +11,15 @@ protected:
 	int _tileX;
 	int _tileY;
 
+	float _moveDistancePerTimeX;
+	float _moveDistancePerTimeY;
+
 public:
-	Component()	{ _canMove = false; }
+	Component()
+	{	_canMove = false;
+		_moveDistancePerTimeX = 0;
+		_moveDistancePerTimeY = 0;
+	}
 	Component(LPCWSTR name);
 	virtual ~Component();
 
@@ -32,6 +39,9 @@ public:
 	bool CanMove() { return _canMove; }
 	int GetTileX() { return _tileX; }
 	int GetTileY() { return _tileY; }
+
+	float GetMoveDeltaX() { return _moveDistancePerTimeX; }
+	float GetMoveDeltaY() { return _moveDistancePerTimeY; }
 
 	//Message
 public:

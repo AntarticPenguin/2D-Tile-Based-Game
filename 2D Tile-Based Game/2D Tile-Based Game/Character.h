@@ -14,6 +14,7 @@ private:
 	std::wstring _spriteFileName;
 	std::wstring _scriptFileName;
 
+protected:
 	float _x;
 	float _y;
 
@@ -52,8 +53,8 @@ protected:
 	float _targetX;
 	float _targetY;
 
-	float _moveDistancePerTimeX;
-	float _moveDistancePerTimeY;
+	//float _moveDistancePerTimeX;
+	//float _moveDistancePerTimeY;
 
 	eDirection _curDirection;
 

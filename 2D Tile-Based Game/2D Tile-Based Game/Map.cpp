@@ -163,6 +163,13 @@ void Map::Update(float deltaTime)
 			_tileMap[y][x]->Update(deltaTime);
 		}
 	}
+
+	if (NULL != _viewer)
+	{
+		float deltaX = _viewer->GetMoveDeltaX() * deltaTime;
+		float deltaY = _viewer->GetMoveDeltaY() * deltaTime;
+		Scroll(-deltaX, -deltaY);
+	}
 }
 
 void Map::Render()
@@ -234,6 +241,16 @@ int Map::GetPositionX(int tileX, int tileY)
 int Map::GetPositionY(int tileX, int tileY)
 {
 	return _tileMap[tileY][tileX]->GetPositionY();
+}
+
+int Map::GetWidth()
+{
+	return _mapWidth;
+}
+
+int Map::GetHeight()
+{
+	return _mapHeight;
 }
 
 void Map::SetTileComponent(int tileX, int tileY, Component* component, bool isRender)
