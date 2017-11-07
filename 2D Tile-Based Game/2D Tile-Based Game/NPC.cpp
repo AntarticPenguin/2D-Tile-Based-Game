@@ -1,7 +1,7 @@
 #include "NPC.h"
 
-NPC::NPC(LPCWSTR name, LPCWSTR spriteFileName) :
-	Character(name, spriteFileName)
+NPC::NPC(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
+	Character(name, scriptName, spriteFileName)
 {
 
 }

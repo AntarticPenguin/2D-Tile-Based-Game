@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <vector>
+#include <list>
 
 #include "Component.h"
 
@@ -44,6 +45,7 @@ public:
 	void SetTileComponent(int tileX, int tileY, Component* component, bool isRender);
 	void ResetTileComponent(int tileX, int tileY, Component* component);
 	bool CanMoveTileMap(int tileX, int tileY);
+	bool GetTileCollisionList(int tileX, int tileY, std::list<Component*>& collisionList); //&(참조자)는 null값이 넘어올 수 없음
 
 	void InitViewer(Component* component);
 };

@@ -34,4 +34,5 @@ public:
 	void MoveDeltaPosition(float deltaX, float deltaY);
 
 	bool CanMove();
+	bool GetCollisionList(std::list<Component*>& collisionList);
 };

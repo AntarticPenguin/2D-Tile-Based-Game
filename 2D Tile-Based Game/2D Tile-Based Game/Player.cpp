@@ -3,12 +3,12 @@
 #include "Map.h"
 #include "Player.h"
 
-Player::Player(LPCWSTR name, LPCWSTR spriteFileName) :
-	Character(name, spriteFileName)
+Player::Player(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
+	Character(name, scriptName, spriteFileName)
 {
 	_moveTime = 0.2f;
-	_tileX = 1;
-	_tileY = 1;
+	_tileX = 32;
+	_tileY = 15;
 }
 
 Player::~Player()

@@ -4,6 +4,6 @@
 class NPC : public Character
 {
 public:
-	NPC(LPCWSTR name, LPCWSTR spriteFileName);
+	NPC(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName);
 	~NPC();
 };

@@ -32,4 +32,8 @@ public:
 	bool CanMove() { return _canMove; }
 	int GetTileX() { return _tileX; }
 	int GetTileY() { return _tileY; }
+
+	//Message
+public:
+	virtual void ReceiveMessage(Component* sender, std::wstring message);
 };

@@ -20,6 +20,10 @@ public:
 	void RemoveAllComponents();
 	Component* FindComponent(std::wstring name);
 
+	//Message
+public:
+	void SendMessageToComponent(Component* sender, Component* receiver, std::wstring message);
+
 private:
 	ComponentSystem();
 

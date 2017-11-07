@@ -3,10 +3,12 @@
 #include "Character.h"
 #include "Sprite.h"
 
-Character::Character(LPCWSTR name, LPCWSTR spriteFileName) :
+Character::Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	Component(name), _x(0.0f), _y(0.0f)
 {
 	_spriteFileName = spriteFileName;
+	_scriptFileName = scriptName;
+
 	_spriteList.clear();
 	_moveTime = 1.0f;
 
@@ -26,25 +28,25 @@ void Character::Init()
 	WCHAR scriptFileName[256];
 
 	{
-		wsprintf(scriptFileName, L"%s_left.json", _name);
+		wsprintf(scriptFileName, L"%s_left.json", _scriptFileName.c_str());
 		Sprite* sprite = new Sprite(textureFileName, scriptFileName);
 		sprite->Init();
 		_spriteList.push_back(sprite);
 	}
 	{
-		wsprintf(scriptFileName, L"%s_right.json", _name);
+		wsprintf(scriptFileName, L"%s_right.json", _scriptFileName.c_str());
 		Sprite* sprite = new Sprite(textureFileName, scriptFileName);
 		sprite->Init();
 		_spriteList.push_back(sprite);
 	}
 	{
-		wsprintf(scriptFileName, L"%s_up.json", _name);
+		wsprintf(scriptFileName, L"%s_up.json", _scriptFileName.c_str());
 		Sprite* sprite = new Sprite(textureFileName, scriptFileName);
 		sprite->Init();
 		_spriteList.push_back(sprite);
 	}
 	{
-		wsprintf(scriptFileName, L"%s_down.json", _name);
+		wsprintf(scriptFileName, L"%s_down.json", _scriptFileName.c_str());
 		Sprite* sprite = new Sprite(textureFileName, scriptFileName);
 		sprite->Init();
 		_spriteList.push_back(sprite);
@@ -181,18 +183,21 @@ void Character::MoveStart(eDirection direction)
 		break;
 	}
 
-
 	/*
 	if (false == map->CanMoveTileMap(newTileX, newTileY))
 		return;
 	*/
+
 	std::list<Component*> collisionList;
 	bool canMove = map->GetTileCollisionList(newTileX, newTileY, collisionList);
 	if (false == canMove)
 	{
-		//collisionList 순환
+		//충돌된 컴포넌트들끼리 메세지 교환
 		{
-			//충돌시 어떤 컴포넌트가 충돌했는지 collisionlist에 다시 담을 것
+			for (std::list<Component*>::iterator itr = collisionList.begin(); itr != collisionList.end(); itr++)
+			{
+				ComponentSystem::GetInstance().SendMessageToComponent(this, (*itr), L"Collision"); //(발신컴포넌트, 송신컴포넌트, 메세지내용)
+			}
 		}
 		return;
 	}

@@ -12,3 +12,11 @@ Component::~Component()
 {
 
 }
+
+void Component::ReceiveMessage(Component* sender, std::wstring message)
+{
+	if (L"Collision" == message)
+	{
+
+	}
+}

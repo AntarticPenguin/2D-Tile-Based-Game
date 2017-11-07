@@ -142,20 +142,24 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	Map* tileMap = new Map(L"tileMap");
 	_componentList.push_back(tileMap);
 
-<<<<<<< HEAD
-	Player* player = new Player(L"Player", L"Player");
+	Player* player = new Player(L"Player", L"Player", L"Player");	//(컴포넌트이름, 스크립트 이름, 스프라이트이름)
 	_componentList.push_back(player);
-=======
-	_player = new Player(L"npc");
-	_player->SetCanMove(false);
->>>>>>> bcf162d76dc561bd9a88489097c6f51d5c4b566b
 
-	NPC* npc = new NPC(L"Npc", L"Npc");
-	_componentList.push_back(npc);
+	for (int i = 0; i < 10; i++)
+	{
+		WCHAR name[256];
+		wsprintf(name, L"npc_%d", i);
+		NPC* npc = new NPC(name, L"npc", L"Npc");
+		_componentList.push_back(npc);
+	}
 
-<<<<<<< HEAD
-	Monster* monster = new Monster(L"Npc", L"character_sprite2");
-	_componentList.push_back(monster);
+	for (int i = 0; i < 50; i++)
+	{
+		WCHAR name[256];
+		wsprintf(name, L"monster_%d", i);
+		Monster* monster = new Monster(name, L"npc", L"character_sprite2");
+		_componentList.push_back(monster);
+	}
 
 	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
 	{
@@ -163,10 +167,6 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	}
 	
 	tileMap->InitViewer(player);
-=======
-	_tileMap->InitViewer(_player);
-	_player->Init();
->>>>>>> bcf162d76dc561bd9a88489097c6f51d5c4b566b
 
 	return true;
 }

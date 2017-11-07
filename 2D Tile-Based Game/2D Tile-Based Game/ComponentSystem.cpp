@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "ComponentSystem.h"
+#include "Component.h"
 using namespace std;
 
 ComponentSystem* ComponentSystem::_instance = NULL;
@@ -34,7 +35,7 @@ void ComponentSystem::RemoveAllComponents()
 	_componentMap.clear();
 }
 
-Component* ComponentSystem::FindComponent(std::wstring name)
+Component* ComponentSystem::FindComponent(wstring name)
 {
 	map<wstring, Component*>::iterator itr = _componentMap.find(name);
 	if (itr != _componentMap.end())
@@ -43,6 +44,11 @@ Component* ComponentSystem::FindComponent(std::wstring name)
 	}
 
 	return NULL;
+}
+
+void ComponentSystem::SendMessageToComponent(Component* sender, Component* receiver, wstring message)
+{
+	receiver->ReceiveMessage(sender, message);
 }
 
 ComponentSystem::ComponentSystem()

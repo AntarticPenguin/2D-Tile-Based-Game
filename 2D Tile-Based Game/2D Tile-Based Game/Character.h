@@ -12,12 +12,13 @@ class Character : public Component
 private:
 	std::vector<Sprite*> _spriteList;
 	std::wstring _spriteFileName;
+	std::wstring _scriptFileName;
 
 	float _x;
 	float _y;
 
 public:
-	Character(LPCWSTR name, LPCWSTR spriteFileName);
+	Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName);
 	virtual ~Character();
 
 public:
