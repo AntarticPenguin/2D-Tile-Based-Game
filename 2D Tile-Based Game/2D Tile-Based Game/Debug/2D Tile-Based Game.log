@@ -1,3 +1,60 @@
+<<<<<<< HEAD
 ﻿  GameSystem.cpp
   2D Tile-Based Game.vcxproj -> C:\Users\atents\Desktop\박평기\2D Tile-based Game\2D-Tile-Based-Game\2D Tile-Based Game\Debug\2D Tile-Based Game.exe
   2D Tile-Based Game.vcxproj -> C:\Users\atents\Desktop\박평기\2D Tile-based Game\2D-Tile-Based-Game\2D Tile-Based Game\Debug\2D Tile-Based Game.pdb (Partial PDB)
+=======
+﻿  WinMain.cpp
+  TileObject.cpp
+  TileCell.cpp
+  Texture.cpp
+  Sprite.cpp
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\sprite.cpp(39): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\sprite.cpp(56): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\sprite.cpp(109): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  ResourceManager.cpp
+  Player.cpp
+  NPC.cpp
+  Monster.cpp
+  Map.cpp
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\map.cpp(55): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\string.h(439): note: 'strtok' 선언을 참조하십시오.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\map.cpp(61): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\string.h(439): note: 'strtok' 선언을 참조하십시오.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\map.cpp(63): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\string.h(439): note: 'strtok' 선언을 참조하십시오.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\map.cpp(86): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\string.h(439): note: 'strtok' 선언을 참조하십시오.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\map.cpp(106): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\string.h(439): note: 'strtok' 선언을 참조하십시오.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\map.cpp(132): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\string.h(439): note: 'strtok' 선언을 참조하십시오.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\map.cpp(231): warning C4244: 'return': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\map.cpp(236): warning C4244: 'return': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\map.cpp(271): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\map.cpp(272): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  GameTimer.cpp
+  GameSystem.cpp
+  Frame.cpp
+  ComponentSystem.cpp
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\componentsystem.cpp(32): warning C4150: 불완전한 형식 'Component'에 대한 포인터를 삭제했습니다. 소멸자가 호출되지 않습니다.
+  d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\componentsystem.h(6): note: 'Component' 선언을 참조하십시오.
+  Component.cpp
+  Character.cpp
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(55): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(56): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(65): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(88): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(96): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(142): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(143): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(189): error C2039: 'list': 'std'의 멤버가 아닙니다.
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.11.25503\include\vector(15): note: 'std' 선언을 참조하십시오.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(189): error C2065: 'list': 선언되지 않은 식별자입니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(189): error C2059: 구문 오류: '>'
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(190): error C2039: 'GetTileCollisionList': 'Map'의 멤버가 아닙니다.
+  d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\map.h(10): note: 'Map' 선언을 참조하십시오.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(190): error C2065: 'collisionList': 선언되지 않은 식별자입니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(209): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\programmingfolder\2d tile-based game\2d tile-based game\2d tile-based game\character.cpp(210): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+>>>>>>> 74fc83470d8d669eba269776c7d11c9152386be9
