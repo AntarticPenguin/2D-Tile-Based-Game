@@ -190,11 +190,6 @@ void Character::MoveStart(eDirection direction)
 		break;
 	}
 
-	/*
-	if (false == map->CanMoveTileMap(newTileX, newTileY))
-		return;
-	*/
-
 	std::list<Component*> collisionList;
 	bool canMove = map->GetTileCollisionList(newTileX, newTileY, collisionList);
 	if (false == canMove)

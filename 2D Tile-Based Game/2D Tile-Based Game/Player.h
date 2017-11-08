@@ -9,9 +9,4 @@ public:
 
 public:
 	void UpdateAI(float deltaTime);
-	void UpdateMove(float deltaTime);
-
-	//Transform
-public:
-	void MoveDeltaPosition(float deltaX, float deltaY);
 };

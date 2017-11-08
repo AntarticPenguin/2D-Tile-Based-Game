@@ -125,13 +125,11 @@ void Map::Init()
 							WCHAR componentName[256];
 							wsprintf(componentName, L"map_layer_02_%d_%d", line, x);
 							TileObject* tileObject = new TileObject(componentName, _spriteList[index]);
-							//tileObject->SetCanMove(false);
 
 							tileCell->AddComponent(tileObject, true);
 						}
 						token = strtok(NULL, ",");
 					}
-					//_tileMap.push_back(rowList);
 					row++;
 				}
 				break;
