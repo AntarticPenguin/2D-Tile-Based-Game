@@ -9,6 +9,7 @@ Player::Player(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	_moveTime = 0.2f;
 	_tileX = 32;
 	_tileY = 15;
+	_eType = eComponentType::CT_PLAYER;
 }
 
 Player::~Player()

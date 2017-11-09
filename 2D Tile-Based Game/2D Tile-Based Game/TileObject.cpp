@@ -5,6 +5,7 @@ TileObject::TileObject(LPCWSTR name, Sprite* sprite)
 	: Component(name), _posX(0.0f), _posY(0.0f)
 {
 	_sprite = sprite;
+	_eType = CT_TILE_OBJECT;
 }
 
 TileObject::~TileObject()

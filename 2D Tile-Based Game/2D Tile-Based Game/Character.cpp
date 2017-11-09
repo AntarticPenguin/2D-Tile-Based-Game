@@ -55,8 +55,14 @@ void Character::Init()
 	{
 		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
 
-		_tileX = rand() % (map->GetWidth() - 1) + 1;
-		_tileY = rand() % (map->GetHeight() - 1) + 1;
+		bool canMove = false;
+		while (true != canMove)
+		{
+			_tileX = rand() % (map->GetWidth() - 2) + 1;
+			_tileY = rand() % (map->GetHeight() - 2) + 1;
+
+			canMove = map->CanMoveTileMap(_tileX, _tileY);
+		}
 
 		_x = map->GetPositionX(_tileX, _tileY);
 		_y = map->GetPositionY(_tileX, _tileY);

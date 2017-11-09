@@ -23,11 +23,14 @@ protected:
 	float _moveDistancePerTimeX;
 	float _moveDistancePerTimeY;
 
+	eComponentType _eType;
+
 public:
 	Component()
 	{	_canMove = false;
 		_moveDistancePerTimeX = 0;
 		_moveDistancePerTimeY = 0;
+		_eType = eComponentType::CT_NONE;
 	}
 	Component(LPCWSTR name);
 	virtual ~Component();
@@ -51,6 +54,8 @@ public:
 
 	float GetMoveDeltaX() { return _moveDistancePerTimeX; }
 	float GetMoveDeltaY() { return _moveDistancePerTimeY; }
+
+	eComponentType GetType() { return _eType; }
 
 	//Message
 public:

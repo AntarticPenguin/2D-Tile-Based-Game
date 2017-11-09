@@ -133,10 +133,15 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	Player* player = new Player(L"Player", L"Player", L"Player");	//(컴포넌트이름, 스크립트 이름, 스프라이트이름)
 	_componentList.push_back(player);
 
-	NPC* npc = new NPC(L"npc1", L"npc", L"Npc");
-	_componentList.push_back(npc);
+	for (int i = 0; i < 10; i++)
+	{
+		WCHAR name[256];
+		wsprintf(name, L"npc_%d", i);
+		NPC* npc = new NPC(name, L"npc", L"Npc");
+		_componentList.push_back(npc);
+	}
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 40; i++)
 	{
 		WCHAR name[256];
 		wsprintf(name, L"monster_%d", i);

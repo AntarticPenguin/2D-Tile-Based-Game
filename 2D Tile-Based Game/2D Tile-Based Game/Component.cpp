@@ -7,6 +7,8 @@ Component::Component(LPCWSTR name)
 	_canMove = false;
 	_moveDistancePerTimeX = 0;
 	_moveDistancePerTimeY = 0;
+	_eType = eComponentType::CT_NONE;
+
 	ComponentSystem::GetInstance().AddComponent(_name, this);
 }
 
