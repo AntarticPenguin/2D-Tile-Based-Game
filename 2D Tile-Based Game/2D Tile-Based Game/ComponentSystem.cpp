@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "ComponentSystem.h"
 #include "Component.h"
+#include "Map.h"
 using namespace std;
 
 ComponentSystem* ComponentSystem::_instance = NULL;
@@ -46,9 +47,61 @@ Component* ComponentSystem::FindComponent(wstring name)
 	return NULL;
 }
 
-void ComponentSystem::SendMessageToComponent(Component* sender, Component* receiver, wstring message)
+Component* ComponentSystem::FindComponentInRange(Component* center, int range, vector<eComponentType> compareTypeList)
 {
-	receiver->ReceiveMessage(sender, message);
+	/*
+		1. 자신을 기준으로, 검사할 타일 범위 결정
+		2. 범위 내 타일을 검사하면서 NPC, PLAYER가 있으면 "찾았음"
+		3. 없으면 평소 움직임
+	*/
+	Map* map = (Map*)FindComponent(L"tileMap");
+	int minTileX = center->GetTileX() - range;
+	int maxTileX = center->GetTileX() + range;
+	int minTileY = center->GetTileY() - range;
+	int maxTileY = center->GetTileY() + range;
+
+	if (minTileX < 0)
+		minTileX = 0;
+	if (map->GetWidth() <= maxTileX)
+		maxTileX = map->GetWidth() - 1;
+	if (minTileY < 0)
+		minTileY = 0;
+	if (map->GetHeight() <= maxTileY)
+		maxTileY = map->GetHeight() - 1;
+
+	//범위에 적이 있는지 확인
+	for (int y = minTileY; y <= maxTileY; y++)
+	{
+		for (int x = minTileX; x <= maxTileX; x++)
+		{
+			std::list<Component*> componentList;
+			if (false == map->GetTileCollisionList(x, y, componentList))
+			{
+				for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
+				{
+					Component* component = (*itr);
+					//죽은대상이면 검사 제외
+					if (component->IsLive())
+					{
+						for (int i = 0; i < compareTypeList.size(); i++)
+						{
+							if (compareTypeList[i] == component->GetType())
+							{
+								return component;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return NULL;
+}
+
+void ComponentSystem::SendMessageToComponent(std::wstring message, Component* receiver, const sComponentMsgParam& msgParam)
+{
+	//receiver->ReceiveMessage(sender, message);
+	receiver->ReceiveMessage(message, msgParam);
 }
 
 ComponentSystem::ComponentSystem()

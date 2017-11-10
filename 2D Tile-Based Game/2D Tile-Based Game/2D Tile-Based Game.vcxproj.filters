@@ -128,5 +128,8 @@
     <ClInclude Include="Monster.h">
       <Filter>소스 파일\Game\Character</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentMessage.h">
+      <Filter>소스 파일\System\ComponentSystem</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

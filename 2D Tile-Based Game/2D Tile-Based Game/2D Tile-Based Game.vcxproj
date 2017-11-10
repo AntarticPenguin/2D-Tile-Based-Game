@@ -39,6 +39,7 @@
   <ItemGroup>
     <ClInclude Include="Character.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentMessage.h" />
     <ClInclude Include="ComponentSystem.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="GameSystem.h" />

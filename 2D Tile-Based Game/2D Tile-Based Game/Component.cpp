@@ -8,6 +8,7 @@ Component::Component(LPCWSTR name)
 	_moveDistancePerTimeX = 0;
 	_moveDistancePerTimeY = 0;
 	_eType = eComponentType::CT_NONE;
+	_isLive = true;
 
 	ComponentSystem::GetInstance().AddComponent(_name, this);
 }
@@ -17,7 +18,7 @@ Component::~Component()
 
 }
 
-void Component::ReceiveMessage(Component* sender, std::wstring message)
+void Component::ReceiveMessage(std::wstring message, const sComponentMsgParam& msgParam)
 {
 	if (L"Collision" == message)
 	{

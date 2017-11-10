@@ -55,6 +55,9 @@ protected:
 
 	eDirection _curDirection;
 
+	int _hp;
+	int _attackPoint;
+
 public:
 	void InitMove();
 	virtual void UpdateMove(float deltaTime);

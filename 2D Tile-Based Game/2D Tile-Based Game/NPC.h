@@ -9,4 +9,8 @@ public:
 
 public:
 	void UpdateAI(float deltaTime);
+
+	//Message
+public:
+	void ReceiveMessage(std::wstring message, const sComponentMsgParam& msgParam);
 };

@@ -2,6 +2,7 @@
 #include "Map.h"
 #include "Character.h"
 #include "Sprite.h"
+#include "ComponentMessage.h"
 
 Character::Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	Component(name), _x(0.0f), _y(0.0f)
@@ -14,6 +15,9 @@ Character::Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 
 	_tileX = 10;
 	_tileY = 10;
+
+	_attackPoint = 10;
+	_hp = 20;
 }
 
 Character::~Character()
@@ -132,6 +136,9 @@ void Character::InitMove()
 
 void Character::UpdateAI(float deltaTime)
 {
+	if (false == _isLive)
+		return;
+
 	if (false == _isMoving)
 	{
 		int direction = rand() % 4;
@@ -141,6 +148,9 @@ void Character::UpdateAI(float deltaTime)
 
 void Character::UpdateMove(float deltaTime)
 {
+	if (false == _isLive)
+		return;
+
 	if (false == _isMoving)
 		return;
 
@@ -202,9 +212,21 @@ void Character::MoveStart(eDirection direction)
 	{
 		//충돌된 컴포넌트들끼리 메세지 교환
 		{
-			for (std::list<Component*>::iterator itr = collisionList.begin(); itr != collisionList.end(); itr++)
+			if (eComponentType::CT_MONSTER == _eType)
 			{
-				ComponentSystem::GetInstance().SendMessageToComponent(this, (*itr), L"Collision"); //(발신컴포넌트, 송신컴포넌트, 메세지내용)
+				for (std::list<Component*>::iterator itr = collisionList.begin(); itr != collisionList.end(); itr++)
+				{
+					Component* com = (*itr);
+					if (com->GetType() == eComponentType::CT_NPC ||
+						com->GetType() == eComponentType::CT_PLAYER)
+					{
+						//ComponentSystem::GetInstance().SendMessageToComponent(this, (*itr), L"Collision"); //(발신컴포넌트, 송신컴포넌트, 메세지내용)
+						sComponentMsgParam msgParam;
+						msgParam.sender = this;
+						msgParam.attackPoint = _attackPoint;
+						ComponentSystem::GetInstance().SendMessageToComponent(L"Attack", (*itr), msgParam);	//(메세지내용, 송신컴포넌트, 메세지정보)
+					}
+				}
 			}
 		}
 		return;
