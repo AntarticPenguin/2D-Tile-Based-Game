@@ -13,6 +13,11 @@ ComponentSystem& ComponentSystem::GetInstance()
 	return *_instance;
 }
 
+void ComponentSystem::Update(float deltaTime)
+{
+	ProcessMessageQueue();
+}
+
 void ComponentSystem::AddComponent(wstring name, Component* component)
 {
 	if (NULL != component)
@@ -98,10 +103,19 @@ Component* ComponentSystem::FindComponentInRange(Component* center, int range, v
 	return NULL;
 }
 
-void ComponentSystem::SendMessageToComponent(std::wstring message, Component* receiver, const sComponentMsgParam& msgParam)
+void ComponentSystem::SendMessageToComponent(const sComponentMsgParam& msgParam)
 {
-	//receiver->ReceiveMessage(sender, message);
-	receiver->ReceiveMessage(message, msgParam);
+	_msgQueue.push(msgParam);
+}
+
+void ComponentSystem::ProcessMessageQueue()
+{
+	while (0 < _msgQueue.size())
+	{
+		sComponentMsgParam msgParam = _msgQueue.front();
+		_msgQueue.pop();
+		msgParam.receiver->ReceiveMessage(msgParam);
+	}
 }
 
 ComponentSystem::ComponentSystem()

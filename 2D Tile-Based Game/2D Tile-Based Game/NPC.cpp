@@ -67,23 +67,3 @@ void NPC::UpdateAI(float deltaTime)
 		}
 	}
 }
-
-void NPC::ReceiveMessage(std::wstring message, const sComponentMsgParam& msgParam)
-{
-	if (L"Attack" == message)
-	{
-		int attackPoint = msgParam.attackPoint;
-		_hp -= attackPoint;
-
-		if (_hp < 0)
-		{
-			//DEAD
-			_isLive = false;
-			SetCanMove(true);
-
-			//STOP
-			_moveDistancePerTimeX = 0.0f;
-			_moveDistancePerTimeY = 0.0f;
-		}
-	}
-}

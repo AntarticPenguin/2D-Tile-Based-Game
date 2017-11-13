@@ -29,13 +29,7 @@ protected:
 	bool _isLive;
 
 public:
-	Component()
-	{	_canMove = false;
-		_moveDistancePerTimeX = 0;
-		_moveDistancePerTimeY = 0;
-		_eType = eComponentType::CT_NONE;
-		_isLive = true;
-	}
+	Component();
 	Component(LPCWSTR name);
 	virtual ~Component();
 
@@ -64,5 +58,5 @@ public:
 
 	//Message
 public:
-	virtual void ReceiveMessage(std::wstring message, const sComponentMsgParam& msgParam);
+	virtual void ReceiveMessage(const sComponentMsgParam& msgParam);
 };

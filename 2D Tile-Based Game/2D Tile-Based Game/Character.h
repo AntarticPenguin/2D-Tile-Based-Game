@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <vector>
 #include <string>
+#include <list>
 
 #include "Component.h"
 
@@ -58,12 +59,15 @@ protected:
 	int _hp;
 	int _attackPoint;
 
+	//AI & MOVE
 public:
 	void InitMove();
+	virtual void UpdateAI(float deltaTime);
 	virtual void UpdateMove(float deltaTime);
 	void MoveStart(eDirection direction);
+	virtual void Collision(std::list<Component*>& collisionList);
 
-	//AI
+	//Message
 public:
-	virtual void UpdateAI(float deltaTime);
+	void ReceiveMessage(const sComponentMsgParam& msgParam);
 };

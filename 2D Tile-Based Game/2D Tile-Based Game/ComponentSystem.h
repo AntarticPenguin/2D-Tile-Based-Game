@@ -3,6 +3,8 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <queue>
+
 #include "ComponentMessage.h"
 
 enum eComponentType;
@@ -19,14 +21,19 @@ private:
 
 public:
 	static ComponentSystem& GetInstance();
+	void Update(float deltaTime);
 	void AddComponent(std::wstring name, Component* component);
 	void RemoveAllComponents();
 	Component* FindComponent(std::wstring name);
 	Component* FindComponentInRange(Component* center, int range, std::vector<eComponentType> compareTypeList);
 
 	//Message
+private:
+	std::queue<sComponentMsgParam> _msgQueue;		//큐는 기본적으로 Reference로 처리
+
 public:
-	void SendMessageToComponent(std::wstring message, Component* receiver, const sComponentMsgParam& msgParam);
+	void ComponentSystem::SendMessageToComponent(const sComponentMsgParam& msgParam);
+	void ProcessMessageQueue();
 
 private:
 	ComponentSystem();

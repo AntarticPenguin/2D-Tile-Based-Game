@@ -155,7 +155,6 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	}
 	
 	tileMap->InitViewer(player);
-	//tileMap->InitViewer(npc);
 
 	return true;
 }
@@ -187,6 +186,11 @@ int	GameSystem::Update()
 			_frameDuration += _gameTimer.GetDeltaTime();
 
 			//게임 업데이트
+			//들어온 메세지들을 큐에 쌓아놓고 처리
+			//컴포넌트들이 공평하게 동작
+			ComponentSystem::GetInstance().Update(deltaTime);
+
+
 			for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
 			{
 				(*itr)->Update(deltaTime);

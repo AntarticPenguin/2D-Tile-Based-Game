@@ -210,25 +210,11 @@ void Character::MoveStart(eDirection direction)
 	bool canMove = map->GetTileCollisionList(newTileX, newTileY, collisionList);
 	if (false == canMove)
 	{
-		//충돌된 컴포넌트들끼리 메세지 교환
-		{
-			if (eComponentType::CT_MONSTER == _eType)
-			{
-				for (std::list<Component*>::iterator itr = collisionList.begin(); itr != collisionList.end(); itr++)
-				{
-					Component* com = (*itr);
-					if (com->GetType() == eComponentType::CT_NPC ||
-						com->GetType() == eComponentType::CT_PLAYER)
-					{
-						//ComponentSystem::GetInstance().SendMessageToComponent(this, (*itr), L"Collision"); //(발신컴포넌트, 송신컴포넌트, 메세지내용)
-						sComponentMsgParam msgParam;
-						msgParam.sender = this;
-						msgParam.attackPoint = _attackPoint;
-						ComponentSystem::GetInstance().SendMessageToComponent(L"Attack", (*itr), msgParam);	//(메세지내용, 송신컴포넌트, 메세지정보)
-					}
-				}
-			}
-		}
+	/*
+		충돌된 컴포넌트들끼리 메세지 교환
+		각 하위 클래스에서 재정의 : 충돌시 메세지
+	*/
+		Collision(collisionList);
 		return;
 	}
 
@@ -253,4 +239,36 @@ void Character::MoveStart(eDirection direction)
 	}
 
 	_isMoving = true;
+}
+
+void Character::Collision(std::list<Component*>& collisionList)
+{
+	for (std::list<Component*>::iterator itr = collisionList.begin(); itr != collisionList.end(); itr++)
+	{
+		sComponentMsgParam msgParam;
+		msgParam.sender = this;
+		msgParam.receiver = (*itr);
+		msgParam.message = L"Collision";
+		ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
+	}
+}
+
+void Character::ReceiveMessage(const sComponentMsgParam& msgParam)
+{
+	if (L"Attack" == msgParam.message)
+	{
+		int attackPoint = msgParam.attackPoint;
+		_hp -= attackPoint;
+
+		if (_hp < 0)
+		{
+			//DEAD
+			_isLive = false;
+			SetCanMove(true);
+
+			//STOP
+			_moveDistancePerTimeX = 0.0f;
+			_moveDistancePerTimeY = 0.0f;
+		}
+	}
 }

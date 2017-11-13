@@ -12,5 +12,4 @@ public:
 
 	//Message
 public:
-	void ReceiveMessage(std::wstring message, const sComponentMsgParam& msgParam);
 };
