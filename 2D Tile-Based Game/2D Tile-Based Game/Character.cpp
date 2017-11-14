@@ -1,12 +1,17 @@
 #include "ComponentSystem.h"
-#include "Map.h"
-#include "Character.h"
-#include "Sprite.h"
 #include "ComponentMessage.h"
+
+#include "Map.h"
+#include "Sprite.h"
+
+#include "MoveState.h"
+#include "Character.h"
 
 Character::Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	Component(name), _x(0.0f), _y(0.0f)
 {
+	_state = new MoveState();
+
 	_spriteFileName = spriteFileName;
 	_scriptFileName = scriptName;
 
@@ -22,7 +27,7 @@ Character::Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 
 Character::~Character()
 {
-
+	delete _state;
 }
 
 void Character::Init()
@@ -90,7 +95,8 @@ void Character::Update(float deltaTime)
 {
 	_spriteList[(int)_curDirection]->Update(deltaTime);
 	UpdateAI(deltaTime);
-	UpdateMove(deltaTime);
+	//UpdateMove(deltaTime);
+	_state->Update(deltaTime);
 }
 
 void Character::Render()
@@ -129,8 +135,8 @@ void Character::SetPosition(float posX, float posY)
 
 void Character::InitMove()
 {
-	_isMoving = false;
-	_movingDuration = 0.0f;
+	_state->Init(this);
+
 	_curDirection = eDirection::DOWN;
 }
 
@@ -139,25 +145,19 @@ void Character::UpdateAI(float deltaTime)
 	if (false == _isLive)
 		return;
 
-	if (false == _isMoving)
+	if (false == _state->IsMoving())
 	{
-		int direction = rand() % 4;
-		MoveStart((eDirection)direction);
+		_curDirection = (eDirection)(rand() % 4);
+		//MoveStart();
+		_state->Start();
 	}
 }
 
 void Character::UpdateMove(float deltaTime)
 {
-	if (false == _isLive)
-		return;
-
-	if (false == _isMoving)
-		return;
-
-	if (_moveTime <= _movingDuration)
+	if (_moveTime <= _state->GetMovingDuration())
 	{
-		_movingDuration = 0.0f;
-		_isMoving = false;
+		_state->Stop();
 
 		//이동후 도착하면 타일의 정확한 위치에 찍어줘야 한다.
 		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
@@ -169,7 +169,7 @@ void Character::UpdateMove(float deltaTime)
 	}
 	else
 	{
-		_movingDuration += deltaTime;
+		_state->UpdateMove(deltaTime);
 
 		float moveDistanceX = _moveDistancePerTimeX * deltaTime;
 		float moveDistanceY = _moveDistancePerTimeY * deltaTime;
@@ -178,46 +178,9 @@ void Character::UpdateMove(float deltaTime)
 	}
 }
 
-void Character::MoveStart(eDirection direction)
+void Character::MoveStart(int newTileX, int newTileY)
 {
-	if (true == _isMoving)
-		return;
-
-	_curDirection = direction;
-
 	Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
-
-	//충돌체크 : 타일 위의 컴포넌트를 리셋하기 전에 충돌 여부 체크
-	int newTileX = _tileX;
-	int newTileY = _tileY;
-	switch (direction)
-	{
-	case eDirection::LEFT:	//left
-		newTileX--;
-		break;
-	case eDirection::RIGHT: //right
-		newTileX++;
-		break;
-	case eDirection::UP: //up
-		newTileY--;
-		break;
-	case eDirection::DOWN: //down
-		newTileY++;
-		break;
-	}
-
-	std::list<Component*> collisionList;
-	bool canMove = map->GetTileCollisionList(newTileX, newTileY, collisionList);
-	if (false == canMove)
-	{
-	/*
-		충돌된 컴포넌트들끼리 메세지 교환
-		각 하위 클래스에서 재정의 : 충돌시 메세지
-	*/
-		Collision(collisionList);
-		return;
-	}
-
 	map->ResetTileComponent(_tileX, _tileY, this);
 	_tileX = newTileX;
 	_tileY = newTileY;
@@ -237,8 +200,6 @@ void Character::MoveStart(eDirection direction)
 		_moveDistancePerTimeX = distanceX / _moveTime;
 		_moveDistancePerTimeY = distanceY / _moveTime;
 	}
-
-	_isMoving = true;
 }
 
 void Character::Collision(std::list<Component*>& collisionList)
@@ -251,6 +212,11 @@ void Character::Collision(std::list<Component*>& collisionList)
 		msgParam.message = L"Collision";
 		ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
 	}
+}
+
+eDirection Character::GetDirection()
+{
+	return _curDirection;
 }
 
 void Character::ReceiveMessage(const sComponentMsgParam& msgParam)

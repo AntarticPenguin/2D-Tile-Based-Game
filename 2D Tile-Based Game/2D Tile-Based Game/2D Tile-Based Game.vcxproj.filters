@@ -31,6 +31,9 @@
     <Filter Include="소스 파일\Game\Character">
       <UniqueIdentifier>{e64e7342-70e6-48dc-b664-8e5abfe1636c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Game\Character\State">
+      <UniqueIdentifier>{14d7d031-6d3b-49f1-bfde-0c424b3921da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -81,6 +84,9 @@
     <ClCompile Include="Monster.cpp">
       <Filter>소스 파일\Game\Character</Filter>
     </ClCompile>
+    <ClCompile Include="MoveState.cpp">
+      <Filter>소스 파일\Game\Character\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -130,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="ComponentMessage.h">
       <Filter>소스 파일\System\ComponentSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveState.h">
+      <Filter>소스 파일\Game\Character\State</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,7 +6,17 @@
 
 #include "Component.h"
 
+enum eDirection
+{
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN,
+	NONE,
+};
+
 class Sprite;
+class MoveState;
 
 class Character : public Component
 {
@@ -35,21 +45,13 @@ public:
 	void MoveDeltaPosition(float deltaX, float deltaY);
 	void SetPosition(float posX, float posY);
 
-	//Move
-public:
-	enum eDirection
-	{
-		LEFT,
-		RIGHT,
-		UP,
-		DOWN,
-		NONE,
-	};
-
 protected:
-	float _moveTime;
+	/*
 	float _movingDuration;
 	bool _isMoving;
+	*/
+	float _moveTime;
+	MoveState* _state;
 
 	float _targetX;
 	float _targetY;
@@ -63,9 +65,12 @@ protected:
 public:
 	void InitMove();
 	virtual void UpdateAI(float deltaTime);
-	virtual void UpdateMove(float deltaTime);
-	void MoveStart(eDirection direction);
+	void UpdateMove(float deltaTime);
+	//void MoveStart(eDirection direction);
+	void MoveStart(int newTileX, int newTileY);
 	virtual void Collision(std::list<Component*>& collisionList);
+
+	eDirection GetDirection();
 
 	//Message
 public:

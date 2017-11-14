@@ -27,6 +27,7 @@
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MoveState.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
@@ -46,6 +47,7 @@
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="MoveState.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ResourceManager.h" />

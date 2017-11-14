@@ -2,6 +2,8 @@
 #include "ComponentSystem.h"
 #include "Map.h"
 
+#include "MoveState.h"
+
 NPC::NPC(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	Character(name, scriptName, spriteFileName)
 {
@@ -21,7 +23,7 @@ void NPC::UpdateAI(float deltaTime)
 	if (false == _isLive)
 		return;
 
-	if (false == _isMoving)
+	if (false == _state->IsMoving())
 	{
 		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
 		std::vector<eComponentType> compareTypeList;
@@ -56,8 +58,14 @@ void NPC::UpdateAI(float deltaTime)
 
 			if (map->CanMoveTileMap(newTileX, newTileY))
 			{
-				direction = (eDirection)findDirection;
-				MoveStart(direction);
+				/*direction = (eDirection)findDirection;
+				MoveStart(direction);*/
+				if (eDirection::NONE != direction)
+				{
+					_curDirection = (eDirection)findDirection;
+					//MoveStart();
+					_state->Start();
+				}
 			}
 		}
 		else
