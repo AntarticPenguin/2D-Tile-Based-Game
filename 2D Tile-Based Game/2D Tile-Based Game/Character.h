@@ -15,8 +15,14 @@ enum eDirection
 	NONE,
 };
 
+enum eStateType
+{
+	ET_IDLE,
+	ET_MOVE,
+};
+
 class Sprite;
-class MoveState;
+class State;
 
 class Character : public Component
 {
@@ -45,32 +51,38 @@ public:
 	void MoveDeltaPosition(float deltaX, float deltaY);
 	void SetPosition(float posX, float posY);
 
+	//Character Info
 protected:
-	/*
-	float _movingDuration;
+	int _hp;
+	int _attackPoint;
+
+	//AI
+public:
+	void InitMove();
+	virtual void UpdateAI(float deltaTime);
+	void ChangeState(eStateType stateType);
+
+	//MOVE
+protected:
 	bool _isMoving;
-	*/
 	float _moveTime;
-	MoveState* _state;
+	State* _state;
 
 	float _targetX;
 	float _targetY;
 
 	eDirection _curDirection;
 
-	int _hp;
-	int _attackPoint;
-
-	//AI & MOVE
 public:
-	void InitMove();
-	virtual void UpdateAI(float deltaTime);
-	void UpdateMove(float deltaTime);
-	//void MoveStart(eDirection direction);
 	void MoveStart(int newTileX, int newTileY);
+	void MoveStop();
+	void Moving(float deltaTime);
+
 	virtual void Collision(std::list<Component*>& collisionList);
 
 	eDirection GetDirection();
+	float GetMoveTime();
+	bool IsMoving();
 
 	//Message
 public:

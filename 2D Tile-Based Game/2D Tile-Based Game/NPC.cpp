@@ -20,58 +20,49 @@ NPC::~NPC()
 
 void NPC::UpdateAI(float deltaTime)
 {
-	if (false == _isLive)
-		return;
+	Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+	std::vector<eComponentType> compareTypeList;
+	compareTypeList.push_back(eComponentType::CT_MONSTER);
+	Component* findEnemy = ComponentSystem::GetInstance().FindComponentInRange(this, 2, compareTypeList);
 
-	if (false == _state->IsMoving())
+	//적이 있으면
+	if (NULL != findEnemy)
 	{
-		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
-		std::vector<eComponentType> compareTypeList;
-		compareTypeList.push_back(eComponentType::CT_MONSTER);
-		Component* findEnemy = ComponentSystem::GetInstance().FindComponentInRange(this, 2, compareTypeList);
+		//추격 방향 설정
+		eDirection direction = eDirection::NONE;
 
-		//적이 있으면
-		if (NULL != findEnemy)
+		int findDirection = rand() % 4;
+		int newTileX = _tileX;
+		int newTileY = _tileY;
+
+		switch (findDirection)
 		{
-			//추격 방향 설정
-			eDirection direction = eDirection::NONE;
+		case eDirection::LEFT:
+			newTileX--;
+			break;
+		case eDirection::RIGHT:
+			newTileX++;
+			break;
+		case eDirection::UP:
+			newTileY--;
+			break;
+		case eDirection::DOWN:
+			newTileY++;
+			break;
+		}
 
-			int findDirection = rand() % 4;
-			int newTileX = _tileX;
-			int newTileY = _tileY;
-
-			switch (findDirection)
+		if (map->CanMoveTileMap(newTileX, newTileY))
+		{
+			if (eDirection::NONE != direction)
 			{
-			case eDirection::LEFT:
-				newTileX--;
-				break;
-			case eDirection::RIGHT:
-				newTileX++;
-				break;
-			case eDirection::UP:
-				newTileY--;
-				break;
-			case eDirection::DOWN:
-				newTileY++;
-				break;
-			}
-
-			if (map->CanMoveTileMap(newTileX, newTileY))
-			{
-				/*direction = (eDirection)findDirection;
-				MoveStart(direction);*/
-				if (eDirection::NONE != direction)
-				{
-					_curDirection = (eDirection)findDirection;
-					//MoveStart();
-					_state->Start();
-				}
+				_curDirection = (eDirection)findDirection;
+				ChangeState(eStateType::ET_MOVE);
 			}
 		}
-		else
-		{
-			//없으면 평소움직임
-			Character::UpdateAI(deltaTime);
-		}
+	}
+	else
+	{
+		//없으면 평소움직임
+		Character::UpdateAI(deltaTime);
 	}
 }

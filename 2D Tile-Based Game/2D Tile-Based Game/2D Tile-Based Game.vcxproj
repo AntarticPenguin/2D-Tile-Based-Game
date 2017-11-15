@@ -25,6 +25,7 @@
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="GameSystem.cpp" />
     <ClCompile Include="GameTimer.cpp" />
+    <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MoveState.cpp" />
@@ -32,6 +33,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TileCell.cpp" />
     <ClCompile Include="TileObject.cpp" />
@@ -45,6 +47,7 @@
     <ClInclude Include="Frame.h" />
     <ClInclude Include="GameSystem.h" />
     <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="IdleState.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MoveState.h" />
@@ -52,6 +55,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="State.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TileCell.h" />
     <ClInclude Include="TileObject.h" />

@@ -5,12 +5,14 @@
 #include "Sprite.h"
 
 #include "MoveState.h"
+#include "IdleState.h"
 #include "Character.h"
 
 Character::Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	Component(name), _x(0.0f), _y(0.0f)
 {
-	_state = new MoveState();
+	//_state = new MoveState();
+	_state = new IdleState();
 
 	_spriteFileName = spriteFileName;
 	_scriptFileName = scriptName;
@@ -78,6 +80,7 @@ void Character::Init()
 		map->SetTileComponent(_tileX, _tileY, this, false);
 	}
 
+	_state->Init(this);
 	InitMove();
 }
 
@@ -94,8 +97,6 @@ void Character::Deinit()
 void Character::Update(float deltaTime)
 {
 	_spriteList[(int)_curDirection]->Update(deltaTime);
-	UpdateAI(deltaTime);
-	//UpdateMove(deltaTime);
 	_state->Update(deltaTime);
 }
 
@@ -135,51 +136,54 @@ void Character::SetPosition(float posX, float posY)
 
 void Character::InitMove()
 {
-	_state->Init(this);
-
+	_isMoving = false;
 	_curDirection = eDirection::DOWN;
 }
 
 void Character::UpdateAI(float deltaTime)
 {
-	if (false == _isLive)
-		return;
-
-	if (false == _state->IsMoving())
-	{
-		_curDirection = (eDirection)(rand() % 4);
-		//MoveStart();
-		_state->Start();
-	}
+	_curDirection = (eDirection)(rand() % 4);
+	ChangeState(eStateType::ET_MOVE);
 }
 
-void Character::UpdateMove(float deltaTime)
+void Character::ChangeState(eStateType stateType)
 {
-	if (_moveTime <= _state->GetMovingDuration())
+	/*
+	_state->Stop();
+	delete _state;
+
+	_state = new MoveState();
+	_state->Init(this);
+	_state->Start();
+	*/
+	
+	/*_state가 NULL 이아니면 stop 후 제거
+	
+	switch문으로 타입을 검사해서 new
+
+	다시 switch를 init 후 start 하기*/
+
+	if(NULL != _state)
+		delete _state;
+	
+	switch (stateType)
 	{
-		_state->Stop();
-
-		//이동후 도착하면 타일의 정확한 위치에 찍어줘야 한다.
-		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
-		_x = map->GetPositionX(_tileX, _tileY);
-		_y = map->GetPositionY(_tileX, _tileY);
-
-		_moveDistancePerTimeX = 0.0f;
-		_moveDistancePerTimeY = 0.0f;
+	case eStateType::ET_IDLE:
+		_state = new IdleState();
+		break;
+	case eStateType::ET_MOVE:
+		_state = new MoveState();
+		break;
 	}
-	else
-	{
-		_state->UpdateMove(deltaTime);
 
-		float moveDistanceX = _moveDistancePerTimeX * deltaTime;
-		float moveDistanceY = _moveDistancePerTimeY * deltaTime;
-		_x += moveDistanceX;
-		_y += moveDistanceY;
-	}
+	_state->Init(this);
+	_state->Start();
 }
 
 void Character::MoveStart(int newTileX, int newTileY)
 {
+	_isMoving = true;
+
 	Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
 	map->ResetTileComponent(_tileX, _tileY, this);
 	_tileX = newTileX;
@@ -202,6 +206,27 @@ void Character::MoveStart(int newTileX, int newTileY)
 	}
 }
 
+void Character::MoveStop()
+{
+	_isMoving = false;
+
+	//이동후 도착하면 타일의 정확한 위치에 찍어줘야 한다.
+	Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+	_x = map->GetPositionX(_tileX, _tileY);
+	_y = map->GetPositionY(_tileX, _tileY);
+
+	_moveDistancePerTimeX = 0.0f;
+	_moveDistancePerTimeY = 0.0f;
+}
+
+void Character::Moving(float deltaTime)
+{
+	float moveDistanceX = _moveDistancePerTimeX * deltaTime;
+	float moveDistanceY = _moveDistancePerTimeY * deltaTime;
+	_x += moveDistanceX;
+	_y += moveDistanceY;
+}
+
 void Character::Collision(std::list<Component*>& collisionList)
 {
 	for (std::list<Component*>::iterator itr = collisionList.begin(); itr != collisionList.end(); itr++)
@@ -217,6 +242,16 @@ void Character::Collision(std::list<Component*>& collisionList)
 eDirection Character::GetDirection()
 {
 	return _curDirection;
+}
+
+float Character::GetMoveTime()
+{
+	return _moveTime;
+}
+
+bool Character::IsMoving()
+{
+	return _isMoving;
 }
 
 void Character::ReceiveMessage(const sComponentMsgParam& msgParam)

@@ -1,14 +1,12 @@
 #pragma once
+#include "State.h"
 
 class Character;
 
-class MoveState
+class MoveState : public State
 {
 private:
-	Character* _character;
-
 	float _movingDuration;
-	bool _isMoving;
 
 public:
 	MoveState();
@@ -17,11 +15,7 @@ public:
 public:
 	void Init(Character* character);
 	void Update(float deltaTime);
-	void UpdateMove(float deltaTime);
 
-	bool IsMoving();
-	float GetMovingDuration();
 	void Start();
 	void Stop();
-	void SetMoving(bool isMoving);
 };

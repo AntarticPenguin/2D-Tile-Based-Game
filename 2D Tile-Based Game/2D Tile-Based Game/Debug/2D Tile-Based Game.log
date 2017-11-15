@@ -1,18 +1,16 @@
-﻿  MoveState.cpp
-  Character.cpp
-c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(76): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(77): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(86): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(110): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(118): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(170): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(171): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(199): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(200): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  코드를 생성하고 있습니다...
-  건너뛰고 있습니다... (관련된 변경 내용 없음)
-  Player.cpp
+﻿  Player.cpp
   NPC.cpp
   Monster.cpp
+  Character.cpp
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(78): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(79): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(89): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(111): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(119): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(197): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(198): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(215): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\atents\desktop\박평기\2d tile-based game\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(216): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
   2D Tile-Based Game.vcxproj -> C:\Users\atents\Desktop\박평기\2D Tile-based Game\2D-Tile-Based-Game\2D Tile-Based Game\Debug\2D Tile-Based Game.exe
   2D Tile-Based Game.vcxproj -> C:\Users\atents\Desktop\박평기\2D Tile-based Game\2D-Tile-Based-Game\2D Tile-Based Game\Debug\2D Tile-Based Game.pdb (Partial PDB)

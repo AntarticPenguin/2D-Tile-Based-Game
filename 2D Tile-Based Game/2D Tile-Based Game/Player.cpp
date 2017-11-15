@@ -21,38 +21,27 @@ Player::~Player()
 
 void Player::UpdateAI(float deltaTime)
 {
-	if (false == _isLive)
-		return;
-
-	if (false == _state->IsMoving())
+	eDirection direction = eDirection::NONE;
+	if (GameSystem::GetInstance().IsKeyDown(VK_UP))
 	{
-		eDirection direction = eDirection::NONE;
-		if (GameSystem::GetInstance().IsKeyDown(VK_UP))
-		{
-			//MoveStart(eDirection::UP);
-			direction = eDirection::UP;
-		}
-		if (GameSystem::GetInstance().IsKeyDown(VK_DOWN))
-		{
-			//MoveStart(eDirection::DOWN);
-			direction = eDirection::DOWN;
-		}
-		if (GameSystem::GetInstance().IsKeyDown(VK_LEFT))
-		{
-			//MoveStart(eDirection::LEFT);
-			direction = eDirection::LEFT;
-		}
-		if (GameSystem::GetInstance().IsKeyDown(VK_RIGHT))
-		{
-			//MoveStart(eDirection::RIGHT);
-			direction = eDirection::RIGHT;
-		}
+		direction = eDirection::UP;
+	}
+	if (GameSystem::GetInstance().IsKeyDown(VK_DOWN))
+	{
+		direction = eDirection::DOWN;
+	}
+	if (GameSystem::GetInstance().IsKeyDown(VK_LEFT))
+	{
+		direction = eDirection::LEFT;
+	}
+	if (GameSystem::GetInstance().IsKeyDown(VK_RIGHT))
+	{
+		direction = eDirection::RIGHT;
+	}
 
-		if (eDirection::NONE != direction)
-		{
-			_curDirection = direction;
-			//MoveStart();
-			_state->Start();
-		}
+	if (eDirection::NONE != direction)
+	{
+		_curDirection = direction;
+		ChangeState(eStateType::ET_MOVE);
 	}
 }

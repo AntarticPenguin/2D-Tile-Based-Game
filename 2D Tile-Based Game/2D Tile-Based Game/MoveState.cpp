@@ -16,7 +16,6 @@ MoveState::~MoveState()
 void MoveState::Init(Character* character)
 {
 	_character = character;
-	_isMoving = false;
 	_movingDuration = 0.0f;
 }
 
@@ -25,31 +24,25 @@ void MoveState::Update(float deltaTime)
 	if (false == _character->IsLive())
 		return;
 
-	if (false == _isMoving)
+	if (false == _character->IsMoving())
 		return;
 
-
-	_character->UpdateMove(deltaTime);
-}
-
-void MoveState::UpdateMove(float deltaTime)
-{
-	_movingDuration += deltaTime;
-}
-
-bool MoveState::IsMoving()
-{
-	return _isMoving;
-}
-
-float MoveState::GetMovingDuration()
-{
-	return _movingDuration;
+	if (_character->GetMoveTime() <= _movingDuration)
+	{
+		_movingDuration = 0.0f;
+		//_character->MoveStop();
+		_character->ChangeState(eStateType::ET_IDLE);
+	}
+	else
+	{
+		_movingDuration += deltaTime;
+		_character->Moving(deltaTime);
+	}
 }
 
 void MoveState::Start()
 {
-	if (true == IsMoving())
+	if (true == _character->IsMoving())
 		return;
 
 	Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
@@ -77,26 +70,19 @@ void MoveState::Start()
 	bool canMove = map->GetTileCollisionList(newTileX, newTileY, collisionList);
 	if (false == canMove)
 	{
-		
 		//충돌된 컴포넌트들끼리 메세지 교환
 		//각 하위 클래스에서 재정의 : 충돌시 메세지
 		_character->Collision(collisionList);
+		_character->ChangeState(eStateType::ET_IDLE);
 		return;
 	}
 	else
 	{
 		_character->MoveStart(newTileX, newTileY);
-		_isMoving = true;
 	}
 }
 
 void MoveState::Stop()
 {
-	_movingDuration = 0.0f;
-	_isMoving = false;
-}
 
-void MoveState::SetMoving(bool isMoving)
-{
-	_isMoving = isMoving;
 }
