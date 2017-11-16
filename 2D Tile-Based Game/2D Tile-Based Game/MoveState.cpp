@@ -15,12 +15,14 @@ MoveState::~MoveState()
 
 void MoveState::Init(Character* character)
 {
-	_character = character;
+	State::Init(character);
 	_movingDuration = 0.0f;
 }
 
 void MoveState::Update(float deltaTime)
 {
+	State::Update(deltaTime);
+
 	if (false == _character->IsLive())
 		return;
 
@@ -30,7 +32,7 @@ void MoveState::Update(float deltaTime)
 	if (_character->GetMoveTime() <= _movingDuration)
 	{
 		_movingDuration = 0.0f;
-		//_character->MoveStop();
+		_character->MoveStop();
 		_character->ChangeState(eStateType::ET_IDLE);
 	}
 	else
@@ -42,6 +44,8 @@ void MoveState::Update(float deltaTime)
 
 void MoveState::Start()
 {
+	State::Start();
+
 	if (true == _character->IsMoving())
 		return;
 
@@ -84,5 +88,5 @@ void MoveState::Start()
 
 void MoveState::Stop()
 {
-
+	State::Stop();
 }

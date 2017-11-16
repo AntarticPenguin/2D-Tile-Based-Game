@@ -1,8 +1,8 @@
 #pragma once
 #include <Windows.h>
-#include <vector>
 #include <string>
 #include <list>
+#include <map>
 
 #include "Component.h"
 
@@ -19,6 +19,7 @@ enum eStateType
 {
 	ET_IDLE,
 	ET_MOVE,
+	ET_ATTACK,
 };
 
 class Sprite;
@@ -27,7 +28,7 @@ class State;
 class Character : public Component
 {
 private:
-	std::vector<Sprite*> _spriteList;
+	//std::vector<Sprite*> _spriteList;
 	std::wstring _spriteFileName;
 	std::wstring _scriptFileName;
 
@@ -46,6 +47,11 @@ public:
 	void Release();
 	void Reset();
 
+	std::wstring GetTextureFileName();
+	std::wstring GetScriptFileName();
+	float GetX();
+	float GetY();
+
 	//Transform
 public:
 	void MoveDeltaPosition(float deltaX, float deltaY);
@@ -54,9 +60,11 @@ public:
 	//Character Info
 protected:
 	int _hp;
-	int _attackPoint;
 
-	//AI
+	//AI & State
+private:
+	std::map<eStateType, State*> _stateMap;
+
 public:
 	void InitMove();
 	virtual void UpdateAI(float deltaTime);
@@ -87,4 +95,14 @@ public:
 	//Message
 public:
 	void ReceiveMessage(const sComponentMsgParam& msgParam);
+
+	//Attack
+protected:
+	Component* _target;
+	int _attackPoint;
+
+public:
+	Component* GetTarget();
+	void ResetTarget();
+	int GetAttackPoint();
 };

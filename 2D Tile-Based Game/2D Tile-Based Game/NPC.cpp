@@ -7,7 +7,7 @@
 NPC::NPC(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	Character(name, scriptName, spriteFileName)
 {
-	_eType = CT_NPC;
+	_eType = eComponentType::CT_NPC;
 	
 	int speed = (rand() % 1500) + 300;
 	_moveTime = (float)speed / 1000.0f;

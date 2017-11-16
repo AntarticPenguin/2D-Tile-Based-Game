@@ -13,11 +13,13 @@ IdleState::~IdleState()
 
 void IdleState::Init(Character* character)
 {
-	_character = character;
+	State::Init(character);
 }
 
 void IdleState::Update(float deltaTime)
 {
+	State::Update(deltaTime);
+
 	if (false == _character->IsLive())
 		return;
 
@@ -29,10 +31,10 @@ void IdleState::Update(float deltaTime)
 
 void IdleState::Start()
 {
-
+	State::Start();
 }
 
 void IdleState::Stop()
 {
-
+	State::Stop();
 }

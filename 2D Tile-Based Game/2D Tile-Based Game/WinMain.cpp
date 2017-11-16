@@ -1,5 +1,5 @@
 #include "GameSystem.h"
-#include "time.h"
+#include <time.h>
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int nCmdShow)
 {

@@ -4,6 +4,7 @@
 #include "Map.h"
 #include "Sprite.h"
 
+#include "AttackState.h"
 #include "MoveState.h"
 #include "IdleState.h"
 #include "Character.h"
@@ -11,13 +12,12 @@
 Character::Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	Component(name), _x(0.0f), _y(0.0f)
 {
-	//_state = new MoveState();
-	_state = new IdleState();
+	_state = NULL;
 
 	_spriteFileName = spriteFileName;
 	_scriptFileName = scriptName;
 
-	_spriteList.clear();
+	//_spriteList.clear();
 	_moveTime = 1.0f;
 
 	_tileX = 10;
@@ -29,48 +29,19 @@ Character::Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 
 Character::~Character()
 {
-	delete _state;
+
 }
 
 void Character::Init()
 {
-	WCHAR textureFileName[256];
-	wsprintf(textureFileName, L"%s.png", _spriteFileName.c_str());
-	WCHAR scriptFileName[256];
-
-	{
-		wsprintf(scriptFileName, L"%s_left.json", _scriptFileName.c_str());
-		Sprite* sprite = new Sprite(textureFileName, scriptFileName);
-		sprite->Init();
-		_spriteList.push_back(sprite);
-	}
-	{
-		wsprintf(scriptFileName, L"%s_right.json", _scriptFileName.c_str());
-		Sprite* sprite = new Sprite(textureFileName, scriptFileName);
-		sprite->Init();
-		_spriteList.push_back(sprite);
-	}
-	{
-		wsprintf(scriptFileName, L"%s_up.json", _scriptFileName.c_str());
-		Sprite* sprite = new Sprite(textureFileName, scriptFileName);
-		sprite->Init();
-		_spriteList.push_back(sprite);
-	}
-	{
-		wsprintf(scriptFileName, L"%s_down.json", _scriptFileName.c_str());
-		Sprite* sprite = new Sprite(textureFileName, scriptFileName);
-		sprite->Init();
-		_spriteList.push_back(sprite);
-	}
-
 	{
 		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
 
 		bool canMove = false;
 		while (true != canMove)
 		{
-			_tileX = rand() % (map->GetWidth() - 2) + 1;
-			_tileY = rand() % (map->GetHeight() - 2) + 1;
+			_tileX = rand() % (map->GetWidth() - 1) + 1;
+			_tileY = rand() % (map->GetHeight() - 1) + 1;
 
 			canMove = map->CanMoveTileMap(_tileX, _tileY);
 		}
@@ -80,46 +51,92 @@ void Character::Init()
 		map->SetTileComponent(_tileX, _tileY, this, false);
 	}
 
-	_state->Init(this);
 	InitMove();
+
+	{
+		State* state = new IdleState();
+		state->Init(this);
+		_stateMap[eStateType::ET_IDLE] = state;
+	}
+	{
+		State* state = new MoveState();
+		state->Init(this);
+		_stateMap[eStateType::ET_MOVE] = state;
+	}
+	{
+		State* state = new AttackState();
+		state->Init(this);
+		_stateMap[eStateType::ET_ATTACK] = state;
+	}
+
+	ChangeState(eStateType::ET_IDLE);
 }
 
 void Character::Deinit()
 {
-	for (int i = 0; i < _spriteList.size(); i++)
+	for (std::map<eStateType, State*>::iterator itr = _stateMap.begin(); itr != _stateMap.end(); itr++)
 	{
-		_spriteList[i]->Deinit();
-		delete _spriteList[i];
+		State* state = itr->second;
+		delete state;
 	}
-	_spriteList.clear();
+	_stateMap.clear();
 }
 
 void Character::Update(float deltaTime)
 {
-	_spriteList[(int)_curDirection]->Update(deltaTime);
+	//_spriteList[(int)_curDirection]->Update(deltaTime);
 	_state->Update(deltaTime);
 }
 
 void Character::Render()
 {
+	/*
 	_spriteList[(int)_curDirection]->SetPosition(_x, _y);
 	_spriteList[(int)_curDirection]->Render();
+	*/
+	_state->Render();
 }
 
 void Character::Release()
 {
+	/*
 	for (int i = 0; i < _spriteList.size(); i++)
 	{
 		_spriteList[i]->Release();
 	}
+	*/
+	_state->Release();
 }
 
 void Character::Reset()
 {
+	/*
 	for (int i = 0; i < _spriteList.size(); i++)
 	{
 		_spriteList[i]->Reset();
 	}
+	*/
+	_state->Reset();
+}
+
+std::wstring Character::GetTextureFileName()
+{
+	return _spriteFileName;
+}
+
+std::wstring Character::GetScriptFileName()
+{
+	return _scriptFileName;
+}
+
+float Character::GetX()
+{
+	return _x;
+}
+
+float Character::GetY()
+{
+	return _y;
 }
 
 void Character::MoveDeltaPosition(float deltaX, float deltaY)
@@ -149,23 +166,13 @@ void Character::UpdateAI(float deltaTime)
 void Character::ChangeState(eStateType stateType)
 {
 	/*
-	_state->Stop();
-	delete _state;
-
-	_state = new MoveState();
-	_state->Init(this);
-	_state->Start();
-	*/
-	
-	/*_state가 NULL 이아니면 stop 후 제거
-	
-	switch문으로 타입을 검사해서 new
-
-	다시 switch를 init 후 start 하기*/
-
-	if(NULL != _state)
+	if (NULL != _state)
+	{
+		_state->Stop();
 		delete _state;
-	
+		_state = NULL;
+	}
+
 	switch (stateType)
 	{
 	case eStateType::ET_IDLE:
@@ -175,8 +182,14 @@ void Character::ChangeState(eStateType stateType)
 		_state = new MoveState();
 		break;
 	}
+	*/
 
-	_state->Init(this);
+	if (NULL != _state)
+	{
+		_state->Stop();
+	}
+
+	_state = _stateMap[stateType];
 	_state->Start();
 }
 
@@ -272,4 +285,19 @@ void Character::ReceiveMessage(const sComponentMsgParam& msgParam)
 			_moveDistancePerTimeY = 0.0f;
 		}
 	}
+}
+
+Component* Character::GetTarget()
+{
+	return _target;
+}
+
+void Character::ResetTarget()
+{
+	_target = NULL;
+}
+
+int Character::GetAttackPoint()
+{
+	return _attackPoint;
 }
