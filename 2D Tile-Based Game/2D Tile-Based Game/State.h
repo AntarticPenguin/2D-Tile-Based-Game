@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 
+enum eStateType;
 class Character;
 class Sprite;
 
@@ -9,6 +10,7 @@ class State
 protected:
 	Character* _character;
 	std::vector<Sprite*> _spriteList;
+	eStateType _nextState;
 
 public:
 	State();
@@ -23,4 +25,6 @@ public:
 
 	virtual void Start();
 	virtual void Stop();
+
+	virtual void CreateSprite();
 };

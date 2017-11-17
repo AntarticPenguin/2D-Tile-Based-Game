@@ -14,6 +14,7 @@ private:
 
 	int _width;
 	int _height;
+	float _rotate;
 
 	float _frameDelay;
 
@@ -25,7 +26,7 @@ public:
 	~Frame();
 
 public:
-	void Init(Texture* texture, int x, int y, int width, int height, float frameDelay);
+	void Init(Texture* texture, int x, int y, int width, int height, float rotate, float frameDelay);
 	void Deinit();
 	void Render();
 	void Reset();

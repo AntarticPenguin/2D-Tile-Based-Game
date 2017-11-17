@@ -17,9 +17,12 @@ enum eDirection
 
 enum eStateType
 {
+	ET_NONE,
 	ET_IDLE,
 	ET_MOVE,
 	ET_ATTACK,
+	ET_DEFENSE,
+	ET_DEAD,
 };
 
 class Sprite;
@@ -60,6 +63,11 @@ public:
 	//Character Info
 protected:
 	int _hp;
+	int _attackedPoint;
+
+public:
+	int GetAttackedPoint();
+	void DecreaseHP(int decreaseHP);
 
 	//AI & State
 private:
@@ -86,7 +94,7 @@ public:
 	void MoveStop();
 	void Moving(float deltaTime);
 
-	virtual void Collision(std::list<Component*>& collisionList);
+	virtual Component* Collision(std::list<Component*>& collisionList);
 
 	eDirection GetDirection();
 	float GetMoveTime();
@@ -103,6 +111,7 @@ protected:
 
 public:
 	Component* GetTarget();
+	void SetTarget(Component* target);
 	void ResetTarget();
 	int GetAttackPoint();
 };

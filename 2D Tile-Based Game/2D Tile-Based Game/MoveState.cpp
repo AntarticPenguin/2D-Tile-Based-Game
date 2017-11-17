@@ -23,6 +23,12 @@ void MoveState::Update(float deltaTime)
 {
 	State::Update(deltaTime);
 
+	if (eStateType::ET_NONE != _nextState)
+	{
+		_character->ChangeState(_nextState);
+		return;
+	}
+
 	if (false == _character->IsLive())
 		return;
 
@@ -33,7 +39,8 @@ void MoveState::Update(float deltaTime)
 	{
 		_movingDuration = 0.0f;
 		_character->MoveStop();
-		_character->ChangeState(eStateType::ET_IDLE);
+		//_character->ChangeState(eStateType::ET_IDLE);
+		_nextState = eStateType::ET_IDLE;
 	}
 	else
 	{
@@ -76,9 +83,19 @@ void MoveState::Start()
 	{
 		//충돌된 컴포넌트들끼리 메세지 교환
 		//각 하위 클래스에서 재정의 : 충돌시 메세지
+		Component* target = _character->Collision(collisionList);
+		if (NULL != target)
+		{
+			_character->SetTarget(target);
+			_nextState = eStateType::ET_ATTACK;
+		}
+		else
+		{
+			_nextState = eStateType::ET_IDLE;
+		}
+
 		_character->Collision(collisionList);
 		_character->ChangeState(eStateType::ET_IDLE);
-		return;
 	}
 	else
 	{

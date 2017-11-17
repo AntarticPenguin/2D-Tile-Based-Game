@@ -8,8 +8,8 @@
 #include "Frame.h"
 
 
-Sprite::Sprite(LPCWSTR textureFileName, LPCWSTR scriptFileName) :
-	_textureFileName(textureFileName), _scriptFileName(scriptFileName), _curFrame(0), _frameTime(0.0f), _srcTexture(NULL)
+Sprite::Sprite(LPCWSTR textureFileName, LPCWSTR scriptFileName, float rotate) :
+	_textureFileName(textureFileName), _scriptFileName(scriptFileName), _curFrame(0), _frameTime(0.0f), _srcTexture(NULL), _rotate(rotate)
 {
 
 }
@@ -53,7 +53,7 @@ void Sprite::Init()
 				double framedelay = root["framedelay"].asDouble();
 
 				Frame* frame = new Frame();
-				frame->Init(_srcTexture, x, y, width, height, framedelay);
+				frame->Init(_srcTexture, x, y, width, height, _rotate, framedelay);
 				_frameList.push_back(frame);
 			}
 		}
@@ -72,7 +72,7 @@ void Sprite::Init(int srcX, int srcY, int width, int height, float delay)
 
 	{
 		Frame* frame = new Frame();
-		frame->Init(_srcTexture, srcX, srcY, width, height, delay);
+		frame->Init(_srcTexture, srcX, srcY, width, height, _rotate, delay);
 		_frameList.push_back(frame);
 	}
 

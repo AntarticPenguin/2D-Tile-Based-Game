@@ -13,13 +13,15 @@ Frame::~Frame()
 
 }
 
-void Frame::Init(Texture* texture, int x, int y, int width, int height, float frameDelay)
+void Frame::Init(Texture* texture, int x, int y, int width, int height, float rotate, float frameDelay)
 {
 	_sprite = GameSystem::GetInstance().GetSprite();
 	_texture = texture;
 	
 	_width = width;
 	_height = height;
+
+	_rotate = rotate;
 
 	_srcTextureRect.left = x;
 	_srcTextureRect.top = y;
@@ -48,10 +50,10 @@ void Frame::Render()
 		D3DXMatrixTransformation2D(
 		&matrix,
 		NULL,
-		0.0f,
+		0.0f,				//회전없음
 		&scaling,
 		&spriteCenter,
-		0.0f,
+		_rotate,				//회전각도
 		&translate
 	);
 

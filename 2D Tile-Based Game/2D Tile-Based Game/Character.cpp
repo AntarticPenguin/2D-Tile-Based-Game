@@ -4,6 +4,8 @@
 #include "Map.h"
 #include "Sprite.h"
 
+#include "DeadState.h"
+#include "DefenseState.h"
 #include "AttackState.h"
 #include "MoveState.h"
 #include "IdleState.h"
@@ -17,13 +19,13 @@ Character::Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	_spriteFileName = spriteFileName;
 	_scriptFileName = scriptName;
 
-	//_spriteList.clear();
 	_moveTime = 1.0f;
 
 	_tileX = 10;
 	_tileY = 10;
 
 	_attackPoint = 10;
+	_attackedPoint = 0;
 	_hp = 20;
 }
 
@@ -68,6 +70,16 @@ void Character::Init()
 		state->Init(this);
 		_stateMap[eStateType::ET_ATTACK] = state;
 	}
+	{
+		State* state = new DefenseState();
+		state->Init(this);
+		_stateMap[eStateType::ET_DEFENSE] = state;
+	}
+	{
+		State* state = new DeadState();
+		state->Init(this);
+		_stateMap[eStateType::ET_DEAD] = state;
+	}
 
 	ChangeState(eStateType::ET_IDLE);
 }
@@ -84,38 +96,21 @@ void Character::Deinit()
 
 void Character::Update(float deltaTime)
 {
-	//_spriteList[(int)_curDirection]->Update(deltaTime);
 	_state->Update(deltaTime);
 }
 
 void Character::Render()
 {
-	/*
-	_spriteList[(int)_curDirection]->SetPosition(_x, _y);
-	_spriteList[(int)_curDirection]->Render();
-	*/
 	_state->Render();
 }
 
 void Character::Release()
 {
-	/*
-	for (int i = 0; i < _spriteList.size(); i++)
-	{
-		_spriteList[i]->Release();
-	}
-	*/
 	_state->Release();
 }
 
 void Character::Reset()
 {
-	/*
-	for (int i = 0; i < _spriteList.size(); i++)
-	{
-		_spriteList[i]->Reset();
-	}
-	*/
 	_state->Reset();
 }
 
@@ -151,6 +146,22 @@ void Character::SetPosition(float posX, float posY)
 	_y = posY;
 }
 
+int Character::GetAttackedPoint()
+{
+	return _attackedPoint;
+}
+
+void Character::DecreaseHP(int decreaseHP)
+{
+	_hp -= decreaseHP;
+
+	if (_hp < 0)
+	{
+		//DEAD
+		_isLive = false;
+	}
+}
+
 void Character::InitMove()
 {
 	_isMoving = false;
@@ -165,25 +176,6 @@ void Character::UpdateAI(float deltaTime)
 
 void Character::ChangeState(eStateType stateType)
 {
-	/*
-	if (NULL != _state)
-	{
-		_state->Stop();
-		delete _state;
-		_state = NULL;
-	}
-
-	switch (stateType)
-	{
-	case eStateType::ET_IDLE:
-		_state = new IdleState();
-		break;
-	case eStateType::ET_MOVE:
-		_state = new MoveState();
-		break;
-	}
-	*/
-
 	if (NULL != _state)
 	{
 		_state->Stop();
@@ -240,16 +232,17 @@ void Character::Moving(float deltaTime)
 	_y += moveDistanceY;
 }
 
-void Character::Collision(std::list<Component*>& collisionList)
+Component* Character::Collision(std::list<Component*>& collisionList)
 {
 	for (std::list<Component*>::iterator itr = collisionList.begin(); itr != collisionList.end(); itr++)
 	{
-		sComponentMsgParam msgParam;
+		/*sComponentMsgParam msgParam;
 		msgParam.sender = this;
 		msgParam.receiver = (*itr);
 		msgParam.message = L"Collision";
-		ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
+		ComponentSystem::GetInstance().SendMessageToComponent(msgParam);*/
 	}
+	return NULL;
 }
 
 eDirection Character::GetDirection()
@@ -271,6 +264,7 @@ void Character::ReceiveMessage(const sComponentMsgParam& msgParam)
 {
 	if (L"Attack" == msgParam.message)
 	{
+		/*
 		int attackPoint = msgParam.attackPoint;
 		_hp -= attackPoint;
 
@@ -284,12 +278,20 @@ void Character::ReceiveMessage(const sComponentMsgParam& msgParam)
 			_moveDistancePerTimeX = 0.0f;
 			_moveDistancePerTimeY = 0.0f;
 		}
+		*/
+		_attackedPoint = msgParam.attackPoint;
+		ChangeState(eStateType::ET_DEFENSE);
 	}
 }
 
 Component* Character::GetTarget()
 {
 	return _target;
+}
+
+void Character::SetTarget(Component* target)
+{
+	_target = target;
 }
 
 void Character::ResetTarget()

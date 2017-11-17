@@ -51,13 +51,10 @@ void NPC::UpdateAI(float deltaTime)
 			break;
 		}
 
-		if (map->CanMoveTileMap(newTileX, newTileY))
+		if (eDirection::NONE != direction)
 		{
-			if (eDirection::NONE != direction)
-			{
-				_curDirection = (eDirection)findDirection;
-				ChangeState(eStateType::ET_MOVE);
-			}
+			_curDirection = (eDirection)findDirection;
+			ChangeState(eStateType::ET_MOVE);
 		}
 	}
 	else
