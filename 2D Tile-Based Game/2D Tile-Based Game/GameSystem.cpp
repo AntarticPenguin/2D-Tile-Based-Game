@@ -130,10 +130,7 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	Map* tileMap = new Map(L"tileMap");
 	_componentList.push_back(tileMap);
 
-	Player* player = new Player(L"Player", L"Player", L"Player");	//(컴포넌트이름, 스크립트 이름, 스프라이트이름)
-	_componentList.push_back(player);
-
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 50; i++)
 	{
 		WCHAR name[256];
 		wsprintf(name, L"npc_%d", i);
@@ -141,13 +138,16 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 		_componentList.push_back(npc);
 	}
 
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 50; i++)
 	{
 		WCHAR name[256];
 		wsprintf(name, L"monster_%d", i);
 		Monster* monster = new Monster(name, L"npc", L"character_sprite2");
 		_componentList.push_back(monster);
 	}
+
+	Player* player = new Player(L"Player", L"Player", L"Player");	//(컴포넌트이름, 스크립트 이름, 스프라이트이름)
+	_componentList.push_back(player);
 
 	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
 	{

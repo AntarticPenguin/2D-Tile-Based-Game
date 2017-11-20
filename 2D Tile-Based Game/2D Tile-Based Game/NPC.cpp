@@ -29,8 +29,6 @@ void NPC::UpdateAI(float deltaTime)
 	if (NULL != findEnemy)
 	{
 		//추격 방향 설정
-		eDirection direction = eDirection::NONE;
-
 		int findDirection = rand() % 4;
 		int newTileX = _tileX;
 		int newTileY = _tileY;
@@ -51,10 +49,13 @@ void NPC::UpdateAI(float deltaTime)
 			break;
 		}
 
-		if (eDirection::NONE != direction)
+		if (map->CanMoveTileMap(newTileX, newTileY))
 		{
-			_curDirection = (eDirection)findDirection;
-			ChangeState(eStateType::ET_MOVE);
+			if (eDirection::NONE != findDirection)
+			{
+				_curDirection = (eDirection)findDirection;
+				_state->NextState(eStateType::ET_MOVE);
+			}
 		}
 	}
 	else

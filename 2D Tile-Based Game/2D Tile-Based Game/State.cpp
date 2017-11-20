@@ -53,7 +53,7 @@ void State::Reset()
 
 void State::Start()
 {
-
+	_nextState = eStateType::ET_NONE;
 }
 
 void State::Stop()
@@ -93,4 +93,9 @@ void State::CreateSprite()
 		sprite->Init();
 		_spriteList.push_back(sprite);
 	}
+}
+
+void State::NextState(eStateType stateType)
+{
+	_nextState = stateType;
 }

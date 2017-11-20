@@ -22,6 +22,12 @@ void DeadState::Init(Character* character)
 void DeadState::Update(float deltaTime)
 {
 	State::Update(deltaTime);
+
+	if (eStateType::ET_NONE != _nextState)
+	{
+		_character->ChangeState(_nextState);
+		return;
+	}
 }
 
 void DeadState::Render()

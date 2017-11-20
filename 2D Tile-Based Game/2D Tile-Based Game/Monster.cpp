@@ -44,7 +44,7 @@ void Monster::UpdateAI(float deltaTime)
 		if (eDirection::NONE != direction)
 		{
 			_curDirection = direction;
-			ChangeState(eStateType::ET_MOVE);
+			_state->NextState(eStateType::ET_MOVE);
 		}
 	}
 	else
@@ -61,13 +61,8 @@ Component* Monster::Collision(std::list<Component*>& collisionList)
 		Component* com = (*itr);
 		if (eComponentType::CT_NPC == com->GetType() || eComponentType::CT_PLAYER == com->GetType())
 		{
-			/*
-			_target = com;
-			ChangeState(eStateType::ET_ATTACK);
-			*/
 			return com;
 		}
 	}
-	//ChangeState(eStateType::ET_IDLE);
 	return NULL;
 }

@@ -27,6 +27,9 @@ Character::Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	_attackPoint = 10;
 	_attackedPoint = 0;
 	_hp = 20;
+
+	_attackCooltimeDuration = 0.0f;
+	_attackCooltime = 1.0f;				//attackSpeed
 }
 
 Character::~Character()
@@ -96,6 +99,7 @@ void Character::Deinit()
 
 void Character::Update(float deltaTime)
 {
+	UpdateAttackCooltime(deltaTime);
 	_state->Update(deltaTime);
 }
 
@@ -171,7 +175,7 @@ void Character::InitMove()
 void Character::UpdateAI(float deltaTime)
 {
 	_curDirection = (eDirection)(rand() % 4);
-	ChangeState(eStateType::ET_MOVE);
+	_state->NextState(eStateType::ET_MOVE);
 }
 
 void Character::ChangeState(eStateType stateType)
@@ -264,23 +268,8 @@ void Character::ReceiveMessage(const sComponentMsgParam& msgParam)
 {
 	if (L"Attack" == msgParam.message)
 	{
-		/*
-		int attackPoint = msgParam.attackPoint;
-		_hp -= attackPoint;
-
-		if (_hp < 0)
-		{
-			//DEAD
-			_isLive = false;
-			SetCanMove(true);
-
-			//STOP
-			_moveDistancePerTimeX = 0.0f;
-			_moveDistancePerTimeY = 0.0f;
-		}
-		*/
 		_attackedPoint = msgParam.attackPoint;
-		ChangeState(eStateType::ET_DEFENSE);
+		_state->NextState(eStateType::ET_DEFENSE);
 	}
 }
 
@@ -302,4 +291,24 @@ void Character::ResetTarget()
 int Character::GetAttackPoint()
 {
 	return _attackPoint;
+}
+
+void Character::UpdateAttackCooltime(float deltaTime)
+{
+	if (_attackCooltimeDuration < _attackCooltime)
+	{
+		_attackCooltimeDuration += deltaTime;
+	}
+}
+
+bool Character::IsAttackCooltime()
+{
+	if (_attackCooltimeDuration <= _attackCooltime)
+		return true;
+	return false;
+}
+
+void Character::ResetAttackCooltime()
+{
+	_attackCooltimeDuration = 0.0f;
 }

@@ -12,6 +12,8 @@ Player::Player(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	_tileX = 32;
 	_tileY = 15;
 	_eType = eComponentType::CT_PLAYER;
+
+	_hp = 9999;
 }
 
 Player::~Player()
@@ -42,6 +44,19 @@ void Player::UpdateAI(float deltaTime)
 	if (eDirection::NONE != direction)
 	{
 		_curDirection = direction;
-		ChangeState(eStateType::ET_MOVE);
+		_state->NextState(eStateType::ET_MOVE);
 	}
+}
+
+Component* Player::Collision(std::list<Component*>& collisionList)
+{
+	for (std::list<Component*>::iterator itr = collisionList.begin(); itr != collisionList.end(); itr++)
+	{
+		Component* com = (*itr);
+		if (eComponentType::CT_MONSTER == com->GetType())
+		{
+			return com;
+		}
+	}
+	return NULL;
 }

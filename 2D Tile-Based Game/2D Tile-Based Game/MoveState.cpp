@@ -39,7 +39,6 @@ void MoveState::Update(float deltaTime)
 	{
 		_movingDuration = 0.0f;
 		_character->MoveStop();
-		//_character->ChangeState(eStateType::ET_IDLE);
 		_nextState = eStateType::ET_IDLE;
 	}
 	else
@@ -75,6 +74,8 @@ void MoveState::Start()
 	case eDirection::DOWN: //down
 		newTileY++;
 		break;
+	case eDirection::NONE:
+		return;
 	}
 
 	std::list<Component*> collisionList;
@@ -84,8 +85,10 @@ void MoveState::Start()
 		//충돌된 컴포넌트들끼리 메세지 교환
 		//각 하위 클래스에서 재정의 : 충돌시 메세지
 		Component* target = _character->Collision(collisionList);
+		//if (NULL != target && _character->IsAttackCooltime())
 		if (NULL != target)
 		{
+			//_character->ResetAttackCooltime();
 			_character->SetTarget(target);
 			_nextState = eStateType::ET_ATTACK;
 		}
@@ -93,9 +96,6 @@ void MoveState::Start()
 		{
 			_nextState = eStateType::ET_IDLE;
 		}
-
-		_character->Collision(collisionList);
-		_character->ChangeState(eStateType::ET_IDLE);
 	}
 	else
 	{
