@@ -3,6 +3,7 @@
 
 #include "GameSystem.h"
 #include "ComponentSystem.h"
+
 #include "Map.h"
 #include "Player.h"
 #include "NPC.h"
@@ -138,7 +139,7 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 		_componentList.push_back(npc);
 	}
 
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		WCHAR name[256];
 		wsprintf(name, L"monster_%d", i);

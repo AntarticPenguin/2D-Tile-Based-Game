@@ -48,6 +48,8 @@ void DeadState::Reset()
 void DeadState::Start()
 {
 	State::Start();
+
+	_curState = eStateType::ET_DEAD;
 }
 
 void DeadState::Stop()

@@ -53,6 +53,7 @@ void State::Reset()
 
 void State::Start()
 {
+	_curState = eStateType::ET_NONE;
 	_nextState = eStateType::ET_NONE;
 }
 
@@ -98,4 +99,9 @@ void State::CreateSprite()
 void State::NextState(eStateType stateType)
 {
 	_nextState = stateType;
+}
+
+eStateType State::GetState()
+{
+	return _curState;
 }

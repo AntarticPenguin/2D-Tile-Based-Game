@@ -3,8 +3,10 @@
 
 #include "Map.h"
 #include "Sprite.h"
+#include "Font.h"
 
 #include "DeadState.h"
+#include "CounterAttackState.h"
 #include "DefenseState.h"
 #include "AttackState.h"
 #include "MoveState.h"
@@ -30,6 +32,8 @@ Character::Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 
 	_attackCooltimeDuration = 0.0f;
 	_attackCooltime = 1.0f;				//attackSpeed
+
+	_counterTarget = NULL;
 }
 
 Character::~Character()
@@ -79,16 +83,32 @@ void Character::Init()
 		_stateMap[eStateType::ET_DEFENSE] = state;
 	}
 	{
+		State* state = new CounterAttackState();
+		state->Init(this);
+		_stateMap[eStateType::ET_COUNTERATTACK] = state;
+	}
+	{
 		State* state = new DeadState();
 		state->Init(this);
 		_stateMap[eStateType::ET_DEAD] = state;
 	}
 
 	ChangeState(eStateType::ET_IDLE);
+
+	//Font
+	{
+		D3DCOLOR color = D3DCOLOR_ARGB(255, 0, 0, 0);
+		_font = new Font(L"Arial", 15, color);
+
+		_font->SetRect(100, 100, 400, 100);
+		UpdateText();
+	}
 }
 
 void Character::Deinit()
 {
+	delete _font;
+
 	for (std::map<eStateType, State*>::iterator itr = _stateMap.begin(); itr != _stateMap.end(); itr++)
 	{
 		State* state = itr->second;
@@ -101,11 +121,16 @@ void Character::Update(float deltaTime)
 {
 	UpdateAttackCooltime(deltaTime);
 	_state->Update(deltaTime);
+
+	UpdateText();
 }
 
 void Character::Render()
 {
 	_state->Render();
+
+	_font->SetPosition(_x - 200, _y - 50);
+	_font->Render();
 }
 
 void Character::Release()
@@ -159,10 +184,11 @@ void Character::DecreaseHP(int decreaseHP)
 {
 	_hp -= decreaseHP;
 
-	if (_hp < 0)
+	if (_hp <= 0)
 	{
 		//DEAD
 		_isLive = false;
+		_hp = 0;
 	}
 }
 
@@ -238,14 +264,16 @@ void Character::Moving(float deltaTime)
 
 Component* Character::Collision(std::list<Component*>& collisionList)
 {
+	/*
 	for (std::list<Component*>::iterator itr = collisionList.begin(); itr != collisionList.end(); itr++)
 	{
-		/*sComponentMsgParam msgParam;
+		sComponentMsgParam msgParam;
 		msgParam.sender = this;
 		msgParam.receiver = (*itr);
 		msgParam.message = L"Collision";
-		ComponentSystem::GetInstance().SendMessageToComponent(msgParam);*/
+		ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
 	}
+	*/
 	return NULL;
 }
 
@@ -268,6 +296,7 @@ void Character::ReceiveMessage(const sComponentMsgParam& msgParam)
 {
 	if (L"Attack" == msgParam.message)
 	{
+		_counterTarget = msgParam.sender;
 		_attackedPoint = msgParam.attackPoint;
 		_state->NextState(eStateType::ET_DEFENSE);
 	}
@@ -276,6 +305,11 @@ void Character::ReceiveMessage(const sComponentMsgParam& msgParam)
 Component* Character::GetTarget()
 {
 	return _target;
+}
+
+Component* Character::GetCounterTarget()
+{
+	return _counterTarget;
 }
 
 void Character::SetTarget(Component* target)
@@ -299,11 +333,15 @@ void Character::UpdateAttackCooltime(float deltaTime)
 	{
 		_attackCooltimeDuration += deltaTime;
 	}
+	else
+	{
+		_attackCooltimeDuration = _attackCooltime;
+	}
 }
 
 bool Character::IsAttackCooltime()
 {
-	if (_attackCooltimeDuration <= _attackCooltime)
+	if (_attackCooltime <= _attackCooltimeDuration)
 		return true;
 	return false;
 }
@@ -311,4 +349,37 @@ bool Character::IsAttackCooltime()
 void Character::ResetAttackCooltime()
 {
 	_attackCooltimeDuration = 0.0f;
+}
+
+void Character::UpdateText()
+{
+	int coolTime = (int)(_attackCooltimeDuration * 1000.0f);
+	WCHAR state[100];
+
+	switch (_state->GetState())
+	{
+	case eStateType::ET_ATTACK:
+		wsprintf(state, L"ATTACK");
+		break;
+	case eStateType::ET_COUNTERATTACK:
+		wsprintf(state, L"COUNTER");
+		break;
+	case eStateType::ET_DEAD:
+		wsprintf(state, L"DEAD");
+		break;
+	case eStateType::ET_DEFENSE:
+		wsprintf(state, L"DEFENSE");
+		break;
+	case eStateType::ET_IDLE:
+		wsprintf(state, L"IDLE");
+		break;
+	case eStateType::ET_MOVE:
+		wsprintf(state, L"MOVE");
+		break;
+	}
+
+	WCHAR text[255];
+	wsprintf(text, L"HP:%d\nCool: %d\nState:%s", _hp, coolTime, state);
+
+	_font->SetText(text);
 }

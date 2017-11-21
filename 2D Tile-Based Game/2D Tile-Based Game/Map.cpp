@@ -33,7 +33,7 @@ void Map::Init()
 	{
 		for (int x = 0; x < 16; x++)
 		{
-			Sprite* sprite = new Sprite(L"MapSprite.png", L"MapSprite.json");
+			Sprite* sprite = new Sprite(L"mountain_landscape.png", L"MapSprite.json");
 			sprite->Init(srcX, srcY, _tileSize, _tileSize, 1.0f);
 			_spriteList.push_back(sprite);
 			srcX += _tileSize;
@@ -179,10 +179,10 @@ void Map::Render()
 	int midX = GameSystem::GetInstance().GetClientWidth() / 2;
 	int midY = GameSystem::GetInstance().GetClientHeight() / 2;
 
-	int minX = _viewer->GetTileX() - (midX / _tileSize) - 2;
-	int maxX = _viewer->GetTileX() + (midX / _tileSize) + 2;
-	int minY = _viewer->GetTileY() - (midY / _tileSize) - 2;
-	int maxY = _viewer->GetTileY() + (midY / _tileSize) + 2;
+	int minX = _viewer->GetTileX() - (midX / _tileSize) - 3;
+	int maxX = _viewer->GetTileX() + (midX / _tileSize) + 3;
+	int minY = _viewer->GetTileY() - (midY / _tileSize) - 3;
+	int maxY = _viewer->GetTileY() + (midY / _tileSize) + 3;
 
 	//예외처리(범위 밖으로 벗어났을 경우)
 	if (minX < 0)

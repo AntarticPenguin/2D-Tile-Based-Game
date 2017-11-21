@@ -38,6 +38,7 @@ void IdleState::Update(float deltaTime)
 void IdleState::Start()
 {
 	State::Start();
+	_curState = eStateType::ET_IDLE;
 }
 
 void IdleState::Stop()

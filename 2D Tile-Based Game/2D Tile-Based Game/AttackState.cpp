@@ -9,7 +9,6 @@ AttackState::AttackState()
 
 AttackState::~AttackState()
 {
-
 }
 
 void AttackState::Init(Character* character)
@@ -47,6 +46,7 @@ void AttackState::Reset()
 void AttackState::Start()
 {
 	State::Start();
+	_curState = eStateType::ET_ATTACK;
 
 	sComponentMsgParam msgParam;
 	msgParam.sender = (Component*)_character;

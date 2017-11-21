@@ -22,16 +22,17 @@ enum eStateType
 	ET_MOVE,
 	ET_ATTACK,
 	ET_DEFENSE,
+	ET_COUNTERATTACK,
 	ET_DEAD,
 };
 
 class Sprite;
 class State;
+class Font;
 
 class Character : public Component
 {
 private:
-	//std::vector<Sprite*> _spriteList;
 	std::wstring _spriteFileName;
 	std::wstring _scriptFileName;
 
@@ -107,12 +108,14 @@ public:
 	//Attack
 protected:
 	Component* _target;
+	Component* _counterTarget;	//나에게 공격을 날린 대상(카운터공격에 사용됨)
 	int _attackPoint;
 	float _attackCooltimeDuration;
 	float _attackCooltime;
 
 public:
 	Component* GetTarget();
+	Component* GetCounterTarget();
 	void SetTarget(Component* target);
 	void ResetTarget();
 	int GetAttackPoint();
@@ -120,4 +123,11 @@ public:
 	void UpdateAttackCooltime(float deltaTime);
 	bool IsAttackCooltime();
 	void ResetAttackCooltime();
+
+	//UI(Font)
+private:
+	Font* _font;
+
+public:
+	void UpdateText();
 };

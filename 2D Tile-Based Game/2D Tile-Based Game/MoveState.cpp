@@ -51,6 +51,7 @@ void MoveState::Update(float deltaTime)
 void MoveState::Start()
 {
 	State::Start();
+	_curState = eStateType::ET_MOVE;
 
 	if (true == _character->IsMoving())
 		return;
@@ -85,10 +86,9 @@ void MoveState::Start()
 		//충돌된 컴포넌트들끼리 메세지 교환
 		//각 하위 클래스에서 재정의 : 충돌시 메세지
 		Component* target = _character->Collision(collisionList);
-		//if (NULL != target && _character->IsAttackCooltime())
-		if (NULL != target)
+		if (NULL != target && _character->IsAttackCooltime())
 		{
-			//_character->ResetAttackCooltime();
+			_character->ResetAttackCooltime();
 			_character->SetTarget(target);
 			_nextState = eStateType::ET_ATTACK;
 		}
