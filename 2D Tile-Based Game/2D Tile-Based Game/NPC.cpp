@@ -11,6 +11,22 @@ NPC::NPC(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	
 	int speed = (rand() % 1500) + 300;
 	_moveTime = (float)speed / 1000.0f;
+
+	//Stat Info
+	{
+		_attackPoint = 10;
+		_attackedPoint = 0;
+		_maxHp = 30;
+		_hp = _maxHp;
+
+		_recoveryStat = 5;
+
+		_attackCooltimeDuration = 0.0f;
+		_attackCooltime = 1.0f;				//attackSpeed
+
+		_recoveryCooltimeDuration = 0.0f;
+		_recoveryCooltime = 3.0f;
+	}
 }
 
 NPC::~NPC()

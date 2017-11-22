@@ -13,7 +13,21 @@ Player::Player(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	_tileY = 15;
 	_eType = eComponentType::CT_PLAYER;
 
-	_hp = 9999;
+	//Stat Info
+	{
+		_attackPoint = 10;
+		_attackedPoint = 0;
+		_maxHp = 50;
+		_hp = _maxHp;
+
+		_recoveryStat = 5;
+
+		_attackCooltimeDuration = 0.0f;
+		_attackCooltime = 1.0f;				//attackSpeed
+
+		_recoveryCooltimeDuration = 0.0f;
+		_recoveryCooltime = 3.0f;
+	}
 }
 
 Player::~Player()

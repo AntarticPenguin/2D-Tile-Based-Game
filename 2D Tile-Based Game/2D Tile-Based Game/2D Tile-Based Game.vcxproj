@@ -36,6 +36,8 @@
     <ClCompile Include="MoveState.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RecoveryItem.cpp" />
+    <ClCompile Include="RecoveryState.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="State.cpp" />
@@ -63,6 +65,8 @@
     <ClInclude Include="MoveState.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RecoveryItem.h" />
+    <ClInclude Include="RecoveryState.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="State.h" />

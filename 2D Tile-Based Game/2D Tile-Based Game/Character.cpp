@@ -7,6 +7,7 @@
 
 #include "DeadState.h"
 #include "CounterAttackState.h"
+#include "RecoveryState.h"
 #include "DefenseState.h"
 #include "AttackState.h"
 #include "MoveState.h"
@@ -26,12 +27,21 @@ Character::Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	_tileX = 10;
 	_tileY = 10;
 
-	_attackPoint = 10;
-	_attackedPoint = 0;
-	_hp = 20;
+	//Stat Info
+	{
+		_attackPoint = 10;
+		_attackedPoint = 0;
+		_maxHp = 20;
+		_hp = _maxHp;
 
-	_attackCooltimeDuration = 0.0f;
-	_attackCooltime = 1.0f;				//attackSpeed
+		_recoveryStat = 5;
+
+		_attackCooltimeDuration = 0.0f;
+		_attackCooltime = 1.0f;				//attackSpeed
+
+		_recoveryCooltimeDuration = 0.0f;
+		_recoveryCooltime = 3.0f;
+	}
 
 	_counterTarget = NULL;
 }
@@ -88,6 +98,11 @@ void Character::Init()
 		_stateMap[eStateType::ET_COUNTERATTACK] = state;
 	}
 	{
+		State* state = new RecoveryState();
+		state->Init(this);
+		_stateMap[eStateType::ET_RECOVERY] = state;
+	}
+	{
 		State* state = new DeadState();
 		state->Init(this);
 		_stateMap[eStateType::ET_DEAD] = state;
@@ -120,6 +135,7 @@ void Character::Deinit()
 void Character::Update(float deltaTime)
 {
 	UpdateAttackCooltime(deltaTime);
+	UpdateRecoveryCooltime(deltaTime);
 	_state->Update(deltaTime);
 
 	UpdateText();
@@ -351,10 +367,51 @@ void Character::ResetAttackCooltime()
 	_attackCooltimeDuration = 0.0f;
 }
 
+void Character::UpdateRecoveryCooltime(float deltaTime)
+{
+	if (_recoveryCooltimeDuration < _recoveryCooltime)
+	{
+		_recoveryCooltimeDuration += deltaTime;
+	}
+	else
+	{
+		_recoveryCooltimeDuration = _recoveryCooltime;
+	}
+}
+
+bool Character::IsHpFull()
+{
+	if (_maxHp == _hp)
+		return true;
+	return false;
+}
+
+bool Character::IsRecoveryCoolTime()
+{
+	if (_recoveryCooltime <= _recoveryCooltimeDuration)
+		return true;
+	return false;
+}
+
+void Character::RecoveryHP()
+{
+	_hp += _recoveryStat;
+
+	if (_maxHp < _hp)
+		_hp = _maxHp;
+}
+
+void Character::ResetRecoveryCooltime()
+{
+	_recoveryCooltimeDuration = 0.0f;
+}
+
 void Character::UpdateText()
 {
 	int coolTime = (int)(_attackCooltimeDuration * 1000.0f);
+
 	WCHAR state[100];
+	ZeroMemory(state, sizeof(state));
 
 	switch (_state->GetState())
 	{
@@ -378,7 +435,9 @@ void Character::UpdateText()
 		break;
 	}
 
+
 	WCHAR text[255];
+	//wsprintf(text, L"HP:%d\nCool: %d\n", _hp, coolTime);
 	wsprintf(text, L"HP:%d\nCool: %d\nState:%s", _hp, coolTime, state);
 
 	_font->SetText(text);

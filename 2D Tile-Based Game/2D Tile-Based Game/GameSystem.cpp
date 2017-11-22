@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "NPC.h"
 #include "Monster.h"
+#include "RecoveryItem.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -131,7 +132,15 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	Map* tileMap = new Map(L"tileMap");
 	_componentList.push_back(tileMap);
 
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 10; i++)
+	{
+		WCHAR name[256];
+		wsprintf(name, L"recovery_Item_%d", i);
+		RecoveryItem* item = new RecoveryItem(name, L"recovery_Item", L"recovery_Item");
+		_componentList.push_back(item);
+	}
+
+	for (int i = 0; i < 20; i++)
 	{
 		WCHAR name[256];
 		wsprintf(name, L"npc_%d", i);
@@ -139,11 +148,11 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 		_componentList.push_back(npc);
 	}
 
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		WCHAR name[256];
 		wsprintf(name, L"monster_%d", i);
-		Monster* monster = new Monster(name, L"npc", L"character_sprite2");
+		Monster* monster = new Monster(name, L"monster", L"monster");
 		_componentList.push_back(monster);
 	}
 

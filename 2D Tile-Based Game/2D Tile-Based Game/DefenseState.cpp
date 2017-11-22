@@ -45,18 +45,24 @@ void DefenseState::Reset()
 void DefenseState::Start()
 {
 	State::Start();
-	_curState = eStateType::ET_DEFENSE;
 
-	int counter = rand() % 5;
+	int counter = (rand() % 100) + 1;
 
-	if (4 == counter)
+	if (0 == (counter % 4))
 	{
 		_nextState = eStateType::ET_COUNTERATTACK;
 		return;
 	}
 
-	int attackPoint = _character->GetAttackedPoint();
-	_character->DecreaseHP(attackPoint);
+	_curState = eStateType::ET_DEFENSE;
+	
+	int defenseRate = (rand() % 100) + 1;
+	
+	if (0 != (defenseRate % 5))
+	{
+		int attackPoint = _character->GetAttackedPoint();
+		_character->DecreaseHP(attackPoint);
+	}
 
 	if(false == _character->IsLive())
 	{

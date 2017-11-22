@@ -39,6 +39,11 @@ void IdleState::Start()
 {
 	State::Start();
 	_curState = eStateType::ET_IDLE;
+
+	if (_character->IsRecoveryCoolTime() && false == _character->IsHpFull())
+	{
+		_nextState = eStateType::ET_RECOVERY;
+	}
 }
 
 void IdleState::Stop()

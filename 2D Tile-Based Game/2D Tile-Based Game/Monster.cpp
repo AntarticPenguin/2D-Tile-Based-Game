@@ -9,8 +9,24 @@ Monster::Monster(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 {
 	_eType = eComponentType::CT_MONSTER;
 
-	int speed = (rand() % 1500) + 200;
+	int speed = (rand() % 1000) + 200;
 	_moveTime = (float)speed / 1000.0f;
+
+	//Stat Info
+	{
+		_attackPoint = 10;
+		_attackedPoint = 0;
+		_maxHp = 20;
+		_hp = _maxHp;
+
+		_recoveryStat = 1;
+
+		_attackCooltimeDuration = 0.0f;
+		_attackCooltime = 2.0f;				//attackSpeed
+
+		_recoveryCooltimeDuration = 0.0f;
+		_recoveryCooltime = 4.0f;
+	}
 }
 
 Monster::~Monster()

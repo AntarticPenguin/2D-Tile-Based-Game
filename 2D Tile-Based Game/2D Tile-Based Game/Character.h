@@ -23,6 +23,7 @@ enum eStateType
 	ET_ATTACK,
 	ET_DEFENSE,
 	ET_COUNTERATTACK,
+	ET_RECOVERY,
 	ET_DEAD,
 };
 
@@ -63,8 +64,13 @@ public:
 
 	//Character Info
 protected:
+	int _maxHp;
 	int _hp;
 	int _attackedPoint;
+	int _recoveryStat;
+
+	float _recoveryCooltimeDuration;
+	float _recoveryCooltime;
 
 public:
 	int GetAttackedPoint();
@@ -123,6 +129,12 @@ public:
 	void UpdateAttackCooltime(float deltaTime);
 	bool IsAttackCooltime();
 	void ResetAttackCooltime();
+
+	void UpdateRecoveryCooltime(float deltaTime);
+	bool IsHpFull();
+	bool IsRecoveryCoolTime();
+	void RecoveryHP();
+	void ResetRecoveryCooltime();
 
 	//UI(Font)
 private:

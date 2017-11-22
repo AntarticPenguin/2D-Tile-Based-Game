@@ -9,6 +9,7 @@ enum eComponentType
 	CT_MONSTER,
 	CT_NPC,
 	CT_TILE_OBJECT,
+	CT_ITEM,
 	CT_NONE,
 };
 
