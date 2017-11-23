@@ -116,3 +116,8 @@ bool TileCell::GetCollisionList(std::list<Component*>& collisionList)
 	return false;
 
 }
+
+std::list<Component*> TileCell::GetComponentList()
+{
+	return _componentList;
+}

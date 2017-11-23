@@ -205,6 +205,8 @@ void Character::DecreaseHP(int decreaseHP)
 		//DEAD
 		_isLive = false;
 		_hp = 0;
+
+		_state->NextState(eStateType::ET_DEAD);
 	}
 }
 
@@ -401,6 +403,14 @@ void Character::RecoveryHP()
 		_hp = _maxHp;
 }
 
+void Character::RecoveryHP(int hp)
+{
+	_hp += hp;
+
+	if (_maxHp < _hp)
+		_hp = _maxHp;
+}
+
 void Character::ResetRecoveryCooltime()
 {
 	_recoveryCooltimeDuration = 0.0f;
@@ -432,6 +442,9 @@ void Character::UpdateText()
 		break;
 	case eStateType::ET_MOVE:
 		wsprintf(state, L"MOVE");
+		break;
+	case eStateType::ET_RECOVERY:
+		wsprintf(state, L"RECOVERY");
 		break;
 	}
 

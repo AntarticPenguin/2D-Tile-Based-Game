@@ -289,6 +289,11 @@ bool Map::GetTileCollisionList(int tileX, int tileY, std::list<Component*>& coll
 	return _tileMap[tileY][tileX]->GetCollisionList(collisionList);
 }
 
+std::list<Component*> Map::GetTileComponentList(int tileX, int tileY)
+{
+	return _tileMap[tileY][tileX]->GetComponentList();
+}
+
 void Map::InitViewer(Component* component)
 {
 	_viewer = component;

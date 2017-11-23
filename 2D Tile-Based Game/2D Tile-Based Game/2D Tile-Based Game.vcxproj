@@ -36,6 +36,7 @@
     <ClCompile Include="MoveState.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PoisonItem.cpp" />
     <ClCompile Include="RecoveryItem.cpp" />
     <ClCompile Include="RecoveryState.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
@@ -65,6 +66,7 @@
     <ClInclude Include="MoveState.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PoisonItem.h" />
     <ClInclude Include="RecoveryItem.h" />
     <ClInclude Include="RecoveryState.h" />
     <ClInclude Include="ResourceManager.h" />

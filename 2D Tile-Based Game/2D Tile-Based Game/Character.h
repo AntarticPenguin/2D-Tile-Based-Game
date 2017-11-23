@@ -134,6 +134,7 @@ public:
 	bool IsHpFull();
 	bool IsRecoveryCoolTime();
 	void RecoveryHP();
+	void RecoveryHP(int hp);
 	void ResetRecoveryCooltime();
 
 	//UI(Font)

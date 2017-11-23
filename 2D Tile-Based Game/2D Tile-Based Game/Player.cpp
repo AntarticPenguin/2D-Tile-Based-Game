@@ -20,7 +20,7 @@ Player::Player(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 		_maxHp = 50;
 		_hp = _maxHp;
 
-		_recoveryStat = 5;
+		_recoveryStat = 1;
 
 		_attackCooltimeDuration = 0.0f;
 		_attackCooltime = 1.0f;				//attackSpeed
@@ -53,6 +53,31 @@ void Player::UpdateAI(float deltaTime)
 	if (GameSystem::GetInstance().IsKeyDown(VK_RIGHT))
 	{
 		direction = eDirection::RIGHT;
+	}
+
+	//æ∆¿Ã≈€ ∏‘±‚
+	if (GameSystem::GetInstance().IsKeyDown(VK_SPACE))
+	{
+		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+
+		std::list<Component*> componentList = map->GetTileComponentList(_tileX, _tileY);
+		for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
+		{
+			Component* component = (*itr);
+			if (eComponentType::CT_ITEM == component->GetType())
+			{
+				/*
+				_hp = _maxHp;
+				map->ResetTileComponent(_tileX, _tileY, component);
+				component->SetLive(false);
+				*/
+				sComponentMsgParam msgParam;
+				msgParam.sender = (Component*)this;
+				msgParam.receiver = component;
+				msgParam.message = L"Use";
+				ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
+			}
+		}
 	}
 
 	if (eDirection::NONE != direction)

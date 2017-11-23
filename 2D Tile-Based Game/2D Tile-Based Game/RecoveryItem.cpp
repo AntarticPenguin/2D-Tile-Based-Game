@@ -1,5 +1,6 @@
 #include "ComponentSystem.h"
 #include "RecoveryItem.h"
+#include "Character.h"
 #include "Map.h"
 #include "Sprite.h"
 
@@ -55,11 +56,16 @@ void RecoveryItem::Deinit()
 
 void RecoveryItem::Update(float deltaTime)
 {
+	if (false == _isLive)
+		return;
 	_sprite->Update(deltaTime);
 }
 
 void RecoveryItem::Render()
 {
+	if (false == _isLive)
+		return;
+
 	_sprite->SetPosition(_posX, _posY);
 	_sprite->Render();
 }
@@ -84,4 +90,24 @@ void RecoveryItem::MoveDeltaPosition(float deltaX, float deltaY)
 {
 	_posX += deltaX;
 	_posY += deltaY;
+}
+
+void RecoveryItem::ReceiveMessage(const sComponentMsgParam& msgParam)
+{
+	if (L"Use" == msgParam.message)
+	{
+		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+
+		Component* sender = msgParam.sender;
+		switch (sender->GetType())
+		{
+		case eComponentType::CT_NPC:
+		case eComponentType::CT_MONSTER:
+		case eComponentType::CT_PLAYER:
+			((Character*)sender)->RecoveryHP(100);
+			map->ResetTileComponent(_tileX, _tileY, this);
+			_isLive = false;
+			break;
+		}
+	}
 }

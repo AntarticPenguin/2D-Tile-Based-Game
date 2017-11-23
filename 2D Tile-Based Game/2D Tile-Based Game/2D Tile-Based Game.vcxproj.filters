@@ -117,6 +117,9 @@
     <ClCompile Include="RecoveryItem.cpp">
       <Filter>소스 파일\Game\Item</Filter>
     </ClCompile>
+    <ClCompile Include="PoisonItem.cpp">
+      <Filter>소스 파일\Game\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -195,6 +198,9 @@
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClInclude>
     <ClInclude Include="RecoveryItem.h">
+      <Filter>소스 파일\Game\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="PoisonItem.h">
       <Filter>소스 파일\Game\Item</Filter>
     </ClInclude>
   </ItemGroup>
