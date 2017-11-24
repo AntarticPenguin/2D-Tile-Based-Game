@@ -41,6 +41,7 @@
     <ClCompile Include="RecoveryState.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Stage.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TileCell.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="RecoveryState.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Stage.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TileCell.h" />

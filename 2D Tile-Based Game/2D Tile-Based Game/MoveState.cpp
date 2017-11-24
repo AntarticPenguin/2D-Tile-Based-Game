@@ -1,7 +1,9 @@
 #include "MoveState.h"
 #include "Character.h"
 #include "Map.h"
+#include "Stage.h"
 #include "ComponentSystem.h"
+#include "GameSystem.h"
 
 MoveState::MoveState()
 {
@@ -56,7 +58,7 @@ void MoveState::Start()
 	if (true == _character->IsMoving())
 		return;
 
-	Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+	Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 
 	//충돌체크 : 타일 위의 컴포넌트를 리셋하기 전에 충돌 여부 체크
 	int newTileX = _character->GetTileX();

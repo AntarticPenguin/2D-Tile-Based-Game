@@ -52,14 +52,15 @@ Component* ComponentSystem::FindComponent(wstring name)
 	return NULL;
 }
 
-Component* ComponentSystem::FindComponentInRange(Component* center, int range, vector<eComponentType> compareTypeList)
+Component* ComponentSystem::FindComponentInRange(Component* mapComponent, Component* center, int range, vector<eComponentType> compareTypeList)
 {
 	/*
 		1. 자신을 기준으로, 검사할 타일 범위 결정
 		2. 범위 내 타일을 검사하면서 NPC, PLAYER가 있으면 "찾았음"
 		3. 없으면 평소 움직임
 	*/
-	Map* map = (Map*)FindComponent(L"tileMap");
+	Map* map = (Map*)mapComponent;
+
 	int minTileX = center->GetTileX() - range;
 	int maxTileX = center->GetTileX() + range;
 	int minTileY = center->GetTileY() - range;
@@ -115,6 +116,14 @@ void ComponentSystem::ProcessMessageQueue()
 		sComponentMsgParam msgParam = _msgQueue.front();
 		_msgQueue.pop();
 		msgParam.receiver->ReceiveMessage(msgParam);
+	}
+}
+
+void ComponentSystem::ClearMessageQueue()
+{
+	while (0 < _msgQueue.size())
+	{
+		_msgQueue.pop();
 	}
 }
 

@@ -1,9 +1,6 @@
 #pragma once
 #include <Windows.h>
-//#include <d3dx11.h>
 #include <d3dx9.h>
-#include <vector>
-#include <list>
 
 #include "GameTimer.h"
 
@@ -11,6 +8,7 @@
 #define SAFE_DELETE(x) { if(x){delete x; x = NULL;} }
 
 class Component;
+class Stage;
 
 class GameSystem
 {
@@ -42,10 +40,6 @@ private:
 	D3DPRESENT_PARAMETERS _d3dpp;
 	LPD3DXSPRITE _sprite;
 
-	//Component
-private:
-	std::list<Component*> _componentList;
-
 public:
 	bool InitDirect3D();
 	void CheckDeviceLost();
@@ -72,6 +66,13 @@ public:
 	void KeyUp(unsigned int keyCode);
 
 	bool IsKeyDown(unsigned int keyCode);
+
+	//Stage
+private:
+	Stage* _stage;
+
+public:
+	Stage* GetStage();
 
 	//Constructor & Destroyer
 private:

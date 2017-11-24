@@ -1,4 +1,6 @@
 #include "ComponentSystem.h"
+#include "GameSystem.h"
+#include "Stage.h"
 #include "PoisonItem.h"
 #include "Character.h"
 #include "Map.h"
@@ -22,7 +24,7 @@ PoisonItem::~PoisonItem()
 void PoisonItem::Init()
 {
 	{
-		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 
 		bool canMove = false;
 		while (true != canMove)
@@ -96,8 +98,7 @@ void PoisonItem::ReceiveMessage(const sComponentMsgParam& msgParam)
 {
 	if (L"Use" == msgParam.message)
 	{
-		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
-
+		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 		Component* sender = msgParam.sender;
 		switch (sender->GetType())
 		{

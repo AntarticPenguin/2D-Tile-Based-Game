@@ -2,8 +2,8 @@
 #include <Windows.h>
 #include <string>
 #include <map>
-#include <vector>
 #include <queue>
+#include <vector>
 
 #include "ComponentMessage.h"
 
@@ -25,7 +25,7 @@ public:
 	void AddComponent(std::wstring name, Component* component);
 	void RemoveAllComponents();
 	Component* FindComponent(std::wstring name);
-	Component* FindComponentInRange(Component* center, int range, std::vector<eComponentType> compareTypeList);
+	Component* FindComponentInRange(Component* mapComponent, Component* center, int range, std::vector<eComponentType> compareTypeList);
 
 	//Message
 private:
@@ -34,6 +34,7 @@ private:
 public:
 	void ComponentSystem::SendMessageToComponent(const sComponentMsgParam& msgParam);
 	void ProcessMessageQueue();
+	void ClearMessageQueue();
 
 private:
 	ComponentSystem();

@@ -43,11 +43,21 @@ void Map::Init()
 		srcY += _tileSize;
 	}
 
+	std::wstring wname = _name;			//16비트를
+	std::string name = "";				//8비트로
+	name.assign(wname.begin(), wname.end());
+
+	char layer01Name[256];
+	sprintf(layer01Name, "%sData_layer1.csv", name.c_str());	//sprintf는 유니코드 못씀
+
+	char layer02Name[256];
+	sprintf(layer02Name, "%sData_layer2.csv", name.c_str());
+
 	//Load Map Script 1층
 	{
 		char record[1024];
 		int line = 0;
-		std::ifstream infile("MapData_layer1.csv");
+		std::ifstream infile(layer01Name);
 		while (!infile.eof())
 		{
 			infile.getline(record, 1024);
@@ -98,7 +108,7 @@ void Map::Init()
 		char record[1024];
 		int line = 0;
 		int row = 0;
-		std::ifstream infile("MapData_layer2.csv");
+		std::ifstream infile(layer02Name);
 		while (!infile.eof())
 		{
 			infile.getline(record, 1024);

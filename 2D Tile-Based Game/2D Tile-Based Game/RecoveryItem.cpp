@@ -1,4 +1,7 @@
 #include "ComponentSystem.h"
+#include "GameSystem.h"
+
+#include "Stage.h"
 #include "RecoveryItem.h"
 #include "Character.h"
 #include "Map.h"
@@ -22,7 +25,8 @@ RecoveryItem::~RecoveryItem()
 void RecoveryItem::Init()
 {
 	{
-		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+		//Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"map");
+		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 
 		bool canMove = false;
 		while (true != canMove)
@@ -96,7 +100,8 @@ void RecoveryItem::ReceiveMessage(const sComponentMsgParam& msgParam)
 {
 	if (L"Use" == msgParam.message)
 	{
-		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+		//Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"map");
+		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 
 		Component* sender = msgParam.sender;
 		switch (sender->GetType())

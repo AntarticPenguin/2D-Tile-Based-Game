@@ -1,5 +1,7 @@
 #include "ComponentSystem.h"
 #include "ComponentMessage.h"
+#include "GameSystem.h"
+#include "Stage.h"
 
 #include "Map.h"
 #include "Sprite.h"
@@ -54,7 +56,7 @@ Character::~Character()
 void Character::Init()
 {
 	{
-		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 
 		bool canMove = false;
 		while (true != canMove)
@@ -237,7 +239,7 @@ void Character::MoveStart(int newTileX, int newTileY)
 {
 	_isMoving = true;
 
-	Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+	Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 	map->ResetTileComponent(_tileX, _tileY, this);
 	_tileX = newTileX;
 	_tileY = newTileY;
@@ -264,7 +266,7 @@ void Character::MoveStop()
 	_isMoving = false;
 
 	//이동후 도착하면 타일의 정확한 위치에 찍어줘야 한다.
-	Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+	Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 	_x = map->GetPositionX(_tileX, _tileY);
 	_y = map->GetPositionY(_tileX, _tileY);
 
@@ -419,6 +421,7 @@ void Character::ResetRecoveryCooltime()
 void Character::UpdateText()
 {
 	int coolTime = (int)(_attackCooltimeDuration * 1000.0f);
+	int RecoveryTime = (int)(_recoveryCooltimeDuration * 1000.0f);
 
 	WCHAR state[100];
 	ZeroMemory(state, sizeof(state));
@@ -451,7 +454,7 @@ void Character::UpdateText()
 
 	WCHAR text[255];
 	//wsprintf(text, L"HP:%d\nCool: %d\n", _hp, coolTime);
-	wsprintf(text, L"HP:%d\nCool: %d\nState:%s", _hp, coolTime, state);
+	wsprintf(text, L"HP:%d\nCool: %d\nState:%s\nRecovery:%d", _hp, coolTime, state, RecoveryTime);
 
 	_font->SetText(text);
 }

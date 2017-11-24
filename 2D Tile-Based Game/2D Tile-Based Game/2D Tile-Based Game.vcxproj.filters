@@ -37,6 +37,9 @@
     <Filter Include="소스 파일\Game\Item">
       <UniqueIdentifier>{1fc868b0-1350-4bdd-b11e-98e2db82c8f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Game\Stage">
+      <UniqueIdentifier>{3997058d-5aab-47f5-9379-0e3969e6fbfc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -120,6 +123,9 @@
     <ClCompile Include="PoisonItem.cpp">
       <Filter>소스 파일\Game\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>소스 파일\Game\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -202,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="PoisonItem.h">
       <Filter>소스 파일\Game\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>소스 파일\Game\Stage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

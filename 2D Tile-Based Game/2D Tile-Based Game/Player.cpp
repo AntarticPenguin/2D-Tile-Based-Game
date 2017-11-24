@@ -1,9 +1,11 @@
 #include "GameSystem.h"
 #include "ComponentSystem.h"
+#include "Stage.h"
 #include "Map.h"
 #include "Player.h"
+#include "State.h"
 
-#include "MoveState.h"
+
 
 Player::Player(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 	Character(name, scriptName, spriteFileName)
@@ -18,7 +20,7 @@ Player::Player(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 		_attackPoint = 10;
 		_attackedPoint = 0;
 		_maxHp = 50;
-		_hp = _maxHp;
+		_hp = _maxHp - 40;
 
 		_recoveryStat = 1;
 
@@ -58,7 +60,7 @@ void Player::UpdateAI(float deltaTime)
 	//¾ÆÀÌÅÛ ¸Ô±â
 	if (GameSystem::GetInstance().IsKeyDown(VK_SPACE))
 	{
-		Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 
 		std::list<Component*> componentList = map->GetTileComponentList(_tileX, _tileY);
 		for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
@@ -66,11 +68,6 @@ void Player::UpdateAI(float deltaTime)
 			Component* component = (*itr);
 			if (eComponentType::CT_ITEM == component->GetType())
 			{
-				/*
-				_hp = _maxHp;
-				map->ResetTileComponent(_tileX, _tileY, component);
-				component->SetLive(false);
-				*/
 				sComponentMsgParam msgParam;
 				msgParam.sender = (Component*)this;
 				msgParam.receiver = component;

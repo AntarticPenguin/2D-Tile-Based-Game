@@ -1,5 +1,7 @@
 #include "Monster.h"
 #include "ComponentSystem.h"
+#include "GameSystem.h"
+#include "Stage.h"
 #include "Map.h"
 
 #include "MoveState.h"
@@ -36,11 +38,12 @@ Monster::~Monster()
 
 void Monster::UpdateAI(float deltaTime)
 {
+	Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 
 	std::vector<eComponentType> compareTypeList;
 	compareTypeList.push_back(eComponentType::CT_NPC);
 	compareTypeList.push_back(eComponentType::CT_PLAYER);
-	Component* findEnemy = ComponentSystem::GetInstance().FindComponentInRange(this, 4, compareTypeList);
+	Component* findEnemy = ComponentSystem::GetInstance().FindComponentInRange(map, this, 4, compareTypeList);
 
 	//적이 있으면
 	if (NULL != findEnemy)

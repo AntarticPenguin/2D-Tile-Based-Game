@@ -1,5 +1,7 @@
 #include "NPC.h"
 #include "ComponentSystem.h"
+#include "GameSystem.h"
+#include "Stage.h"
 #include "Map.h"
 
 #include "MoveState.h"
@@ -36,10 +38,11 @@ NPC::~NPC()
 
 void NPC::UpdateAI(float deltaTime)
 {
-	Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"tileMap");
+	Map* map = GameSystem::GetInstance().GetStage()->GetMap();
+
 	std::vector<eComponentType> compareTypeList;
 	compareTypeList.push_back(eComponentType::CT_MONSTER);
-	Component* findEnemy = ComponentSystem::GetInstance().FindComponentInRange(this, 2, compareTypeList);
+	Component* findEnemy = ComponentSystem::GetInstance().FindComponentInRange(map, this, 2, compareTypeList);
 
 	//적이 있으면
 	if (NULL != findEnemy)
