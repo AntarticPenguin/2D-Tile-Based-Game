@@ -9,6 +9,8 @@
 #include "PoisonItem.h"
 #include "Sword.h"
 
+#include "LifeNPC.h"
+
 Stage::Stage()
 {
 
@@ -27,49 +29,62 @@ void Stage::Init(std::wstring mapName)
 	_map = new Map(mapName.c_str());
 	_componentList.push_back(_map);
 
-	//Recovery Item
-	for (int i = 0; i < 20; i++)
+	if (L"Map3" == mapName)
 	{
-		WCHAR name[256];
-		wsprintf(name, L"recovery_Item_%d", i);
-		RecoveryItem* item = new RecoveryItem(name, L"recovery_Item", L"recovery_Item");
-		_componentList.push_back(item);
+		for (int i = 0; i < 30; i++)
+		{
+			WCHAR name[256];
+			wsprintf(name, L"life_npc_%d", i);
+			LifeNPC* npc = new LifeNPC(name, L"npc", L"Npc");
+			_componentList.push_back(npc);
+		}
 	}
-
-	//Poison Item
-	for (int i = 0; i < 20; i++)
+	else
 	{
-		WCHAR name[256];
-		wsprintf(name, L"poison_Item_%d", i);
-		PoisonItem* item = new PoisonItem(name, L"recovery_Item", L"recovery_Item");
-		_componentList.push_back(item);
-	}
+		//Recovery Item
+		for (int i = 0; i < 20; i++)
+		{
+			WCHAR name[256];
+			wsprintf(name, L"recovery_Item_%d", i);
+			RecoveryItem* item = new RecoveryItem(name, L"recovery_Item", L"recovery_Item");
+			_componentList.push_back(item);
+		}
 
-	//Sword Item
-	for (int i = 0; i < 10; i++)
-	{
-		WCHAR name[256];
-		wsprintf(name, L"sword_Item_%d", i);
-		Sword* item = new Sword(name, L"sword_Item", L"sword_Item");
-		_componentList.push_back(item);
-	}
+		//Poison Item
+		for (int i = 0; i < 20; i++)
+		{
+			WCHAR name[256];
+			wsprintf(name, L"poison_Item_%d", i);
+			PoisonItem* item = new PoisonItem(name, L"recovery_Item", L"recovery_Item");
+			_componentList.push_back(item);
+		}
 
-	//NPC
-	for (int i = 0; i < 0; i++)
-	{
-		WCHAR name[256];
-		wsprintf(name, L"npc_%d", i);
-		NPC* npc = new NPC(name, L"npc", L"Npc");
-		_componentList.push_back(npc);
-	}
+		//Sword Item
+		for (int i = 0; i < 10; i++)
+		{
+			WCHAR name[256];
+			wsprintf(name, L"sword_Item_%d", i);
+			Sword* item = new Sword(name, L"sword_Item", L"sword_Item");
+			_componentList.push_back(item);
+		}
 
-	//Monster
-	for (int i = 0; i < 0; i++)
-	{
-		WCHAR name[256];
-		wsprintf(name, L"monster_%d", i);
-		Monster* monster = new Monster(name, L"monster", L"monster");
-		_componentList.push_back(monster);
+		//NPC
+		for (int i = 0; i < 0; i++)
+		{
+			WCHAR name[256];
+			wsprintf(name, L"npc_%d", i);
+			NPC* npc = new NPC(name, L"npc", L"Npc");
+			_componentList.push_back(npc);
+		}
+
+		//Monster
+		for (int i = 0; i < 0; i++)
+		{
+			WCHAR name[256];
+			wsprintf(name, L"monster_%d", i);
+			Monster* monster = new Monster(name, L"monster", L"monster");
+			_componentList.push_back(monster);
+		}
 	}
 
 	Player* player = new Player(L"Player", L"Player", L"Player");	//(컴포넌트이름, 스크립트 이름, 스프라이트이름)

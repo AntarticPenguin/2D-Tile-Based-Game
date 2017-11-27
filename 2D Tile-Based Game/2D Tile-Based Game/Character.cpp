@@ -215,11 +215,6 @@ void Character::DecreaseHP(int decreaseHP)
 void Character::Equip(Component* weapon)
 {
 	_equipList.push_back(weapon);
-
-	for (std::list<Component*>::iterator itr = _equipList.begin(); itr != _equipList.end(); itr++)
-	{
-		
-	}
 }
 
 void Character::InitMove()
@@ -463,8 +458,8 @@ void Character::UpdateText()
 
 
 	WCHAR text[255];
-	//wsprintf(text, L"HP:%d\nCool: %d\n", _hp, coolTime);
-	wsprintf(text, L"HP:%d\nCool: %d\nState:%s\nRecovery:%d\nATK:%d", _hp, coolTime, state, RecoveryTime, _attackPoint);
+	wsprintf(text, L"HP:%d\nCool: %d\n", _hp, coolTime);
+	//wsprintf(text, L"HP:%d\nCool: %d\nState:%s\nRecovery:%d\nATK:%d", _hp, coolTime, state, RecoveryTime, _attackPoint);
 
 	_font->SetText(text);
 }
