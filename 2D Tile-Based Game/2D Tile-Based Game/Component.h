@@ -10,6 +10,7 @@ enum eComponentType
 	CT_NPC,
 	CT_TILE_OBJECT,
 	CT_ITEM,
+	CT_ITEM_WEAPON,
 	CT_NONE,
 };
 

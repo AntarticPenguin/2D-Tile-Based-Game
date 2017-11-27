@@ -76,6 +76,13 @@ public:
 	int GetAttackedPoint();
 	void DecreaseHP(int decreaseHP);
 
+	//Character Item
+protected:
+	std::list<Component*> _equipList;
+
+public:
+	void Equip(Component* weapon);
+
 	//AI & State
 private:
 	std::map<eStateType, State*> _stateMap;

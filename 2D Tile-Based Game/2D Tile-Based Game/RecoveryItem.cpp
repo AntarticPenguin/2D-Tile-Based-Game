@@ -25,7 +25,6 @@ RecoveryItem::~RecoveryItem()
 void RecoveryItem::Init()
 {
 	{
-		//Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"map");
 		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 
 		bool canMove = false;
@@ -100,7 +99,6 @@ void RecoveryItem::ReceiveMessage(const sComponentMsgParam& msgParam)
 {
 	if (L"Use" == msgParam.message)
 	{
-		//Map* map = (Map*)ComponentSystem::GetInstance().FindComponent(L"map");
 		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 
 		Component* sender = msgParam.sender;

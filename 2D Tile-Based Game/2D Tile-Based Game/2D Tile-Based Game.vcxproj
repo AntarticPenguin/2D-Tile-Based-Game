@@ -43,6 +43,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="State.cpp" />
+    <ClCompile Include="Sword.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TileCell.cpp" />
     <ClCompile Include="TileObject.cpp" />
@@ -74,6 +75,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="State.h" />
+    <ClInclude Include="Sword.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TileCell.h" />
     <ClInclude Include="TileObject.h" />

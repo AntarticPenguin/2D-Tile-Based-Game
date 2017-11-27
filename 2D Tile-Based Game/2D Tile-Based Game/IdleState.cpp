@@ -20,6 +20,11 @@ void IdleState::Update(float deltaTime)
 {
 	State::Update(deltaTime);
 
+	if (_character->IsRecoveryCoolTime() && false == _character->IsHpFull())
+	{
+		_nextState = eStateType::ET_RECOVERY;
+	}
+
 	if (eStateType::ET_NONE != _nextState)
 	{
 		_character->ChangeState(_nextState);
@@ -38,13 +43,8 @@ void IdleState::Update(float deltaTime)
 void IdleState::Start()
 {
 	State::Start();
-	_curState = eStateType::ET_IDLE;
 
-	if (_character->IsRecoveryCoolTime() && false == _character->IsHpFull())
-	{
-		_nextState = eStateType::ET_RECOVERY;
-		return;
-	}
+	_curState = eStateType::ET_IDLE;
 }
 
 void IdleState::Stop()

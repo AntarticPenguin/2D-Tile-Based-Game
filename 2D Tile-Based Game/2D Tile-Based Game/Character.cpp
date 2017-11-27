@@ -147,7 +147,7 @@ void Character::Render()
 {
 	_state->Render();
 
-	_font->SetPosition(_x - 200, _y - 50);
+	_font->SetPosition(_x, _y);
 	_font->Render();
 }
 
@@ -209,6 +209,16 @@ void Character::DecreaseHP(int decreaseHP)
 		_hp = 0;
 
 		_state->NextState(eStateType::ET_DEAD);
+	}
+}
+
+void Character::Equip(Component* weapon)
+{
+	_equipList.push_back(weapon);
+
+	for (std::list<Component*>::iterator itr = _equipList.begin(); itr != _equipList.end(); itr++)
+	{
+		
 	}
 }
 
@@ -454,7 +464,7 @@ void Character::UpdateText()
 
 	WCHAR text[255];
 	//wsprintf(text, L"HP:%d\nCool: %d\n", _hp, coolTime);
-	wsprintf(text, L"HP:%d\nCool: %d\nState:%s\nRecovery:%d", _hp, coolTime, state, RecoveryTime);
+	wsprintf(text, L"HP:%d\nCool: %d\nState:%s\nRecovery:%d\nATK:%d", _hp, coolTime, state, RecoveryTime, _attackPoint);
 
 	_font->SetText(text);
 }

@@ -126,6 +126,9 @@
     <ClCompile Include="Stage.cpp">
       <Filter>소스 파일\Game\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Sword.cpp">
+      <Filter>소스 파일\Game\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -211,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="Stage.h">
       <Filter>소스 파일\Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Sword.h">
+      <Filter>소스 파일\Game\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

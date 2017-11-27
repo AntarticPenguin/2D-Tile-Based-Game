@@ -34,7 +34,7 @@ void Texture::Init(LPCWSTR fileName)
 		D3DPOOL_DEFAULT,
 		D3DX_DEFAULT,
 		D3DX_DEFAULT,
-		D3DCOLOR_ARGB(255, 255, 255, 255),		//컬러키
+		D3DCOLOR_ARGB(255, 10, 10, 10),		//컬러키
 		&_textureInfo,
 		NULL,
 		&_texture

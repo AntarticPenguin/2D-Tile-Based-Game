@@ -22,7 +22,7 @@ Player::Player(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
 		_maxHp = 50;
 		_hp = _maxHp - 40;
 
-		_recoveryStat = 1;
+		_recoveryStat = 5;
 
 		_attackCooltimeDuration = 0.0f;
 		_attackCooltime = 1.0f;				//attackSpeed
@@ -57,7 +57,7 @@ void Player::UpdateAI(float deltaTime)
 		direction = eDirection::RIGHT;
 	}
 
-	//¾ÆÀÌÅÛ ¸Ô±â
+	//¾ÆÀÌÅÛ ¸Ô±â ¹× ÀåÂø
 	if (GameSystem::GetInstance().IsKeyDown(VK_SPACE))
 	{
 		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
@@ -66,7 +66,8 @@ void Player::UpdateAI(float deltaTime)
 		for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
 		{
 			Component* component = (*itr);
-			if (eComponentType::CT_ITEM == component->GetType())
+			if (eComponentType::CT_ITEM == component->GetType() ||
+				eComponentType::CT_ITEM_WEAPON == component->GetType())
 			{
 				sComponentMsgParam msgParam;
 				msgParam.sender = (Component*)this;

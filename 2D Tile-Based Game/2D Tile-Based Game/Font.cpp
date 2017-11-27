@@ -48,6 +48,6 @@ void Font::SetText(std::wstring text)
 
 void Font::SetPosition(int x, int y)
 {
-	_x = x;
-	_y = y;
+	_x = x - (_width / 2);
+	_y = y - (_height / 2);
 }

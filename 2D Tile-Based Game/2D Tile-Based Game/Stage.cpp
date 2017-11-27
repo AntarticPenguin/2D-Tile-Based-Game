@@ -7,6 +7,7 @@
 #include "Monster.h"
 #include "RecoveryItem.h"
 #include "PoisonItem.h"
+#include "Sword.h"
 
 Stage::Stage()
 {
@@ -41,6 +42,15 @@ void Stage::Init(std::wstring mapName)
 		WCHAR name[256];
 		wsprintf(name, L"poison_Item_%d", i);
 		PoisonItem* item = new PoisonItem(name, L"recovery_Item", L"recovery_Item");
+		_componentList.push_back(item);
+	}
+
+	//Sword Item
+	for (int i = 0; i < 10; i++)
+	{
+		WCHAR name[256];
+		wsprintf(name, L"sword_Item_%d", i);
+		Sword* item = new Sword(name, L"sword_Item", L"sword_Item");
 		_componentList.push_back(item);
 	}
 
