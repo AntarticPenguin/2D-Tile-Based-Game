@@ -11,9 +11,9 @@ ResourceManager& ResourceManager::GetInstance()
 	return *_instance;
 }
 
-Texture* ResourceManager::LoadTexture(std::wstring fileName)
+Texture* ResourceManager::LoadTexture(wstring fileName)
 {
-	map<std::wstring, Texture*>::iterator iter = _textureMap.find(fileName);
+	map<wstring, Texture*>::iterator iter = _textureMap.find(fileName);
 	if (iter != _textureMap.end())	//끝까지 가지 않았다면 찾음
 	{
 		return iter->second;

@@ -5,10 +5,11 @@
 #include "Map.h"
 #include "Player.h"
 
-LifeTileObject::LifeTileObject(LPCWSTR name, Sprite* sprite) :
+LifeTileObject::LifeTileObject(int tileX, int tileY, LPCWSTR name, Sprite* sprite) :
 	TileObject(name, sprite)
 {
-	
+	_tileX = tileX;
+	_tileY = tileY;
 }
 
 LifeTileObject::~LifeTileObject()
@@ -22,15 +23,12 @@ void LifeTileObject::Update(float deltaTime)
 
 	//주변 8칸 검사 - 캐릭터가 몇마리 있는가?(자기 칸을 제외한)
 	Map* map = GameSystem::GetInstance().GetStage()->GetMap();
-	Player* player = (Player*)ComponentSystem::GetInstance().FindComponent(L"Player");
 	int range = 1;
-
-	int count = 0;
-
-	int minTileX = GetTileX() - range;
-	int maxTileX = GetTileX() + range;
-	int minTileY = GetTileY() - range;
-	int maxTileY = GetTileY() + range;
+	
+	int minTileX = _tileX - range;
+	int maxTileX = _tileX + range;
+	int minTileY = _tileY - range;
+	int maxTileY = _tileY + range;
 
 	if (minTileX < 0)
 		minTileX = 0;
@@ -41,15 +39,79 @@ void LifeTileObject::Update(float deltaTime)
 	if (map->GetHeight() <= maxTileY)
 		maxTileY = map->GetHeight() - 1;
 
+	int character_count = 0;
+	Component* tileCharacter = NULL;
+
 	//범위에 캐릭터가 있으면 Count추가
 	for (int y = minTileY; y <= maxTileY; y++)
 	{
 		for (int x = minTileX; x <= maxTileX; x++)
 		{
-			std::list<Component*> componentList;
-			if (false == map->GetTileCollisionList(x, y, componentList))
+			if (x != _tileX || y != _tileY)
 			{
-				count++;
+				std::list<Component*> componentList;
+				if (false == map->GetTileCollisionList(x, y, componentList))
+				{
+					for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
+					{
+						Component* component = (*itr);
+						switch (component->GetType())
+						{
+						case eComponentType::CT_NPC:
+						case eComponentType::CT_PLAYER:
+							character_count++;
+							break;
+						}
+					}
+				}
+			}
+			else
+			{
+				std::list<Component*> componentList;
+				if (false == map->GetTileCollisionList(x, y, componentList))
+				{
+					for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
+					{
+						Component* component = (*itr);
+						switch (component->GetType())
+						{
+						case eComponentType::CT_NPC:
+						case eComponentType::CT_PLAYER:
+							tileCharacter = component;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	/*
+		1. 주변에 살아있는 세포가 2개보다 적으면 세포 사망
+		2. 주변에 2, 3개의 세포가 있다면 다음세대에 삼
+		3. 정확히 3개가 있다면 계속 살거나 죽어있는 세포가 부활
+		4. 3개 초과이면 죽음
+	}
+	*/
+	if (3 == character_count)
+	{
+		if (NULL == tileCharacter)
+		{
+			GameSystem::GetInstance().GetStage()->CreateLifeNPC(_tileX, _tileY);
+		}
+	}
+	else if (2 == true)
+	{
+		//skip
+	}
+	else
+	{
+		//dead
+		if (NULL != tileCharacter )
+		{
+			if (eComponentType::CT_PLAYER != tileCharacter->GetType())
+			{
+				GameSystem::GetInstance().GetStage()->DestroyLifeNPC(_tileX, _tileY, tileCharacter);
+				tileCharacter = NULL;
 			}
 		}
 	}

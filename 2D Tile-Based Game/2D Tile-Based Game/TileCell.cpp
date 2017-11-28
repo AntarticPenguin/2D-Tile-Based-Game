@@ -19,7 +19,10 @@ void TileCell::Deinit()
 
 void TileCell::Update(float deltaTime)
 {
-	
+	for (std::list<Component*>::iterator itr = _renderList.begin(); itr != _renderList.end(); itr++)
+	{
+		(*itr)->Update(deltaTime);
+	}
 }
 
 void TileCell::Render()

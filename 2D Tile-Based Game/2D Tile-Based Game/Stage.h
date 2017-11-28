@@ -24,4 +24,11 @@ public:
 
 public:
 	Map* GetMap();
+
+	//lifegame
+private:
+	int _lifeNPCCount;
+public:
+	void CreateLifeNPC(int tileX, int tileY);
+	void DestroyLifeNPC(int tileX, int tileY, Component* tileCharacter);
 };

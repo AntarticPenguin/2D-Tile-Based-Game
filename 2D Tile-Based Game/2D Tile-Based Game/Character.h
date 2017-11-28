@@ -46,6 +46,7 @@ public:
 
 public:
 	void Init();
+	void Init(int tileX, int tileY);
 	void Deinit();
 	void Update(float deltaTime);
 	void Render();

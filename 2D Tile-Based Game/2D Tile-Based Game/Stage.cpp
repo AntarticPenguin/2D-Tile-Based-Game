@@ -29,12 +29,16 @@ void Stage::Init(std::wstring mapName)
 	_map = new Map(mapName.c_str());
 	_componentList.push_back(_map);
 
+	
 	if (L"Map3" == mapName)
 	{
-		for (int i = 0; i < 30; i++)
+		_lifeNPCCount = 0;
+		for (int i = 0; i < 300; i++)
 		{
 			WCHAR name[256];
-			wsprintf(name, L"life_npc_%d", i);
+			wsprintf(name, L"life_npc_%d", _lifeNPCCount);
+			_lifeNPCCount++;
+
 			LifeNPC* npc = new LifeNPC(name, L"npc", L"Npc");
 			_componentList.push_back(npc);
 		}
@@ -133,4 +137,22 @@ void Stage::Reset()
 Map* Stage::GetMap()
 {
 	return _map;
+}
+
+void Stage::CreateLifeNPC(int tileX, int tileY)
+{
+	WCHAR name[256];
+	wsprintf(name, L"life_npc_%d", _lifeNPCCount);
+	_lifeNPCCount++;
+
+	LifeNPC* npc = new LifeNPC(name, L"npc", L"Npc");
+	npc->Init(tileX, tileY);
+	_componentList.push_back(npc);
+}
+
+void Stage::DestroyLifeNPC(int tileX, int tileY, Component* tileCharacter)
+{
+	_map->ResetTileComponent(tileX, tileY, tileCharacter);
+	tileCharacter->SetCanMove(true);
+	tileCharacter->SetLive(false);
 }
