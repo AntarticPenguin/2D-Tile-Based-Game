@@ -6,7 +6,7 @@
 #include "Map.h"
 #include "Sprite.h"
 
-PoisonItem::PoisonItem(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName)
+PoisonItem::PoisonItem(std::wstring name, std::wstring scriptName, std::wstring spriteFileName)
 	: Component(name), _posX(0.0f), _posY(0.0f)
 {
 	_eType = eComponentType::CT_ITEM;

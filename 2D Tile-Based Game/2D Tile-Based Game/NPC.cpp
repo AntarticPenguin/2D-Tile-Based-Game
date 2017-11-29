@@ -6,7 +6,7 @@
 
 #include "MoveState.h"
 
-NPC::NPC(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
+NPC::NPC(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
 	Character(name, scriptName, spriteFileName)
 {
 	_eType = eComponentType::CT_NPC;

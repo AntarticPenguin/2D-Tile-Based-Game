@@ -5,7 +5,7 @@
 #include "Map.h"
 #include "Player.h"
 
-LifeTileObject::LifeTileObject(int tileX, int tileY, LPCWSTR name, Sprite* sprite) :
+LifeTileObject::LifeTileObject(int tileX, int tileY, std::wstring name, Sprite* sprite) :
 	TileObject(name, sprite)
 {
 	_tileX = tileX;
@@ -92,21 +92,19 @@ void LifeTileObject::Update(float deltaTime)
 		4. 3개 초과이면 죽음
 	}
 	*/
-	if (3 == character_count)
+
+	switch (character_count)
 	{
+	case 2:		//skip
+		break;
+	case 3:
 		if (NULL == tileCharacter)
 		{
 			GameSystem::GetInstance().GetStage()->CreateLifeNPC(_tileX, _tileY);
 		}
-	}
-	else if (2 == true)
-	{
-		//skip
-	}
-	else
-	{
-		//dead
-		if (NULL != tileCharacter )
+		break;
+	default:	//dead
+		if (NULL != tileCharacter)
 		{
 			if (eComponentType::CT_PLAYER != tileCharacter->GetType())
 			{
@@ -114,5 +112,6 @@ void LifeTileObject::Update(float deltaTime)
 				tileCharacter = NULL;
 			}
 		}
+		break;
 	}
 }

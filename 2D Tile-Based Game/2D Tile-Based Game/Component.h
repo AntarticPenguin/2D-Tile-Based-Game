@@ -17,7 +17,7 @@ enum eComponentType
 class Component
 {
 protected:
-	LPCWSTR _name;
+	std::wstring _name;
 	bool _canMove;
 
 	int _tileX;
@@ -32,7 +32,7 @@ protected:
 
 public:
 	Component();
-	Component(LPCWSTR name);
+	Component(std::wstring name);
 	virtual ~Component();
 
 public:
@@ -58,6 +58,8 @@ public:
 	eComponentType GetType() { return _eType; }
 	bool IsLive(){ return _isLive; }
 	void SetLive(bool isLive) { _isLive = isLive; }
+
+	std::wstring GetName() { return _name; }
 
 	//Message
 public:

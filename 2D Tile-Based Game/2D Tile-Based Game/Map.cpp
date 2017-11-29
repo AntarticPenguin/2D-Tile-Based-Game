@@ -7,7 +7,7 @@
 #include "TileObject.h"
 #include "LifeTileObject.h"
 
-Map::Map(LPCWSTR name) : Component(name)
+Map::Map(std::wstring name) : Component(name)
 {
 	_startX = 0.0f;
 	_startY = 0.0f;

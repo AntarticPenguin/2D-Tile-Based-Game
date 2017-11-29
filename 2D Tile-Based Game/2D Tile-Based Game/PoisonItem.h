@@ -14,7 +14,7 @@ private:
 	float _posY;
 
 public:
-	PoisonItem(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName);
+	PoisonItem(std::wstring name, std::wstring scriptName, std::wstring spriteFileName);
 	~PoisonItem();
 
 public:

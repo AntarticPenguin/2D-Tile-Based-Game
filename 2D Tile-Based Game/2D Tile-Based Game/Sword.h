@@ -16,7 +16,7 @@ private:
 	int _attackPoint;
 
 public:
-	Sword(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName);
+	Sword(std::wstring name, std::wstring scriptName, std::wstring spriteFileName);
 	~Sword();
 
 public:

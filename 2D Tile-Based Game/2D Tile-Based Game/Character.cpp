@@ -16,7 +16,7 @@
 #include "IdleState.h"
 #include "Character.h"
 
-Character::Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
+Character::Character(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
 	Component(name), _x(0.0f), _y(0.0f)
 {
 	_state = NULL;
@@ -55,71 +55,25 @@ Character::~Character()
 
 void Character::Init()
 {
-	{
-		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
+	Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 
-		bool canMove = false;
-		while (true != canMove)
+	bool canMove = false;
+	int tileX;
+	int tileY;
+
+	while (true)
+	{
+		tileX = rand() % (map->GetWidth() - 1) + 1;
+		tileY = rand() % (map->GetHeight() - 1) + 1;
+
+		canMove = map->CanMoveTileMap(tileX, tileY);
+
+		if (true == canMove)
 		{
-			_tileX = rand() % (map->GetWidth() - 1) + 1;
-			_tileY = rand() % (map->GetHeight() - 1) + 1;
-
-			canMove = map->CanMoveTileMap(_tileX, _tileY);
+			break;
 		}
-
-		_x = map->GetPositionX(_tileX, _tileY);
-		_y = map->GetPositionY(_tileX, _tileY);
-		map->SetTileComponent(_tileX, _tileY, this, false);
 	}
-
-	InitMove();
-
-	{
-		State* state = new IdleState();
-		state->Init(this);
-		_stateMap[eStateType::ET_IDLE] = state;
-	}
-	{
-		State* state = new MoveState();
-		state->Init(this);
-		_stateMap[eStateType::ET_MOVE] = state;
-	}
-	{
-		State* state = new AttackState();
-		state->Init(this);
-		_stateMap[eStateType::ET_ATTACK] = state;
-	}
-	{
-		State* state = new DefenseState();
-		state->Init(this);
-		_stateMap[eStateType::ET_DEFENSE] = state;
-	}
-	{
-		State* state = new CounterAttackState();
-		state->Init(this);
-		_stateMap[eStateType::ET_COUNTERATTACK] = state;
-	}
-	{
-		State* state = new RecoveryState();
-		state->Init(this);
-		_stateMap[eStateType::ET_RECOVERY] = state;
-	}
-	{
-		State* state = new DeadState();
-		state->Init(this);
-		_stateMap[eStateType::ET_DEAD] = state;
-	}
-
-	ChangeState(eStateType::ET_IDLE);
-
-	//Font
-	{
-		D3DCOLOR color = D3DCOLOR_ARGB(255, 0, 0, 0);
-		_font = new Font(L"Arial", 15, color);
-
-		_font->SetRect(100, 100, 400, 100);
-		//UpdateText();
-	}
+	Init(tileX, tileY);
 }
 
 void Character::Init(int tileX, int tileY)
@@ -127,7 +81,6 @@ void Character::Init(int tileX, int tileY)
 	{
 		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 
-		bool canMove = false;
 		_tileX = tileX;
 		_tileY = tileY;
 
@@ -137,7 +90,8 @@ void Character::Init(int tileX, int tileY)
 	}
 
 	InitMove();
-
+	
+	//State Initialize
 	{
 		State* state = new IdleState();
 		state->Init(this);

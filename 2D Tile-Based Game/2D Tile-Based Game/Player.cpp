@@ -5,9 +5,7 @@
 #include "Player.h"
 #include "State.h"
 
-
-
-Player::Player(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
+Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
 	Character(name, scriptName, spriteFileName)
 {
 	_moveTime = 0.2f;

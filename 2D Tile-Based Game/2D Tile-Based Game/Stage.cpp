@@ -33,7 +33,7 @@ void Stage::Init(std::wstring mapName)
 	if (L"Map3" == mapName)
 	{
 		_lifeNPCCount = 0;
-		for (int i = 0; i < 300; i++)
+		for (int i = 0; i < 200; i++)
 		{
 			WCHAR name[256];
 			wsprintf(name, L"life_npc_%d", _lifeNPCCount);
@@ -155,4 +155,7 @@ void Stage::DestroyLifeNPC(int tileX, int tileY, Component* tileCharacter)
 	_map->ResetTileComponent(tileX, tileY, tileCharacter);
 	tileCharacter->SetCanMove(true);
 	tileCharacter->SetLive(false);
+
+	_componentList.remove(tileCharacter);
+	ComponentSystem::GetInstance().RemoveComponent(tileCharacter);
 }

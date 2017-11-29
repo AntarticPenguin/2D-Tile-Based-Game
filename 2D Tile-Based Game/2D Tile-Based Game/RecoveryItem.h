@@ -14,7 +14,7 @@ private:
 	float _posY;
 
 public:
-	RecoveryItem(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName);
+	RecoveryItem(std::wstring name, std::wstring scriptName, std::wstring spriteFileName);
 	~RecoveryItem();
 
 public:

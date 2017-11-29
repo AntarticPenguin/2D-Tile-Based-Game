@@ -13,8 +13,8 @@ private:
 	LPD3DXSPRITE _sprite;
 
 	Texture* _srcTexture;
-	LPCWSTR _textureFileName;
-	LPCWSTR _scriptFileName;
+	std::wstring _textureFileName;
+	std::wstring _scriptFileName;
 
 private:
 	std::vector<Frame*> _frameList;
@@ -26,7 +26,7 @@ private:
 	float _rotate;
 
 public:
-	Sprite(LPCWSTR textureFileName, LPCWSTR scriptFileName, float rotate = 0.0f);
+	Sprite(std::wstring textureFileName, std::wstring scriptFileName, float rotate = 0.0f);
 	~Sprite();
 
 public:

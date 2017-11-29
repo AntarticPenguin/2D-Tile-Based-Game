@@ -4,7 +4,7 @@
 class Player : public Character
 {
 public:
-	Player(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName);
+	Player(std::wstring name, std::wstring scriptName, std::wstring spriteFileName);
 	~Player();
 
 public:

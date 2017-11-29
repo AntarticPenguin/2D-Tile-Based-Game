@@ -8,7 +8,7 @@
 #include "Frame.h"
 
 
-Sprite::Sprite(LPCWSTR textureFileName, LPCWSTR scriptFileName, float rotate) :
+Sprite::Sprite(std::wstring textureFileName, std::wstring scriptFileName, float rotate) :
 	_textureFileName(textureFileName), _scriptFileName(scriptFileName), _curFrame(0), _frameTime(0.0f), _srcTexture(NULL), _rotate(rotate)
 {
 

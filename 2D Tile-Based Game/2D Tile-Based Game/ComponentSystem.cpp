@@ -41,6 +41,12 @@ void ComponentSystem::RemoveAllComponents()
 	_componentMap.clear();
 }
 
+void ComponentSystem::RemoveComponent(Component* component)
+{
+	_componentMap.erase(component->GetName());
+	delete component;
+}
+
 Component* ComponentSystem::FindComponent(wstring name)
 {
 	map<wstring, Component*>::iterator itr = _componentMap.find(name);

@@ -7,7 +7,7 @@
 #include "Map.h"
 #include "Sprite.h"
 
-Sword::Sword(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName)
+Sword::Sword(std::wstring name, std::wstring scriptName, std::wstring spriteFileName)
 	: Component(name), _posX(0.0f), _posY(0.0f)
 {
 	_eType = eComponentType::CT_ITEM_WEAPON;

@@ -24,6 +24,7 @@ public:
 	void Update(float deltaTime);
 	void AddComponent(std::wstring name, Component* component);
 	void RemoveAllComponents();
+	void RemoveComponent(Component* component);
 	Component* FindComponent(std::wstring name);
 	Component* FindComponentInRange(Component* mapComponent, Component* center, int range, std::vector<eComponentType> compareTypeList);
 

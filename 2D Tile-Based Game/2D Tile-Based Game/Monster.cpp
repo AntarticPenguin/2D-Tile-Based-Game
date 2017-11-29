@@ -6,7 +6,7 @@
 
 #include "MoveState.h"
 
-Monster::Monster(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName) :
+Monster::Monster(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
 	Character(name, scriptName, spriteFileName)
 {
 	_eType = eComponentType::CT_MONSTER;

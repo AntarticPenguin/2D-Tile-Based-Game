@@ -41,7 +41,7 @@ private:
 	float _y;
 
 public:
-	Character(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName);
+	Character(std::wstring name, std::wstring scriptName, std::wstring spriteFileName);
 	virtual ~Character();
 
 public:

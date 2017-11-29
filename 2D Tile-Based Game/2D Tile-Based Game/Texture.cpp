@@ -11,11 +11,11 @@ Texture::~Texture()
 
 }
 
-void Texture::Init(LPCWSTR fileName)
+void Texture::Init(std::wstring fileName)
 {
 	//Texture
 	//파일로 이미지 너비와 높이를 가져온다.
-	HRESULT hr = D3DXGetImageInfoFromFile(fileName, &_textureInfo);
+	HRESULT hr = D3DXGetImageInfoFromFile(fileName.c_str(), &_textureInfo);
 	if (FAILED(hr))
 	{
 		MessageBox(0, L"TextureInfo 획득 실패", L"ERROR", MB_OK);
@@ -25,7 +25,7 @@ void Texture::Init(LPCWSTR fileName)
 	//텍스쳐 생성
 	hr = D3DXCreateTextureFromFileEx(
 		GameSystem::GetInstance().GetDevice(),
-		fileName,
+		fileName.c_str(),
 		_textureInfo.Width,
 		_textureInfo.Height,
 		1,

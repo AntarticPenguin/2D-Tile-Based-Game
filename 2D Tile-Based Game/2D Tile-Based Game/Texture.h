@@ -1,5 +1,6 @@
 #pragma once
 #include <d3dx9.h>
+#include <string>
 
 class Texture
 {
@@ -12,7 +13,7 @@ public:
 	~Texture();
 
 public:
-	void Init(LPCWSTR fileName);
+	void Init(std::wstring fileName);
 	void Deinit();
 	void Release();
 

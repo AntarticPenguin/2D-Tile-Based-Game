@@ -4,7 +4,7 @@
 class NPC : public Character
 {
 public:
-	NPC(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName);
+	NPC(std::wstring name, std::wstring scriptName, std::wstring spriteFileName);
 	~NPC();
 
 public:

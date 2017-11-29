@@ -4,7 +4,7 @@
 class Monster : public Character
 {
 public:
-	Monster(LPCWSTR name, LPCWSTR scriptName, LPCWSTR spriteFileName);
+	Monster(std::wstring name, std::wstring scriptName, std::wstring spriteFileName);
 	~Monster();
 
 	//AI
