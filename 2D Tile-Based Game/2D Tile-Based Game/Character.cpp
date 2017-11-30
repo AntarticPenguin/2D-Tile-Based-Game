@@ -154,8 +154,6 @@ void Character::Deinit()
 
 void Character::Update(float deltaTime)
 {
-	if (false == _isLive)
-		return;
 	UpdateAttackCooltime(deltaTime);
 	UpdateRecoveryCooltime(deltaTime);
 	_state->Update(deltaTime);
@@ -165,9 +163,6 @@ void Character::Update(float deltaTime)
 
 void Character::Render()
 {
-	if (false == _isLive)
-		return;
-
 	_state->Render();
 
 	_font->SetPosition(_x, _y);

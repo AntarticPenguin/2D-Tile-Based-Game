@@ -108,6 +108,9 @@ void Stage::Update(float deltaTime)
 	{
 		(*itr)->Update(deltaTime);
 	}
+
+	UpdateBaseComponentList();
+	UpdateRemoveComponentList();
 }
 
 void Stage::Render()
@@ -139,15 +142,12 @@ Map* Stage::GetMap()
 	return _map;
 }
 
-void Stage::CreateLifeNPC(int tileX, int tileY)
+void Stage::CreateLifeNPC(Component* component)
 {
-	WCHAR name[256];
-	wsprintf(name, L"life_npc_%d", _lifeNPCCount);
-	_lifeNPCCount++;
-
-	LifeNPC* npc = new LifeNPC(name, L"npc", L"Npc");
-	npc->Init(tileX, tileY);
-	_componentList.push_back(npc);
+	//해당위치에 컴포넌트를 생성
+	component->GetTileX();
+	component->GetTileY();
+	_createBaseComponentList.push_back(component);
 }
 
 void Stage::DestroyLifeNPC(int tileX, int tileY, Component* tileCharacter)
@@ -158,4 +158,39 @@ void Stage::DestroyLifeNPC(int tileX, int tileY, Component* tileCharacter)
 
 	_componentList.remove(tileCharacter);
 	ComponentSystem::GetInstance().RemoveComponent(tileCharacter);
+}
+
+void Stage::CheckDestroyLifeNPC(Component* tileCharacter)
+{
+	_removeComponentList.push_back(tileCharacter);
+}
+
+void Stage::UpdateBaseComponentList()
+{
+	for (std::list<Component*>::iterator itr = _createBaseComponentList.begin();
+		itr != _createBaseComponentList.end();	itr++)
+	{
+		Component* baseCom = (*itr);
+
+		WCHAR name[256];
+		wsprintf(name, L"life_npc_%d", _lifeNPCCount);
+		_lifeNPCCount++;
+
+		LifeNPC* npc = new LifeNPC(name, L"npc", L"Npc");
+		npc->Init(baseCom->GetTileX() , baseCom->GetTileY());
+		_componentList.push_back(npc);
+	}
+
+	_createBaseComponentList.clear();
+}
+
+void Stage::UpdateRemoveComponentList()
+{
+	for (std::list<Component*>::iterator itr = _removeComponentList.begin();
+		itr != _removeComponentList.end();	itr++)
+	{
+		Component* component = (*itr);
+		DestroyLifeNPC(component->GetTileX(), component->GetTileY(), component);
+	}
+	_removeComponentList.clear();
 }

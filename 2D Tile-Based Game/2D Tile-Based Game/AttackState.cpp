@@ -53,7 +53,7 @@ void AttackState::Start()
 	msgParam.receiver = _character->GetTarget();
 	msgParam.message = L"Attack";
 	msgParam.attackPoint = _character->GetAttackPoint();
-	ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
+	//ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
 
 	_nextState = eStateType::ET_IDLE;
 }

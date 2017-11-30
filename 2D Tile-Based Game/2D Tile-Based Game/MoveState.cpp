@@ -34,6 +34,7 @@ void MoveState::Update(float deltaTime)
 	if (false == _character->IsLive())
 		return;
 
+	/*
 	if (false == _character->IsMoving())
 		return;
 
@@ -47,6 +48,17 @@ void MoveState::Update(float deltaTime)
 	{
 		_movingDuration += deltaTime;
 		_character->Moving(deltaTime);
+	}
+	*/
+
+	//lifeGame
+	if (_character->GetMoveTime() <= _movingDuration)
+	{
+		_nextState = eStateType::ET_IDLE;
+	}
+	else
+	{
+		_movingDuration += deltaTime;
 	}
 }
 
@@ -102,6 +114,10 @@ void MoveState::Start()
 	else
 	{
 		_character->MoveStart(newTileX, newTileY);
+
+		//LifeGame
+		_character->MoveStop();
+		_movingDuration = 0.0f;
 	}
 }
 

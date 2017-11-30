@@ -28,7 +28,13 @@ public:
 	//lifegame
 private:
 	int _lifeNPCCount;
+	std::list<Component*> _removeComponentList;
+	std::list<Component*> _createBaseComponentList;
+
 public:
-	void CreateLifeNPC(int tileX, int tileY);
+	void CreateLifeNPC(Component* component);
 	void DestroyLifeNPC(int tileX, int tileY, Component* tileCharacter);
+	void CheckDestroyLifeNPC(Component* tileCharacter);
+	void UpdateBaseComponentList();
+	void UpdateRemoveComponentList();
 };
