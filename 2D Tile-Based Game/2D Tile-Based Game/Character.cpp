@@ -90,44 +90,7 @@ void Character::Init(int tileX, int tileY)
 	}
 
 	InitMove();
-	
-	//State Initialize
-	{
-		State* state = new IdleState();
-		state->Init(this);
-		_stateMap[eStateType::ET_IDLE] = state;
-	}
-	{
-		State* state = new MoveState();
-		state->Init(this);
-		_stateMap[eStateType::ET_MOVE] = state;
-	}
-	{
-		State* state = new AttackState();
-		state->Init(this);
-		_stateMap[eStateType::ET_ATTACK] = state;
-	}
-	{
-		State* state = new DefenseState();
-		state->Init(this);
-		_stateMap[eStateType::ET_DEFENSE] = state;
-	}
-	{
-		State* state = new CounterAttackState();
-		state->Init(this);
-		_stateMap[eStateType::ET_COUNTERATTACK] = state;
-	}
-	{
-		State* state = new RecoveryState();
-		state->Init(this);
-		_stateMap[eStateType::ET_RECOVERY] = state;
-	}
-	{
-		State* state = new DeadState();
-		state->Init(this);
-		_stateMap[eStateType::ET_DEAD] = state;
-	}
-
+	InitState();
 	ChangeState(eStateType::ET_IDLE);
 
 	//Font
@@ -239,6 +202,31 @@ void Character::InitMove()
 {
 	_isMoving = false;
 	_curDirection = eDirection::DOWN;
+}
+
+void Character::InitState()
+{
+	ReplaceState(eStateType::ET_IDLE, new IdleState());
+	ReplaceState(eStateType::ET_MOVE, new MoveState());
+	ReplaceState(eStateType::ET_ATTACK, new AttackState());
+	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
+	ReplaceState(eStateType::ET_COUNTERATTACK, new CounterAttackState());
+	ReplaceState(eStateType::ET_RECOVERY, new RecoveryState());
+	ReplaceState(eStateType::ET_DEAD, new DeadState());
+}
+
+void Character::ReplaceState(eStateType changeType, State* replaceState)
+{
+	std::map<eStateType, State*>::iterator itr = _stateMap.find(changeType);
+	if (itr != _stateMap.end())
+	{
+		delete itr->second;
+		_stateMap.erase(changeType);
+	}
+
+	State* state = replaceState;
+	state->Init(this);
+	_stateMap[changeType] = state;
 }
 
 void Character::UpdateAI(float deltaTime)

@@ -8,6 +8,7 @@ public:
 	~NPC();
 
 public:
+	void InitState();
 	void UpdateAI(float deltaTime);
 
 	//Message

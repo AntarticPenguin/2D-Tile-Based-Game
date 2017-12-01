@@ -10,6 +10,7 @@
 #include "Sword.h"
 
 #include "LifeNPC.h"
+#include "LifePlayer.h"
 
 Stage::Stage()
 {
@@ -29,6 +30,7 @@ void Stage::Init(std::wstring mapName)
 	_map = new Map(mapName.c_str());
 	_componentList.push_back(_map);
 
+	Player* player = NULL;	
 	
 	if (L"Map3" == mapName)
 	{
@@ -42,6 +44,7 @@ void Stage::Init(std::wstring mapName)
 			LifeNPC* npc = new LifeNPC(name, L"npc", L"Npc");
 			_componentList.push_back(npc);
 		}
+		player = new LifePlayer(L"Player", L"Player", L"Player");	//(컴포넌트이름, 스크립트 이름, 스프라이트이름)
 	}
 	else
 	{
@@ -82,16 +85,17 @@ void Stage::Init(std::wstring mapName)
 		}
 
 		//Monster
-		for (int i = 0; i < 0; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			WCHAR name[256];
 			wsprintf(name, L"monster_%d", i);
 			Monster* monster = new Monster(name, L"monster", L"monster");
 			_componentList.push_back(monster);
 		}
+		player = new Player(L"Player", L"Player", L"Player");
 	}
 
-	Player* player = new Player(L"Player", L"Player", L"Player");	//(컴포넌트이름, 스크립트 이름, 스프라이트이름)
+	
 	_componentList.push_back(player);
 
 	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)

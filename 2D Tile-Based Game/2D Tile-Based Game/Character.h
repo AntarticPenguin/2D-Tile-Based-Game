@@ -85,11 +85,13 @@ public:
 	void Equip(Component* weapon);
 
 	//AI & State
-private:
+protected:
 	std::map<eStateType, State*> _stateMap;
 
 public:
 	void InitMove();
+	virtual void InitState();
+	void ReplaceState(eStateType changeType, State* replaceState);
 	virtual void UpdateAI(float deltaTime);
 	void ChangeState(eStateType stateType);
 

@@ -89,7 +89,27 @@ void LifeTileObject::Update(float deltaTime)
 					}
 				}
 			}*/
-			CheckLife(x, y, &character_count, tileCharacter);
+			std::list<Component*> componentList;
+			if (false == map->GetTileCollisionList(x, y, componentList))
+			{
+				for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
+				{
+					Component* component = (*itr);
+					if (component->IsLive())
+					{
+						switch (component->GetType())
+						{
+						case eComponentType::CT_NPC:
+						case eComponentType::CT_PLAYER:
+							if (x != _tileX || y != _tileY)
+								character_count++;
+							else
+								tileCharacter = component;
+							break;
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -115,38 +135,10 @@ void LifeTileObject::Update(float deltaTime)
 		{
 			if (eComponentType::CT_PLAYER != tileCharacter->GetType())
 			{
-				//GameSystem::GetInstance().GetStage()->DestroyLifeNPC(_tileX, _tileY, tileCharacter);
 				GameSystem::GetInstance().GetStage()->CheckDestroyLifeNPC(tileCharacter);
 				tileCharacter = NULL;
 			}
 		}
 		break;
-	}
-}
-
-void LifeTileObject::CheckLife(int x, int y, int* character_count, Component* tileCharacter)
-{
-	Map* map = GameSystem::GetInstance().GetStage()->GetMap();
-
-	std::list<Component*> componentList;
-	if (false == map->GetTileCollisionList(x, y, componentList))
-	{
-		for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
-		{
-			Component* component = (*itr);
-			if (component->IsLive())
-			{
-				switch (component->GetType())
-				{
-				case eComponentType::CT_NPC:
-				case eComponentType::CT_PLAYER:
-					if (x != _tileX || y != _tileY)
-						character_count++;
-					else
-						tileCharacter = component;
-					break;
-				}
-			}
-		}
 	}
 }

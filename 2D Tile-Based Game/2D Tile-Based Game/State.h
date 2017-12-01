@@ -15,7 +15,7 @@ protected:
 
 public:
 	State();
-	~State();
+	virtual ~State();
 
 public:
 	virtual void Init(Character* character);

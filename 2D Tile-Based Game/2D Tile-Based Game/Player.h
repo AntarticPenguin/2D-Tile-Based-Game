@@ -8,6 +8,7 @@ public:
 	~Player();
 
 public:
+	void InitState();
 	void UpdateAI(float deltaTime);
 	Component* Collision(std::list<Component*>& collisionList);
 };

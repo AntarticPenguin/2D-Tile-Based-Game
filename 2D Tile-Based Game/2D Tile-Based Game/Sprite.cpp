@@ -16,12 +16,13 @@ Sprite::Sprite(std::wstring textureFileName, std::wstring scriptFileName, float 
 
 Sprite::~Sprite()
 {
-	if (NULL != _srcTexture)
+	/*if (NULL != _srcTexture)
 	{
 		_srcTexture->Deinit();
 		delete _srcTexture;
 		_srcTexture = NULL;
-	}
+	}*/
+	_srcTexture = NULL;
 }
 
 void Sprite::Init()
@@ -90,7 +91,8 @@ void Sprite::Deinit()
 	}
 	_frameList.clear();
 
-	_srcTexture->Deinit();
+	//_srcTexture->Deinit();
+	_srcTexture = NULL;
 }
 
 void Sprite::Update(float deltaTime)

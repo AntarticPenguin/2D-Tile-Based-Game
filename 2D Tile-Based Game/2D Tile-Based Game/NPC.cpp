@@ -4,7 +4,13 @@
 #include "Stage.h"
 #include "Map.h"
 
+#include "DeadState.h"
+#include "CounterAttackState.h"
+#include "RecoveryState.h"
+#include "DefenseState.h"
+#include "AttackState.h"
 #include "MoveState.h"
+#include "IdleState.h"
 
 NPC::NPC(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
 	Character(name, scriptName, spriteFileName)
@@ -34,6 +40,17 @@ NPC::NPC(std::wstring name, std::wstring scriptName, std::wstring spriteFileName
 NPC::~NPC()
 {
 
+}
+
+void NPC::InitState()
+{
+	ReplaceState(eStateType::ET_IDLE, new IdleState());
+	ReplaceState(eStateType::ET_MOVE, new MoveState());
+	ReplaceState(eStateType::ET_ATTACK, new AttackState());
+	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
+	ReplaceState(eStateType::ET_COUNTERATTACK, new CounterAttackState());
+	ReplaceState(eStateType::ET_RECOVERY, new RecoveryState());
+	ReplaceState(eStateType::ET_DEAD, new DeadState());
 }
 
 void NPC::UpdateAI(float deltaTime)

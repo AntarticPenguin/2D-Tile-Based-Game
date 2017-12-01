@@ -9,5 +9,4 @@ public:
 
 public:
 	void Update(float deltaTime);
-	void LifeTileObject::CheckLife(int x, int y, int* character_count, Component* tileCharacter);
 };

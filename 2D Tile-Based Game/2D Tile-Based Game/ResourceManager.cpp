@@ -13,10 +13,10 @@ ResourceManager& ResourceManager::GetInstance()
 
 Texture* ResourceManager::LoadTexture(wstring fileName)
 {
-	map<wstring, Texture*>::iterator iter = _textureMap.find(fileName);
-	if (iter != _textureMap.end())	//끝까지 가지 않았다면 찾음
+	map<wstring, Texture*>::iterator itr = _textureMap.find(fileName);
+	if (itr != _textureMap.end())	//끝까지 가지 않았다면 찾음
 	{
-		return iter->second;
+		return itr->second;
 	}
 
 	Texture* texture = new Texture();
@@ -29,10 +29,10 @@ Texture* ResourceManager::LoadTexture(wstring fileName)
 
 vector<string> ResourceManager::LoadScript(wstring fileName)
 {
-	map<wstring, vector<string>>::iterator iter = _scriptMap.find(fileName);
-	if (iter != _scriptMap.end())	//끝까지 가지 않았다면 찾음
+	map<wstring, vector<string>>::iterator itr = _scriptMap.find(fileName);
+	if (itr != _scriptMap.end())	//끝까지 가지 않았다면 찾음
 	{
-		return iter->second;
+		return itr->second;
 	}
 
 	char inputRecord[1000];
