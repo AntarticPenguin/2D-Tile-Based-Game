@@ -47,66 +47,21 @@ void LifeTileObject::Update(float deltaTime)
 	{
 		for (int x = minTileX; x <= maxTileX; x++)
 		{
-			/*if (x != _tileX || y != _tileY)
-			{
-				std::list<Component*> componentList;
-				if (false == map->GetTileCollisionList(x, y, componentList))
-				{
-					for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
-					{
-						Component* component = (*itr);
-						if (component->IsLive())
-						{
-							switch (component->GetType())
-							{
-							case eComponentType::CT_NPC:
-							case eComponentType::CT_PLAYER:
-								character_count++;
-								break;
-							}
-						}
-					}
-				}
-			}
-			else
-			{
-				std::list<Component*> componentList;
-				if (false == map->GetTileCollisionList(x, y, componentList))
-				{
-					for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
-					{
-						Component* component = (*itr);
-						if (component->IsLive())
-						{
-							switch (component->GetType())
-							{
-							case eComponentType::CT_NPC:
-							case eComponentType::CT_PLAYER:
-								tileCharacter = component;
-								break;
-							}
-						}
-					}
-				}
-			}*/
 			std::list<Component*> componentList;
 			if (false == map->GetTileCollisionList(x, y, componentList))
 			{
 				for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
 				{
 					Component* component = (*itr);
-					if (component->IsLive())
+					switch (component->GetType())
 					{
-						switch (component->GetType())
-						{
-						case eComponentType::CT_NPC:
-						case eComponentType::CT_PLAYER:
-							if (x != _tileX || y != _tileY)
-								character_count++;
-							else
-								tileCharacter = component;
-							break;
-						}
+					case eComponentType::CT_NPC:
+					case eComponentType::CT_PLAYER:
+						if (x != _tileX || y != _tileY)
+							character_count++;
+						else
+							tileCharacter = component;
+						break;
 					}
 				}
 			}

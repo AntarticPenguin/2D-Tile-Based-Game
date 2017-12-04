@@ -12,14 +12,21 @@
 #include "LifeNPC.h"
 #include "LifePlayer.h"
 
+#include "StageParts.h"
+
 Stage::Stage()
 {
-
+	_bp = NULL;
 }
 
 Stage::~Stage()
 {
 	ComponentSystem::GetInstance().RemoveAllComponents();
+	if (NULL != _bp)
+	{
+		delete _bp;
+		_bp = NULL;
+	}
 }
 
 
@@ -31,23 +38,19 @@ void Stage::Init(std::wstring mapName)
 	_componentList.push_back(_map);
 
 	Player* player = NULL;	
-	
+
+	//1단계 리팩토링
+	/*
 	if (L"Map3" == mapName)
 	{
-		_lifeNPCCount = 0;
-		for (int i = 0; i < 200; i++)
-		{
-			WCHAR name[256];
-			wsprintf(name, L"life_npc_%d", _lifeNPCCount);
-			_lifeNPCCount++;
-
-			LifeNPC* npc = new LifeNPC(name, L"npc", L"Npc");
-			_componentList.push_back(npc);
-		}
-		player = new LifePlayer(L"Player", L"Player", L"Player");	//(컴포넌트이름, 스크립트 이름, 스프라이트이름)
+		_bp = new LifeStageParts(this);
+		_bp->CreateComponents();
 	}
 	else
 	{
+		_bp = new DefaultStageParts(this);
+		_bp->CreateComponents();
+
 		//Recovery Item
 		for (int i = 0; i < 20; i++)
 		{
@@ -94,8 +97,27 @@ void Stage::Init(std::wstring mapName)
 		}
 		player = new Player(L"Player", L"Player", L"Player");
 	}
+	*/
 
-	
+	//2단계 리팩토링
+	/*
+	if (L"Map3" == mapName)
+	{
+		_bp = new LifeStageParts(this);
+	}
+	else
+	{
+		_bp = new DefaultStageParts(this);
+	}
+	*/
+
+	//3단계 리팩토링
+	if (find(mapName) == true)
+		_bpMap[mapName]->CreateComponents();
+	else
+		_bpMap["default"]->CreateComponents();
+
+	_bp->CreateComponents();
 	_componentList.push_back(player);
 
 	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
@@ -157,8 +179,8 @@ void Stage::CreateLifeNPC(Component* component)
 void Stage::DestroyLifeNPC(int tileX, int tileY, Component* tileCharacter)
 {
 	_map->ResetTileComponent(tileX, tileY, tileCharacter);
-	tileCharacter->SetCanMove(true);
-	tileCharacter->SetLive(false);
+	/*tileCharacter->SetCanMove(true);
+	tileCharacter->SetLive(false);*/
 
 	_componentList.remove(tileCharacter);
 	ComponentSystem::GetInstance().RemoveComponent(tileCharacter);
@@ -176,13 +198,9 @@ void Stage::UpdateBaseComponentList()
 	{
 		Component* baseCom = (*itr);
 
-		WCHAR name[256];
-		wsprintf(name, L"life_npc_%d", _lifeNPCCount);
-		_lifeNPCCount++;
+		LifeNPC* npc = (LifeNPC*)(_bp->CreateLifeNPC(L"npc", L"Npc"));
 
-		LifeNPC* npc = new LifeNPC(name, L"npc", L"Npc");
-		npc->Init(baseCom->GetTileX() , baseCom->GetTileY());
-		_componentList.push_back(npc);
+		npc->Init(baseCom->GetTileX(), baseCom->GetTileY());
 	}
 
 	_createBaseComponentList.clear();
@@ -197,4 +215,9 @@ void Stage::UpdateRemoveComponentList()
 		DestroyLifeNPC(component->GetTileX(), component->GetTileY(), component);
 	}
 	_removeComponentList.clear();
+}
+
+void Stage::AddStageComponent(Component* component)
+{
+	_componentList.push_back(component);
 }

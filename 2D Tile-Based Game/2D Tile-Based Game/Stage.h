@@ -4,6 +4,7 @@
 
 class Component;
 class Map;
+class StageParts;
 
 class Stage
 {
@@ -27,7 +28,7 @@ public:
 
 	//lifegame
 private:
-	int _lifeNPCCount;
+	//int _lifeNPCCount;
 	std::list<Component*> _removeComponentList;
 	std::list<Component*> _createBaseComponentList;
 
@@ -37,4 +38,11 @@ public:
 	void CheckDestroyLifeNPC(Component* tileCharacter);
 	void UpdateBaseComponentList();
 	void UpdateRemoveComponentList();
+
+	//ºÎÇ°
+private:
+	StageParts* _bp;
+
+public:
+	void AddStageComponent(Component* component);
 };
