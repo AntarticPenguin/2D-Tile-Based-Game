@@ -3,20 +3,19 @@
 
 class Component;
 class Stage;
+class Map;
 
 class StageParts
 {
-private:
+protected:
 	Stage* _stage;
-	std::wstring _name;
-	int _lifeNPCCount;
+	Map* _map;
 
 public:
 	StageParts(Stage* stage);
 	~StageParts();
 
 public:
-	Component* CreateLifeNPC(std::wstring scriptName, std::wstring spriteName);
-	void SetName(std::wstring name);
-	void CreateComponents(int count);
+	virtual void CreateComponents(std::wstring mapName);
+	virtual Component* CreateLifeNPC(std::wstring scriptName, std::wstring spriteName);
 };

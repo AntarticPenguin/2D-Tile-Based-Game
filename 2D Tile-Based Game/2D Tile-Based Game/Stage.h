@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <list>
+#include <map>
 
 class Component;
 class Map;
@@ -25,10 +26,10 @@ public:
 
 public:
 	Map* GetMap();
+	void SetMap(Map* map);
 
 	//lifegame
 private:
-	//int _lifeNPCCount;
 	std::list<Component*> _removeComponentList;
 	std::list<Component*> _createBaseComponentList;
 
@@ -41,8 +42,10 @@ public:
 
 	//ºÎÇ°
 private:
-	StageParts* _bp;
+	std::map<std::wstring, StageParts*> _partsMap;
+	StageParts* _partsLoader;
 
 public:
 	void AddStageComponent(Component* component);
+	StageParts* GetStageParts(std::wstring mapName);
 };

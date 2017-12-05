@@ -87,6 +87,7 @@ public:
 	//AI & State
 protected:
 	std::map<eStateType, State*> _stateMap;
+	State* _state;
 
 public:
 	void InitMove();
@@ -95,11 +96,10 @@ public:
 	virtual void UpdateAI(float deltaTime);
 	void ChangeState(eStateType stateType);
 
-	//MOVE
+	//Move
 protected:
 	bool _isMoving;
 	float _moveTime;
-	State* _state;
 
 	float _targetX;
 	float _targetY;

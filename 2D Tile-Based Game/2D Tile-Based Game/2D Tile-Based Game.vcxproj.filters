@@ -141,6 +141,12 @@
     <ClCompile Include="StageParts.cpp">
       <Filter>소스 파일\Game\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="LifeStageParts.cpp">
+      <Filter>소스 파일\Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultStageParts.cpp">
+      <Filter>소스 파일\Game\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -240,6 +246,12 @@
       <Filter>소스 파일\Game\Character</Filter>
     </ClInclude>
     <ClInclude Include="StageParts.h">
+      <Filter>소스 파일\Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeStageParts.h">
+      <Filter>소스 파일\Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultStageParts.h">
       <Filter>소스 파일\Game\Stage</Filter>
     </ClInclude>
   </ItemGroup>
