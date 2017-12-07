@@ -22,6 +22,8 @@
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="DefaultStageParts.cpp" />
     <ClCompile Include="LifeStageParts.cpp" />
+    <ClCompile Include="PathfinderPlayer.cpp" />
+    <ClCompile Include="PathfinderStageParts.cpp" />
     <ClCompile Include="StageParts.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -59,6 +61,8 @@
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="DefaultStageParts.h" />
     <ClInclude Include="LifeStageParts.h" />
+    <ClInclude Include="PathfinderPlayer.h" />
+    <ClInclude Include="PathfinderStageParts.h" />
     <ClInclude Include="StageParts.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Component.h" />

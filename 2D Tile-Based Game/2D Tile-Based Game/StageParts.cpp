@@ -22,11 +22,5 @@ void StageParts::CreateComponents(std::wstring mapName)
 
 Component* StageParts::CreateLifeNPC(std::wstring scriptName, std::wstring spriteName)
 {
-//	SetName(L"life_npc");
-//	_lifeNPCCount++;
-//	Component* component = new LifeNPC(_name.c_str(), scriptName, spriteName);
-//	_stage->AddStageComponent(component);
-//
-//	return component;
 	return NULL;
 }

@@ -4,7 +4,7 @@
 class LifeTileObject : public TileObject
 {
 public:
-	LifeTileObject(int tileX, int tileY, std::wstring name, Sprite* sprite);
+	LifeTileObject(std::wstring name, Sprite* sprite, int tileX, int tileY);
 	~LifeTileObject();
 
 public:

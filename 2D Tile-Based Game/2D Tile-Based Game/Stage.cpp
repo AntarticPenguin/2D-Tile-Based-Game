@@ -7,6 +7,7 @@
 #include "StageParts.h"
 #include "LifeStageParts.h"
 #include "DefaultStageParts.h"
+#include "PathfinderStageParts.h"
 
 Stage::Stage()
 {
@@ -32,16 +33,19 @@ void Stage::Init(std::wstring mapName)
 {
 	_partsMap[L"default"] = new DefaultStageParts(this);
 	_partsMap[L"Map3"] = new LifeStageParts(this);
+	_partsMap[L"Map4"] = new PathfinderStageParts(this);
 
 	_componentList.clear();
 
 	_partsLoader = GetStageParts(mapName);
 	_partsLoader->CreateComponents(mapName);
 
+	/*
 	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
 	{
 		(*itr)->Init();
 	}
+	*/
 }
 
 void Stage::Update(float deltaTime)
@@ -118,7 +122,9 @@ void Stage::UpdateBaseComponentList()
 		Component* baseCom = (*itr);
 
 		LifeNPC* npc = (LifeNPC*)(_partsLoader->CreateLifeNPC(L"npc", L"Npc"));
-		npc->Init(baseCom->GetTileX(), baseCom->GetTileY());
+		//npc->Init();
+
+		npc->InitTilePosition(baseCom->GetTileX(), baseCom->GetTileY());
 	}
 
 	_createBaseComponentList.clear();
@@ -137,6 +143,7 @@ void Stage::UpdateRemoveComponentList()
 
 void Stage::AddStageComponent(Component* component)
 {
+	component->Init();
 	_componentList.push_back(component);
 }
 

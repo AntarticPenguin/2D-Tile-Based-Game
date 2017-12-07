@@ -5,11 +5,10 @@
 #include "Map.h"
 #include "Player.h"
 
-LifeTileObject::LifeTileObject(int tileX, int tileY, std::wstring name, Sprite* sprite) :
-	TileObject(name, sprite)
+LifeTileObject::LifeTileObject(std::wstring name, Sprite* sprite, int tileX, int tileY) :
+	TileObject(name, sprite, tileX, tileY)
 {
-	_tileX = tileX;
-	_tileY = tileY;
+
 }
 
 LifeTileObject::~LifeTileObject()

@@ -162,6 +162,24 @@ float Character::GetY()
 	return _y;
 }
 
+
+void Character::InitTilePosition(int tileX, int tileY)
+{
+	{
+		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
+
+		map->ResetTileComponent(_tileX, _tileY, this);
+
+		_tileX = tileX;
+		_tileY = tileY;
+
+		_x = map->GetPositionX(_tileX, _tileY);
+		_y = map->GetPositionY(_tileX, _tileY);
+		map->SetTileComponent(_tileX, _tileY, this, false);
+	}
+}
+
+
 void Character::MoveDeltaPosition(float deltaX, float deltaY)
 {
 	_x += deltaX;

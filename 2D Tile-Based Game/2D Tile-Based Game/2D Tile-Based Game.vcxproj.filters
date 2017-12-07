@@ -147,6 +147,12 @@
     <ClCompile Include="DefaultStageParts.cpp">
       <Filter>소스 파일\Game\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="PathfinderStageParts.cpp">
+      <Filter>소스 파일\Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="PathfinderPlayer.cpp">
+      <Filter>소스 파일\Game\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -253,6 +259,12 @@
     </ClInclude>
     <ClInclude Include="DefaultStageParts.h">
       <Filter>소스 파일\Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="PathfinderStageParts.h">
+      <Filter>소스 파일\Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="PathfinderPlayer.h">
+      <Filter>소스 파일\Game\Character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

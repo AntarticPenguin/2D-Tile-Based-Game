@@ -58,6 +58,8 @@ public:
 	float GetX();
 	float GetY();
 
+	void InitTilePosition(int tileX, int tileY);
+
 	//Transform
 public:
 	void MoveDeltaPosition(float deltaX, float deltaY);
