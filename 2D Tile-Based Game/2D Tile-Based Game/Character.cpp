@@ -99,7 +99,7 @@ void Character::Init(int tileX, int tileY)
 		_font = new Font(L"Arial", 15, color);
 
 		_font->SetRect(100, 100, 400, 100);
-		//UpdateText();
+		UpdateText();
 	}
 }
 
@@ -121,7 +121,7 @@ void Character::Update(float deltaTime)
 	UpdateRecoveryCooltime(deltaTime);
 	_state->Update(deltaTime);
 
-	//UpdateText();
+	UpdateText();
 }
 
 void Character::Render()
@@ -482,8 +482,19 @@ void Character::UpdateText()
 
 
 	WCHAR text[255];
-	wsprintf(text, L"HP:%d\nCool: %d\n", _hp, coolTime);
+	wsprintf(text, L"HP:%d\nCool: %d\nState::%s", _hp, coolTime, state);
 	//wsprintf(text, L"HP:%d\nCool: %d\nState:%s\nRecovery:%d\nATK:%d", _hp, coolTime, state, RecoveryTime, _attackPoint);
 
 	_font->SetText(text);
+}
+
+TileCell* Character::GetTargetCell()
+{
+	return _targetTileCell;
+}
+
+void Character::SetTargetTileCell(TileCell* tileCell)
+{
+	_targetTileCell = tileCell;
+	_state->NextState(eStateType::ET_PATHFINDING);
 }

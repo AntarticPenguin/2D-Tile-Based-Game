@@ -86,7 +86,7 @@ void Map::Init()
 					for (int x = 0; x < _mapWidth; x++)
 					{
 						int index = atoi(token);
-						TileCell* tileCell = new TileCell();
+						TileCell* tileCell = new TileCell(x, row);
 
 						WCHAR componentName[256];
 						wsprintf(componentName, L"map_layer_01_%d_%d", line, x);
@@ -294,6 +294,11 @@ int Map::GetWidth()
 int Map::GetHeight()
 {
 	return _mapHeight;
+}
+
+TileCell* Map::GetTileCell(int tileX, int tileY)
+{
+	return _tileMap[tileY][tileX];
 }
 
 void Map::SetTileComponent(int tileX, int tileY, Component* component, bool isRender)

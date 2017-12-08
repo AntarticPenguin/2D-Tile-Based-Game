@@ -10,11 +10,14 @@ private:
 	float _posX;
 	float _posY;
 
+	int _tileX;
+	int _tileY;
+
 	std::list<Component*> _componentList;
 	std::list<Component*> _renderList;
 
 public:
-	TileCell();
+	TileCell(int tileX, int tileY);
 	~TileCell();
 
 public:
@@ -28,6 +31,8 @@ public:
 
 	float GetPositionX();
 	float GetPositionY();
+	int GetTileX();
+	int GetTileY();
 
 	void AddComponent(Component* component, bool isRender);
 	void RemoveComponent(Component* component);
@@ -36,4 +41,14 @@ public:
 	bool CanMove();
 	bool GetCollisionList(std::list<Component*>& collisionList);
 	std::list<Component*> GetComponentList();
+
+	//FindPath
+private:
+	bool _isPathfindingMark;
+	TileCell* _prevPathfindingCell;
+
+public:
+	void InitPathfinding();
+	bool IsPathfindingMark();
+	void PathFinded();
 };

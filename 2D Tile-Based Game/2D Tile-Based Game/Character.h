@@ -24,12 +24,14 @@ enum eStateType
 	ET_DEFENSE,
 	ET_COUNTERATTACK,
 	ET_RECOVERY,
+	ET_PATHFINDING,
 	ET_DEAD,
 };
 
 class Sprite;
 class State;
 class Font;
+class TileCell;
 
 class Character : public Component
 {
@@ -155,4 +157,12 @@ private:
 
 public:
 	void UpdateText();
+
+	//Pathfinding
+private:
+	TileCell* _targetTileCell;
+
+public:
+	TileCell* GetTargetCell();
+	void SetTargetTileCell(TileCell* tileCell);
 };

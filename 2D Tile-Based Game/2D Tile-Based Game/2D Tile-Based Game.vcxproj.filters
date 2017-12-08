@@ -153,6 +153,12 @@
     <ClCompile Include="PathfinderPlayer.cpp">
       <Filter>소스 파일\Game\Character</Filter>
     </ClCompile>
+    <ClCompile Include="PathfinderMonster.cpp">
+      <Filter>소스 파일\Game\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="PathfindingState.cpp">
+      <Filter>소스 파일\Game\Character\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -265,6 +271,12 @@
     </ClInclude>
     <ClInclude Include="PathfinderPlayer.h">
       <Filter>소스 파일\Game\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="PathfinderMonster.h">
+      <Filter>소스 파일\Game\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="PathfindingState.h">
+      <Filter>소스 파일\Game\Character\State</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

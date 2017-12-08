@@ -39,13 +39,6 @@ void Stage::Init(std::wstring mapName)
 
 	_partsLoader = GetStageParts(mapName);
 	_partsLoader->CreateComponents(mapName);
-
-	/*
-	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
-	{
-		(*itr)->Init();
-	}
-	*/
 }
 
 void Stage::Update(float deltaTime)

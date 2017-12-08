@@ -2,9 +2,11 @@
 #include "Sprite.h"
 #include "Component.h"
 
-TileCell::TileCell()
+TileCell::TileCell(int tileX, int tileY)
 {
 	_componentList.clear();
+	_tileX = tileX;
+	_tileY = tileY;
 }
 
 TileCell::~TileCell()
@@ -62,6 +64,16 @@ float TileCell::GetPositionX()
 float TileCell::GetPositionY()
 {
 	return _posY;
+}
+
+int TileCell::GetTileX()
+{
+	return _tileX;
+}
+
+int TileCell::GetTileY()
+{
+	return _tileY;
 }
 
 void TileCell::AddComponent(Component* component, bool isRender)
@@ -123,4 +135,20 @@ bool TileCell::GetCollisionList(std::list<Component*>& collisionList)
 std::list<Component*> TileCell::GetComponentList()
 {
 	return _componentList;
+}
+
+void TileCell::InitPathfinding()
+{
+	_isPathfindingMark = false;
+	_prevPathfindingCell = NULL;
+}
+
+bool TileCell::IsPathfindingMark()
+{
+	return _isPathfindingMark;
+}
+
+void TileCell::PathFinded()
+{
+	_isPathfindingMark = true;
 }

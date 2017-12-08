@@ -6,6 +6,7 @@
 #include "Monster.h"
 
 #include "PathfinderPlayer.h"
+#include "PathfinderMonster.h"
 
 PathfinderStageParts::PathfinderStageParts(Stage* stage) :
 	StageParts(stage)
@@ -23,9 +24,7 @@ void PathfinderStageParts::CreateComponents(std::wstring mapName)
 	StageParts::CreateComponents(mapName);
 
 	//1개의 몬스터 생성
-	WCHAR name[256];
-	wsprintf(name, L"path_monster");
-	Monster* monster = new Monster(name, L"monster", L"monster");
+	Component* monster = new PathfinderMonster(L"pathfindermonster", L"monster", L"monster");
 	_stage->AddStageComponent(monster);
 
 	//1개의 플레이어 생성( 추후 길찾기 전용 플레이어로 바꿀 예정)
