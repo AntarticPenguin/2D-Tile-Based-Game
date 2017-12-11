@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="DefaultStageParts.cpp" />
+    <ClCompile Include="GlobalTile.cpp" />
     <ClCompile Include="LifeStageParts.cpp" />
     <ClCompile Include="PathfinderMonster.cpp" />
     <ClCompile Include="PathfinderPlayer.cpp" />
@@ -62,6 +63,7 @@
   <ItemGroup>
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="DefaultStageParts.h" />
+    <ClInclude Include="GlobalTile.h" />
     <ClInclude Include="LifeStageParts.h" />
     <ClInclude Include="PathfinderMonster.h" />
     <ClInclude Include="PathfinderPlayer.h" />

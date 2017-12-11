@@ -301,6 +301,11 @@ TileCell* Map::GetTileCell(int tileX, int tileY)
 	return _tileMap[tileY][tileX];
 }
 
+TileCell* Map::GetTileCell(TilePosition nextTilePos)
+{
+	return GetTileCell(nextTilePos.x, nextTilePos.y);
+}
+
 void Map::SetTileComponent(int tileX, int tileY, Component* component, bool isRender)
 {
 	_tileMap[tileY][tileX]->AddComponent(component, isRender);
@@ -323,6 +328,11 @@ bool Map::CanMoveTileMap(int tileX, int tileY)
 		return false;
 
 	return _tileMap[tileY][tileX]->CanMove();
+}
+
+bool Map::CanMoveTileMap(TilePosition nextTilePos)
+{
+	return CanMoveTileMap(nextTilePos.x, nextTilePos.y);
 }
 
 bool Map::GetTileCollisionList(int tileX, int tileY, std::list<Component*>& collisionList)

@@ -31,6 +31,9 @@ void PathfinderStageParts::CreateComponents(std::wstring mapName)
 	Player* player = new PathfinderPlayer(L"Player", L"Player", L"Player");
 	_stage->AddStageComponent(player);
 
+	TileCell* targetCell = _stage->GetMap()->GetTileCell(monster->GetTileX(), monster->GetTileY());
+	player->SetTargetTileCell(targetCell);
+
 	//뷰어를 맵 중앙으로 세팅(타일오브젝트로)
 	int midTileX = _stage->GetMap()->GetWidth() / 2;
 	int midTileY = _stage->GetMap()->GetHeight() / 2;

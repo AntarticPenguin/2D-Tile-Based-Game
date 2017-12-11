@@ -1,6 +1,7 @@
 #include "PathfindingState.h"
 
 #include "GameSystem.h"
+#include "GlobalTile.h"
 #include "Stage.h"
 #include "Character.h"
 #include "Map.h"
@@ -34,19 +35,47 @@ void PathfindingState::Update(float deltaTime)
 	//길찾기 알고리즘 시작
 	if (0 != _pathfindingTileQueue.size())
 	{
-		TileCell* node = _pathfindingTileQueue.front();
+		//첫번째 노드를 꺼내서 검사
+		TileCell* tileCell = _pathfindingTileQueue.front();
 		_pathfindingTileQueue.pop();
 
-		if (false == node->IsPathfindingMark())
+		if (false == tileCell->IsPathfindingMark())
 		{
-			node->PathFinded();
+			tileCell->PathFinded();
 
-			//Is Target?
-			if (node->GetTileX() == _targetTileCell->GetTileX() &&
-				node->GetTileY() == _targetTileCell->GetTileY())
+			WCHAR msg[256];
+			wsprintf(msg, L"X: %d, Y: %d, targetX: %d, targetY: %d\n", tileCell->GetTileX(), tileCell->GetTileY()
+			,_targetTileCell->GetTileX(), _targetTileCell->GetTileY());
+			OutputDebugString(msg);
+
+			//목표 타겟이면 종료
+			if (tileCell->GetTileX() == _targetTileCell->GetTileX() &&
+				tileCell->GetTileY() == _targetTileCell->GetTileY())
 			{
+				OutputDebugString(L"Find Goal\n");
 				_nextState = eStateType::ET_IDLE;
 				return;
+			}
+
+			for (int direction = 0; direction < eDirection::NONE; direction++)
+			{
+				TilePosition curTilePos;
+				curTilePos.x = tileCell->GetTileX();
+				curTilePos.y = tileCell->GetTileY();
+				TilePosition nextTilePos = GetNextTilePosition(curTilePos, (eDirection)direction);
+
+				Map* map = GameSystem::GetInstance().GetStage()->GetMap();
+				TileCell* nextTileCell = map->GetTileCell(nextTilePos);
+
+				if ( (true == map->CanMoveTileMap(nextTilePos) && false == nextTileCell->IsPathfindingMark()) ||
+					(nextTileCell->GetTileX() == _targetTileCell->GetTileX() && nextTileCell->GetTileY() == _targetTileCell->GetTileY()) )
+				{
+					if (NULL == nextTileCell->GetPrevPathfindingNode())
+					{
+						nextTileCell->SetPrevPathfindingNode(tileCell);
+						_pathfindingTileQueue.push(nextTileCell);
+					}
+				}
 			}
 		}
 	}

@@ -5,15 +5,7 @@
 #include <map>
 
 #include "Component.h"
-
-enum eDirection
-{
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN,
-	NONE,
-};
+#include "GlobalTile.h"
 
 enum eStateType
 {

@@ -152,3 +152,14 @@ void TileCell::PathFinded()
 {
 	_isPathfindingMark = true;
 }
+
+TileCell* TileCell::GetPrevPathfindingNode()
+{
+	return _prevPathfindingCell;
+}
+
+void TileCell::SetPrevPathfindingNode(TileCell* tileCell)
+{
+	_prevPathfindingCell = tileCell;
+}
+

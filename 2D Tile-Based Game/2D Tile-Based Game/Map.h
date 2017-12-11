@@ -4,6 +4,7 @@
 #include <list>
 
 #include "Component.h"
+#include "GlobalTile.h"
 
 class TileCell;
 class Sprite;
@@ -45,10 +46,12 @@ public:
 	int GetHeight();
 
 	TileCell* GetTileCell(int tileX, int tileY);
+	TileCell* GetTileCell(TilePosition nextTilePos);
 
 	void SetTileComponent(int tileX, int tileY, Component* component, bool isRender);
 	void ResetTileComponent(int tileX, int tileY, Component* component);
 	bool CanMoveTileMap(int tileX, int tileY);
+	bool CanMoveTileMap(TilePosition nextTilePos);
 	bool GetTileCollisionList(int tileX, int tileY, std::list<Component*>& collisionList); //&(참조자)는 null값이 넘어올 수 없음
 	std::list<Component*> GetTileComponentList(int tileX, int tileY);
 
