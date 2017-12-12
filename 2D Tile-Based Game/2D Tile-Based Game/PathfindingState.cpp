@@ -43,15 +43,32 @@ void PathfindingState::Update(float deltaTime)
 		{
 			tileCell->PathFinded();
 
-			WCHAR msg[256];
+			/*WCHAR msg[256];
 			wsprintf(msg, L"X: %d, Y: %d, targetX: %d, targetY: %d\n", tileCell->GetTileX(), tileCell->GetTileY()
 			,_targetTileCell->GetTileX(), _targetTileCell->GetTileY());
-			OutputDebugString(msg);
+			OutputDebugString(msg);*/
 
 			//목표 타겟이면 종료
 			if (tileCell->GetTileX() == _targetTileCell->GetTileX() &&
 				tileCell->GetTileY() == _targetTileCell->GetTileY())
 			{
+				std::list<Component*> comList = tileCell->GetComponentList();
+				for (std::list<Component*>::iterator itr = comList.begin(); itr != comList.end(); itr++)
+				{
+					Component* component = (*itr);
+					if (component->GetType() == eComponentType::CT_MONSTER)
+					{
+						if (tileCell->GetTileX() < tileCell->GetPrevPathfindingCell()->GetTileX())
+							((Character*)component)->SetDirection(eDirection::RIGHT);
+						else if (tileCell->GetTileX() > tileCell->GetPrevPathfindingCell()->GetTileX())
+							((Character*)component)->SetDirection(eDirection::LEFT);
+						else if (tileCell->GetTileY() < tileCell->GetPrevPathfindingCell()->GetTileY())
+							((Character*)component)->SetDirection(eDirection::DOWN);
+						else if (tileCell->GetTileY() > tileCell->GetPrevPathfindingCell()->GetTileY())
+							((Character*)component)->SetDirection(eDirection::UP);
+					}
+				}
+
 				OutputDebugString(L"Find Goal\n");
 				_nextState = eStateType::ET_IDLE;
 				return;
@@ -70,10 +87,24 @@ void PathfindingState::Update(float deltaTime)
 				if ( (true == map->CanMoveTileMap(nextTilePos) && false == nextTileCell->IsPathfindingMark()) ||
 					(nextTileCell->GetTileX() == _targetTileCell->GetTileX() && nextTileCell->GetTileY() == _targetTileCell->GetTileY()) )
 				{
-					if (NULL == nextTileCell->GetPrevPathfindingNode())
+					if (NULL == nextTileCell->GetPrevPathfindingCell())
 					{
-						nextTileCell->SetPrevPathfindingNode(tileCell);
+						nextTileCell->SetPrevPathfindingCell(tileCell);
 						_pathfindingTileQueue.push(nextTileCell);
+
+						/*if (몬스터, 플레이어는 제외)
+						{
+							움직이지 않는 npc 생성해서 해당 타일셀에다가 위치
+								방향은 이전 방향을 바라보게 한다.
+						}*/
+						if ( 
+							!(nextTileCell->GetTileX() == _targetTileCell->GetTileX() && nextTileCell->GetTileY() == _targetTileCell->GetTileY())
+							&&
+							!(nextTileCell->GetTileX() == _character->GetTileX() && nextTileCell->GetTileY() == _character->GetTileY())
+							)
+						{
+							GameSystem::GetInstance().GetStage()->CreatePathfindNPC(nextTileCell);
+						}
 					}
 				}
 			}
@@ -109,4 +140,7 @@ void PathfindingState::Start()
 void PathfindingState::Stop()
 {
 	State::Stop();
+	
+	while(false == _pathfindingTileQueue.empty())
+		_pathfindingTileQueue.pop();
 }

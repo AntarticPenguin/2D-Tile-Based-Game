@@ -99,7 +99,7 @@ void Character::Init(int tileX, int tileY)
 		_font = new Font(L"Arial", 15, color);
 
 		_font->SetRect(100, 100, 400, 100);
-		UpdateText();
+		//UpdateText();
 	}
 }
 
@@ -121,7 +121,7 @@ void Character::Update(float deltaTime)
 	UpdateRecoveryCooltime(deltaTime);
 	_state->Update(deltaTime);
 
-	UpdateText();
+	//UpdateText();
 }
 
 void Character::Render()
@@ -329,6 +329,11 @@ Component* Character::Collision(std::list<Component*>& collisionList)
 eDirection Character::GetDirection()
 {
 	return _curDirection;
+}
+
+void Character::SetDirection(eDirection direction)
+{
+	_curDirection = direction;
 }
 
 float Character::GetMoveTime()

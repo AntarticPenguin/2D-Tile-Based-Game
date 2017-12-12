@@ -110,6 +110,7 @@ public:
 	virtual Component* Collision(std::list<Component*>& collisionList);
 
 	eDirection GetDirection();
+	void SetDirection(eDirection direction);
 	float GetMoveTime();
 	bool IsMoving();
 

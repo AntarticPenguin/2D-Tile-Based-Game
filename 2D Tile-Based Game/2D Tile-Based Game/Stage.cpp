@@ -2,6 +2,7 @@
 #include "ComponentSystem.h"
 
 #include "Map.h"
+#include "TileCell.h"
 #include "LifeNPC.h"
 
 #include "StageParts.h"
@@ -92,6 +93,21 @@ void Stage::CreateLifeNPC(Component* component)
 	component->GetTileX();
 	component->GetTileY();
 	_createBaseComponentList.push_back(component);
+}
+
+void Stage::CreatePathfindNPC(TileCell* tileCell)
+{
+	LifeNPC* npc = (LifeNPC*)(_partsLoader->CreateLifeNPC(L"npc", L"Red_NPC"));
+	npc->InitTilePosition(tileCell->GetTileX(), tileCell->GetTileY());
+
+	if (tileCell->GetTileX() < tileCell->GetPrevPathfindingCell()->GetTileX())
+		npc->SetDirection(eDirection::RIGHT);
+	else if(tileCell->GetTileX() > tileCell->GetPrevPathfindingCell()->GetTileX())
+		npc->SetDirection(eDirection::LEFT);
+	else if (tileCell->GetTileY() < tileCell->GetPrevPathfindingCell()->GetTileY())
+		npc->SetDirection(eDirection::DOWN);
+	else if (tileCell->GetTileY() > tileCell->GetPrevPathfindingCell()->GetTileY())
+		npc->SetDirection(eDirection::UP);
 }
 
 void Stage::DestroyLifeNPC(int tileX, int tileY, Component* tileCharacter)

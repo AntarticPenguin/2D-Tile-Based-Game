@@ -10,6 +10,7 @@ class StageParts
 protected:
 	Stage* _stage;
 	Map* _map;
+	int _lifeNpcCount;
 
 public:
 	StageParts(Stage* stage);

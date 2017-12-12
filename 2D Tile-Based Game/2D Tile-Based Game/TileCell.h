@@ -51,6 +51,6 @@ public:
 	void InitPathfinding();
 	bool IsPathfindingMark();
 	void PathFinded();
-	TileCell* GetPrevPathfindingNode();
-	void SetPrevPathfindingNode(TileCell* tileCell);
+	TileCell* GetPrevPathfindingCell();
+	void SetPrevPathfindingCell(TileCell* tileCell);
 };

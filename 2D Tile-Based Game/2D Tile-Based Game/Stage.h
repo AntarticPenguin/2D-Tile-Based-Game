@@ -6,6 +6,7 @@
 class Component;
 class Map;
 class StageParts;
+class TileCell;
 
 class Stage
 {
@@ -34,6 +35,7 @@ private:
 	std::list<Component*> _createBaseComponentList;
 
 public:
+	void CreatePathfindNPC(TileCell* tileCell);
 	void CreateLifeNPC(Component* component);
 	void DestroyLifeNPC(int tileX, int tileY, Component* tileCharacter);
 	void CheckDestroyLifeNPC(Component* tileCharacter);
