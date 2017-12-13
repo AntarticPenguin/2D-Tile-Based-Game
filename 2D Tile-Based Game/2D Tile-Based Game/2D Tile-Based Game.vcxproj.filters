@@ -162,6 +162,9 @@
     <ClCompile Include="GlobalTile.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="PathfindingMoveState.cpp">
+      <Filter>소스 파일\Game\Character\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -283,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="GlobalTile.h">
       <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PathfindingMoveState.h">
+      <Filter>소스 파일\Game\Character\State</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

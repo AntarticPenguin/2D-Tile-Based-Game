@@ -25,7 +25,7 @@ void PathfinderStageParts::CreateComponents(std::wstring mapName)
 	StageParts::CreateComponents(mapName);
 
 	//1개의 몬스터 생성
-	Component* monster = new PathfinderMonster(L"pathfindermonster", L"npc", L"zombie_npc");
+	Component* monster = new PathfinderMonster(L"pathfindermonster", L"Monster", L"Monster");
 	_stage->AddStageComponent(monster);
 
 	//1개의 플레이어 생성( 추후 길찾기 전용 플레이어로 바꿀 예정)

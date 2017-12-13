@@ -503,3 +503,13 @@ void Character::SetTargetTileCell(TileCell* tileCell)
 	_targetTileCell = tileCell;
 	_state->NextState(eStateType::ET_PATHFINDING);
 }
+
+std::stack<TileCell*> Character::GetPathTileCellStack()
+{
+	return _pathTileCellStack;
+}
+
+void Character::PushPathTileCell(TileCell* tileCell)
+{
+	_pathTileCellStack.push(tileCell);
+}

@@ -3,6 +3,7 @@
 #include <string>
 #include <list>
 #include <map>
+#include <stack>
 
 #include "Component.h"
 #include "GlobalTile.h"
@@ -154,8 +155,12 @@ public:
 	//Pathfinding
 private:
 	TileCell* _targetTileCell;
+	std::stack<TileCell*> _pathTileCellStack;
 
 public:
 	TileCell* GetTargetCell();
 	void SetTargetTileCell(TileCell* tileCell);
+
+	std::stack<TileCell*> GetPathTileCellStack();
+	void PushPathTileCell(TileCell* tileCell);
 };

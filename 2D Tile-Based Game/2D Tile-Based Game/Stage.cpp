@@ -100,6 +100,9 @@ void Stage::CreatePathfindNPC(TileCell* tileCell)
 	LifeNPC* npc = (LifeNPC*)(_partsLoader->CreateLifeNPC(L"npc", L"Red_NPC"));
 	npc->InitTilePosition(tileCell->GetTileX(), tileCell->GetTileY());
 
+	_componentList.remove(npc);
+	tileCell->AddComponent(npc, true);
+
 	if (tileCell->GetTileX() < tileCell->GetPrevPathfindingCell()->GetTileX())
 		npc->SetDirection(eDirection::RIGHT);
 	else if(tileCell->GetTileX() > tileCell->GetPrevPathfindingCell()->GetTileX())
@@ -108,6 +111,27 @@ void Stage::CreatePathfindNPC(TileCell* tileCell)
 		npc->SetDirection(eDirection::DOWN);
 	else if (tileCell->GetTileY() > tileCell->GetPrevPathfindingCell()->GetTileY())
 		npc->SetDirection(eDirection::UP);
+}
+
+void Stage::CreatePathfindMark(TileCell* tileCell)
+{
+	LifeNPC* npc = (LifeNPC*)(_partsLoader->CreateLifeNPC(L"npc", L"Zombie_NPC"));
+	npc->InitTilePosition(tileCell->GetTileX(), tileCell->GetTileY());
+
+	_componentList.remove(npc);
+	tileCell->AddComponent(npc, true);
+
+	if (NULL != tileCell->GetPrevPathfindingCell())
+	{
+		if (tileCell->GetTileX() < tileCell->GetPrevPathfindingCell()->GetTileX())
+			npc->SetDirection(eDirection::LEFT);
+		else if (tileCell->GetTileX() > tileCell->GetPrevPathfindingCell()->GetTileX())
+			npc->SetDirection(eDirection::RIGHT);
+		else if (tileCell->GetTileY() < tileCell->GetPrevPathfindingCell()->GetTileY())
+			npc->SetDirection(eDirection::UP);
+		else if (tileCell->GetTileY() > tileCell->GetPrevPathfindingCell()->GetTileY())
+			npc->SetDirection(eDirection::DOWN);
+	}
 }
 
 void Stage::DestroyLifeNPC(int tileX, int tileY, Component* tileCharacter)
