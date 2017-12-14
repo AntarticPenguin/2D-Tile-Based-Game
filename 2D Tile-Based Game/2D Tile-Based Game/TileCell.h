@@ -47,10 +47,18 @@ private:
 	bool _isPathfindingMark;
 	TileCell* _prevPathfindingCell;
 
+	float _distanceWeight;			//타일속성(늪, 얼음 등..)에 따라 세팅된 고정된 값
+	float _distanceFromStart;		//계산된 값을 저장하기 위한 변수
+
 public:
 	void InitPathfinding();
 	bool IsPathfindingMark();
 	void PathFinded();
 	TileCell* GetPrevPathfindingCell();
 	void SetPrevPathfindingCell(TileCell* tileCell);
+
+	float GetDistanceFromStart();
+	void SetDistanceFromStart(float distance);
+
+	float GetDistanceWeight();
 };

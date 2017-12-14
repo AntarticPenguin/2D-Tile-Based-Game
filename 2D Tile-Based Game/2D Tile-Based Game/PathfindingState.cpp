@@ -84,7 +84,7 @@ void PathfindingState::UpdatePathfinding()
 	if (0 != _pathfindingTileQueue.size())
 	{
 		//첫번째 노드를 꺼내서 검사
-		TileCell* tileCell = _pathfindingTileQueue.front();
+		TileCell* tileCell = _pathfindingTileQueue.top();
 		_pathfindingTileQueue.pop();
 
 		if (false == tileCell->IsPathfindingMark())
@@ -128,11 +128,15 @@ void PathfindingState::UpdatePathfinding()
 				Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 				TileCell* nextTileCell = map->GetTileCell(nextTilePos);
 
+				float distanceFromStart = tileCell->GetDistanceFromStart() + tileCell->GetDistanceWeight();
+
 				if ((true == map->CanMoveTileMap(nextTilePos) && false == nextTileCell->IsPathfindingMark()) ||
 					(nextTileCell->GetTileX() == _targetTileCell->GetTileX() && nextTileCell->GetTileY() == _targetTileCell->GetTileY()))
 				{
+
 					if (NULL == nextTileCell->GetPrevPathfindingCell())
 					{
+						nextTileCell->SetDistanceFromStart(distanceFromStart);
 						nextTileCell->SetPrevPathfindingCell(tileCell);
 						_pathfindingTileQueue.push(nextTileCell);
 
@@ -145,6 +149,16 @@ void PathfindingState::UpdatePathfinding()
 							//검색범위를 그려준다.
 							GameSystem::GetInstance().GetStage()->CreatePathfindNPC(nextTileCell);
 						}
+					}
+				}
+				else
+				{
+					if (distanceFromStart < nextTileCell->GetDistanceFromStart())
+					{
+						//다시 검사(큐에 삽입)
+						nextTileCell->SetDistanceFromStart(distanceFromStart);
+						nextTileCell->SetPrevPathfindingCell(tileCell);
+						_pathfindingTileQueue.push(nextTileCell);
 					}
 				}
 			}

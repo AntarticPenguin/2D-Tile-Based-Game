@@ -99,6 +99,7 @@ void Stage::CreatePathfindNPC(TileCell* tileCell)
 {
 	LifeNPC* npc = (LifeNPC*)(_partsLoader->CreateLifeNPC(L"npc", L"Red_NPC"));
 	npc->InitTilePosition(tileCell->GetTileX(), tileCell->GetTileY());
+	npc->SetCanMove(true);
 
 	_componentList.remove(npc);
 	tileCell->AddComponent(npc, true);
@@ -117,6 +118,7 @@ void Stage::CreatePathfindMark(TileCell* tileCell)
 {
 	LifeNPC* npc = (LifeNPC*)(_partsLoader->CreateLifeNPC(L"npc", L"Zombie_NPC"));
 	npc->InitTilePosition(tileCell->GetTileX(), tileCell->GetTileY());
+	npc->SetCanMove(true);
 
 	_componentList.remove(npc);
 	tileCell->AddComponent(npc, true);

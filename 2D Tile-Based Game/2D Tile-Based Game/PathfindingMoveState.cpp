@@ -43,10 +43,11 @@ void PathfindingMoveState::Update(float deltaTime)
 			TileCell* tileCell = _pathTileCellStack.top();
 			_pathTileCellStack.pop();
 
-			TilePosition to = { tileCell->GetTileX(), tileCell->GetTileY() };
-			TilePosition from = { _character->GetTileX(), _character->GetTileY() };
+			TilePosition to = { tileCell->GetTileX(), tileCell->GetTileY() };		//µµÂø
+			TilePosition from = { _character->GetTileX(), _character->GetTileY() };	//½ÃÀÛ
 			eDirection direction = GetDirection(to, from);
-			_character->SetDirection(direction);
+			if(eDirection::NONE != direction)
+				_character->SetDirection(direction);
 
 			_character->MoveStart(tileCell->GetTileX(), tileCell->GetTileY());
 			_character->MoveStop();

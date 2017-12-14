@@ -7,6 +7,7 @@ TileCell::TileCell(int tileX, int tileY)
 	_componentList.clear();
 	_tileX = tileX;
 	_tileY = tileY;
+	_distanceWeight = 1.0f;
 }
 
 TileCell::~TileCell()
@@ -141,6 +142,7 @@ void TileCell::InitPathfinding()
 {
 	_isPathfindingMark = false;
 	_prevPathfindingCell = NULL;
+	_distanceFromStart = 0.0f;
 }
 
 bool TileCell::IsPathfindingMark()
@@ -163,3 +165,17 @@ void TileCell::SetPrevPathfindingCell(TileCell* tileCell)
 	_prevPathfindingCell = tileCell;
 }
 
+float TileCell::GetDistanceFromStart()
+{
+	return _distanceFromStart;
+}
+
+void TileCell::SetDistanceFromStart(float distance)
+{
+	_distanceFromStart = distance;
+}
+
+float TileCell::GetDistanceWeight()
+{
+	return _distanceWeight;
+}
