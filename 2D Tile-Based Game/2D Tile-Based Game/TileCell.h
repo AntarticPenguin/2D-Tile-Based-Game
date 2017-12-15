@@ -49,6 +49,7 @@ private:
 
 	float _distanceWeight;			//타일속성(늪, 얼음 등..)에 따라 세팅된 고정된 값
 	float _distanceFromStart;		//계산된 값을 저장하기 위한 변수
+	float _heuristic;
 
 public:
 	void InitPathfinding();
@@ -61,4 +62,6 @@ public:
 	void SetDistanceFromStart(float distance);
 
 	float GetDistanceWeight();
+	float GetHeuristic();
+	void SetHeuristic(float heuristic);
 };

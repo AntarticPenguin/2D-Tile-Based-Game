@@ -120,23 +120,22 @@ void PathfindingState::UpdatePathfinding()
 
 			for (int direction = 0; direction < eDirection::NONE; direction++)
 			{
-				TilePosition curTilePos;
-				curTilePos.x = tileCell->GetTileX();
-				curTilePos.y = tileCell->GetTileY();
+				TilePosition curTilePos = { tileCell->GetTileX(), tileCell->GetTileY() };
 				TilePosition nextTilePos = GetNextTilePosition(curTilePos, (eDirection)direction);
 
 				Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 				TileCell* nextTileCell = map->GetTileCell(nextTilePos);
 
-				float distanceFromStart = tileCell->GetDistanceFromStart() + tileCell->GetDistanceWeight();
-
 				if ((true == map->CanMoveTileMap(nextTilePos) && false == nextTileCell->IsPathfindingMark()) ||
 					(nextTileCell->GetTileX() == _targetTileCell->GetTileX() && nextTileCell->GetTileY() == _targetTileCell->GetTileY()))
 				{
+					//float distanceFromStart = tileCell->GetDistanceFromStart() + tileCell->GetDistanceWeight();
+					float heuristic = CalcSimpleHeuristic(tileCell, nextTileCell, _targetTileCell);
 
 					if (NULL == nextTileCell->GetPrevPathfindingCell())
 					{
-						nextTileCell->SetDistanceFromStart(distanceFromStart);
+						//nextTileCell->SetDistanceFromStart(distanceFromStart);
+						nextTileCell->SetHeuristic(heuristic);
 						nextTileCell->SetPrevPathfindingCell(tileCell);
 						_pathfindingTileQueue.push(nextTileCell);
 
@@ -150,16 +149,16 @@ void PathfindingState::UpdatePathfinding()
 							GameSystem::GetInstance().GetStage()->CreatePathfindNPC(nextTileCell);
 						}
 					}
-				}
-				else
-				{
-					if (distanceFromStart < nextTileCell->GetDistanceFromStart())
-					{
-						//다시 검사(큐에 삽입)
-						nextTileCell->SetDistanceFromStart(distanceFromStart);
-						nextTileCell->SetPrevPathfindingCell(tileCell);
-						_pathfindingTileQueue.push(nextTileCell);
-					}
+					//else
+					//{
+					//	if (distanceFromStart < nextTileCell->GetDistanceFromStart())
+					//	{
+					//		//다시 검사(큐에 삽입)
+					//		nextTileCell->SetDistanceFromStart(distanceFromStart);
+					//		nextTileCell->SetPrevPathfindingCell(tileCell);
+					//		_pathfindingTileQueue.push(nextTileCell);
+					//	}
+					//}
 				}
 			}
 		}
@@ -183,4 +182,60 @@ void PathfindingState::UpdateBuildPath()
 	}
 	else
 		_nextState = eStateType::ET_MOVE;
+}
+
+float PathfindingState::CalcSimpleHeuristic(TileCell* tileCell, TileCell* nextTileCell, TileCell* targetTileCell)
+{
+	float heuristic = 0.0f;
+
+	int diffFromCurrent = 0;
+	int diffFromNext = 0;
+
+	//x의 발견적 값 갱신
+	{
+		diffFromCurrent = tileCell->GetTileX() - targetTileCell->GetTileX();
+		if (diffFromCurrent < 0)
+			diffFromCurrent = diffFromCurrent * (-1);
+
+		diffFromNext = nextTileCell->GetTileX() - targetTileCell->GetTileX();
+		if (diffFromNext < 0)
+			diffFromNext = diffFromNext * (-1);
+
+		if (diffFromNext < diffFromCurrent)		//다음 타일이 현재 타일보다 목표타일에 가까울 때
+		{
+			heuristic -= 1.0f;
+		}
+		else if (diffFromNext > diffFromCurrent)
+		{
+			heuristic += 1.0f;
+		}
+	}
+
+	//y의 발견적 값 누정 갱신
+	{
+		diffFromCurrent = tileCell->GetTileY() - targetTileCell->GetTileY();
+		if (diffFromCurrent < 0)
+			diffFromCurrent = diffFromCurrent * (-1);
+
+		diffFromNext = nextTileCell->GetTileY() - targetTileCell->GetTileY();
+		if (diffFromNext < 0)
+			diffFromNext = diffFromNext * (-1);
+
+		if (diffFromNext < diffFromCurrent)		//다음 타일이 현재 타일보다 목표타일에 가까울 때
+		{
+			heuristic -= 1.0f;
+		}
+		else if (diffFromNext > diffFromCurrent)
+		{
+			heuristic += 1.0f;
+		}
+	}
+
+	//Add heuristic what you want
+	if (tileCell->GetDistanceWeight() < nextTileCell->GetDistanceWeight())
+		heuristic += 1.0f;
+	else if (tileCell->GetDistanceWeight() > nextTileCell->GetDistanceWeight())
+		heuristic -= 1.0f;
+
+	return heuristic;
 }

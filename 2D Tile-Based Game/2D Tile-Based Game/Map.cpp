@@ -91,6 +91,18 @@ void Map::Init()
 						WCHAR componentName[256];
 						wsprintf(componentName, L"map_layer_01_%d_%d", line, x);
 						TileObject* tileObject = new TileObject(componentName, _spriteList[index], x, row);
+
+						//TEST
+						switch (index)
+						{
+						case 78:	//ÀÜµð
+							tileObject->SetDistanceWeight(1.5f);
+							break;
+						case 183:	//µ¹±æ
+							tileObject->SetDistanceWeight(0.5f);
+							break;
+						}
+
 						tileObject->SetCanMove(true);
 
 						tileCell->AddComponent(tileObject, true);

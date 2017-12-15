@@ -25,4 +25,12 @@ public:
 
 	void SetPosition(float posX, float posY);
 	void MoveDeltaPosition(float deltaX, float deltaY);
+
+	//distance Weight
+private:
+	float _distanceWeight;
+
+public:
+	float GetDistanceWeight();
+	void SetDistanceWeight(float distanceWeight);
 };

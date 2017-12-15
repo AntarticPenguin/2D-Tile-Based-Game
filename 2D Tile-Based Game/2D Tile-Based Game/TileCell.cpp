@@ -1,6 +1,7 @@
 #include "TileCell.h"
 #include "Sprite.h"
 #include "Component.h"
+#include "TileObject.h"
 
 TileCell::TileCell(int tileX, int tileY)
 {
@@ -81,6 +82,11 @@ void TileCell::AddComponent(Component* component, bool isRender)
 {
 	_componentList.push_back(component);
 
+	if (eComponentType::CT_TILE_OBJECT == component->GetType())
+	{
+		_distanceWeight = ((TileObject*)component)->GetDistanceWeight();
+	}
+
 	if (isRender)
 	{
 		_renderList.push_back(component);
@@ -143,6 +149,7 @@ void TileCell::InitPathfinding()
 	_isPathfindingMark = false;
 	_prevPathfindingCell = NULL;
 	_distanceFromStart = 0.0f;
+	_heuristic = 0.0f;
 }
 
 bool TileCell::IsPathfindingMark()
@@ -178,4 +185,14 @@ void TileCell::SetDistanceFromStart(float distance)
 float TileCell::GetDistanceWeight()
 {
 	return _distanceWeight;
+}
+
+float TileCell::GetHeuristic()
+{
+	return _heuristic;
+}
+
+void TileCell::SetHeuristic(float heuristic)
+{
+	_heuristic = heuristic;
 }

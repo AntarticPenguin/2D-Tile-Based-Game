@@ -30,12 +30,12 @@ public:
 	{
 		bool operator()(TileCell* a, TileCell* b)
 		{
-			return a->GetDistanceFromStart() > b->GetDistanceFromStart();
+			//return a->GetDistanceFromStart() > b->GetDistanceFromStart();
+			return a->GetHeuristic() > b->GetHeuristic();
 		}
 	};
 
 private:
-	//std::queue<TileCell*> _pathfindingTileQueue;
 	std::priority_queue<TileCell*, std::vector<TileCell*>, compare> _pathfindingTileQueue;
 	TileCell* _targetTileCell;
 	TileCell* _reverseTileCell;
@@ -44,4 +44,5 @@ private:
 public:
 	void UpdatePathfinding();
 	void UpdateBuildPath();
+	float CalcSimpleHeuristic(TileCell* tileCell, TileCell* nextTileCell, TileCell*_targetTileCell);
 };
