@@ -129,12 +129,15 @@ void PathfindingState::UpdatePathfinding()
 				if ((true == map->CanMoveTileMap(nextTilePos) && false == nextTileCell->IsPathfindingMark()) ||
 					(nextTileCell->GetTileX() == _targetTileCell->GetTileX() && nextTileCell->GetTileY() == _targetTileCell->GetTileY()))
 				{
-					//float distanceFromStart = tileCell->GetDistanceFromStart() + tileCell->GetDistanceWeight();
-					float heuristic = CalcSimpleHeuristic(tileCell, nextTileCell, _targetTileCell);
+					float distanceFromStart = tileCell->GetDistanceFromStart() + tileCell->GetDistanceWeight();	//芭府快急
+					//float heuristic = CalcSimpleHeuristic(tileCell, nextTileCell, _targetTileCell);
+					//float heuristic = CalcComplexHeuristic(nextTileCell, _targetTileCell);
+					float heuristic = CalcAStarHeuristic(distanceFromStart, nextTileCell, _targetTileCell);
+
 
 					if (NULL == nextTileCell->GetPrevPathfindingCell())
 					{
-						//nextTileCell->SetDistanceFromStart(distanceFromStart);
+						nextTileCell->SetDistanceFromStart(distanceFromStart);	//芭府快急
 						nextTileCell->SetHeuristic(heuristic);
 						nextTileCell->SetPrevPathfindingCell(tileCell);
 						_pathfindingTileQueue.push(nextTileCell);
@@ -238,4 +241,20 @@ float PathfindingState::CalcSimpleHeuristic(TileCell* tileCell, TileCell* nextTi
 		heuristic -= 1.0f;
 
 	return heuristic;
+}
+
+float PathfindingState::CalcComplexHeuristic(TileCell* nextTileCell, TileCell* targetTileCell)
+{
+	int distanceW = nextTileCell->GetTileX() - targetTileCell->GetTileX();
+	int distanceH = nextTileCell->GetTileY() - targetTileCell->GetTileY();
+
+	distanceW = distanceW * distanceW;
+	distanceH = distanceH * distanceH;
+
+	return (float)sqrt((double)distanceW + (double)distanceH);
+}
+
+float PathfindingState::CalcAStarHeuristic(float distanceFromStart, TileCell* nextTileCell, TileCell* targetTileCell)
+{
+	return distanceFromStart + CalcComplexHeuristic(nextTileCell, targetTileCell);
 }

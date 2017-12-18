@@ -45,4 +45,6 @@ public:
 	void UpdatePathfinding();
 	void UpdateBuildPath();
 	float CalcSimpleHeuristic(TileCell* tileCell, TileCell* nextTileCell, TileCell*_targetTileCell);
+	float CalcComplexHeuristic(TileCell* nextTileCell, TileCell* targetTileCell);
+	float CalcAStarHeuristic(float distanceFromStart, TileCell* nextTileCell, TileCell* targetTileCell);
 };

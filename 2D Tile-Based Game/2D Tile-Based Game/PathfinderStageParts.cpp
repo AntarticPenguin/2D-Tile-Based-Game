@@ -25,12 +25,14 @@ void PathfinderStageParts::CreateComponents(std::wstring mapName)
 	StageParts::CreateComponents(mapName);
 
 	//1개의 몬스터 생성
-	Component* monster = new PathfinderMonster(L"pathfindermonster", L"Monster", L"Monster");
+	Monster* monster = new PathfinderMonster(L"pathfindermonster", L"Monster", L"Monster");
 	_stage->AddStageComponent(monster);
+	//monster->InitTilePosition(1, 1);
 
 	//1개의 플레이어 생성( 추후 길찾기 전용 플레이어로 바꿀 예정)
 	Player* player = new PathfinderPlayer(L"Player", L"Player", L"Player");
 	_stage->AddStageComponent(player);
+	//player->InitTilePosition(23, 23);
 
 	TileCell* targetCell = _stage->GetMap()->GetTileCell(monster->GetTileX(), monster->GetTileY());
 	player->SetTargetTileCell(targetCell);
