@@ -26,17 +26,23 @@ public:
 		BUILD_PATH,
 	};
 
+	typedef struct _sPathCommand
+	{
+		float heuristic;
+		TileCell* tileCell;
+	}sPathCommand;
+
 	struct compare
 	{
-		bool operator()(TileCell* a, TileCell* b)
+		bool operator()(sPathCommand& a, sPathCommand& b)
 		{
-			//return a->GetDistanceFromStart() > b->GetDistanceFromStart();
-			return a->GetHeuristic() > b->GetHeuristic();
+			return a.heuristic > b.heuristic;
 		}
 	};
 
 private:
-	std::priority_queue<TileCell*, std::vector<TileCell*>, compare> _pathfindingTileQueue;
+	//std::priority_queue<TileCell*, std::vector<TileCell*>, compare> _pathfindingTileQueue;
+	std::priority_queue<sPathCommand, std::vector<sPathCommand>, compare> _pathfindingTileQueue;
 	TileCell* _targetTileCell;
 	TileCell* _reverseTileCell;
 	eUpdateState _updateState;

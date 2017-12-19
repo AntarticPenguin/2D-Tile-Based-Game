@@ -513,3 +513,9 @@ void Character::PushPathTileCell(TileCell* tileCell)
 {
 	_pathTileCellStack.push(tileCell);
 }
+
+void Character::ClearPathTileCellStack()
+{
+	while (false == _pathTileCellStack.empty())
+		_pathTileCellStack.pop();
+}

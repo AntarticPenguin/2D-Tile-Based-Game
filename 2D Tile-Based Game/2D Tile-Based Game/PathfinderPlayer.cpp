@@ -1,3 +1,6 @@
+#include "GameSystem.h"
+#include "Stage.h"
+#include "Map.h"
 #include "PathfinderPlayer.h"
 #include "IdleState.h"
 #include "PathfindingState.h"
@@ -14,7 +17,19 @@ PathfinderPlayer::~PathfinderPlayer()
 
 void PathfinderPlayer::UpdateAI(float deltaTime)
 {
+	// 마우스 키처리
+	if (GameSystem::GetInstance().IsMouseDown())
+	{
+		int mouseX = GameSystem::GetInstance().GetMouseX();
+		int mouseY = GameSystem::GetInstance().GetMouseY();
+		TileCell* targetTileCell = GameSystem::GetInstance().GetStage()->GetMap()
+			->FindTileCellWithMousePosition(mouseX, mouseY);
 
+		if (NULL != targetTileCell)
+		{
+			SetTargetTileCell(targetTileCell);
+		}
+	}
 }
 
 void PathfinderPlayer::InitState()

@@ -34,8 +34,11 @@ void PathfinderStageParts::CreateComponents(std::wstring mapName)
 	_stage->AddStageComponent(player);
 	//player->InitTilePosition(23, 23);
 
+	//마우스 사용으로 인해 주석
+	/*
 	TileCell* targetCell = _stage->GetMap()->GetTileCell(monster->GetTileX(), monster->GetTileY());
 	player->SetTargetTileCell(targetCell);
+	*/
 
 	//뷰어를 맵 중앙으로 세팅(타일오브젝트로)
 	int midTileX = _stage->GetMap()->GetWidth() / 2;

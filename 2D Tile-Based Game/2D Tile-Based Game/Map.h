@@ -47,6 +47,7 @@ public:
 
 	TileCell* GetTileCell(int tileX, int tileY);
 	TileCell* GetTileCell(TilePosition nextTilePos);
+	TileCell* FindTileCellWithMousePosition(int mouseX, int mouseY);
 
 	void SetTileComponent(int tileX, int tileY, Component* component, bool isRender);
 	void ResetTileComponent(int tileX, int tileY, Component* component);

@@ -65,7 +65,11 @@ void PathfindingState::Start()
 	}
 
 	TileCell* startTileCell = map->GetTileCell(_character->GetTileX(), _character->GetTileY());
-	_pathfindingTileQueue.push(startTileCell);
+	
+	sPathCommand newCommand;
+	newCommand.heuristic = 0.0f;
+	newCommand.tileCell = startTileCell;
+	_pathfindingTileQueue.push(newCommand);
 
 	_updateState = eUpdateState::PATHFINDING;
 }
@@ -73,7 +77,7 @@ void PathfindingState::Start()
 void PathfindingState::Stop()
 {
 	State::Stop();
-	
+
 	while(false == _pathfindingTileQueue.empty())
 		_pathfindingTileQueue.pop();
 }
@@ -84,30 +88,30 @@ void PathfindingState::UpdatePathfinding()
 	if (0 != _pathfindingTileQueue.size())
 	{
 		//첫번째 노드를 꺼내서 검사
-		TileCell* tileCell = _pathfindingTileQueue.top();
+		sPathCommand command = _pathfindingTileQueue.top();
 		_pathfindingTileQueue.pop();
 
-		if (false == tileCell->IsPathfindingMark())
+		if (false == command.tileCell->IsPathfindingMark())
 		{
-			tileCell->PathFinded();
+			command.tileCell->PathFinded();
 
 			//목표 타겟이면 종료
-			if (tileCell->GetTileX() == _targetTileCell->GetTileX() &&
-				tileCell->GetTileY() == _targetTileCell->GetTileY())
+			if (command.tileCell->GetTileX() == _targetTileCell->GetTileX() &&
+				command.tileCell->GetTileY() == _targetTileCell->GetTileY())
 			{
-				std::list<Component*> comList = tileCell->GetComponentList();
+				std::list<Component*> comList = command.tileCell->GetComponentList();
 				for (std::list<Component*>::iterator itr = comList.begin(); itr != comList.end(); itr++)
 				{
 					Component* component = (*itr);
 					if (component->GetType() == eComponentType::CT_MONSTER)
 					{
-						if (tileCell->GetTileX() < tileCell->GetPrevPathfindingCell()->GetTileX())
+						if (command.tileCell->GetTileX() < command.tileCell->GetPrevPathfindingCell()->GetTileX())
 							((Character*)component)->SetDirection(eDirection::RIGHT);
-						else if (tileCell->GetTileX() > tileCell->GetPrevPathfindingCell()->GetTileX())
+						else if (command.tileCell->GetTileX() > command.tileCell->GetPrevPathfindingCell()->GetTileX())
 							((Character*)component)->SetDirection(eDirection::LEFT);
-						else if (tileCell->GetTileY() < tileCell->GetPrevPathfindingCell()->GetTileY())
+						else if (command.tileCell->GetTileY() < command.tileCell->GetPrevPathfindingCell()->GetTileY())
 							((Character*)component)->SetDirection(eDirection::DOWN);
-						else if (tileCell->GetTileY() > tileCell->GetPrevPathfindingCell()->GetTileY())
+						else if (command.tileCell->GetTileY() > command.tileCell->GetPrevPathfindingCell()->GetTileY())
 							((Character*)component)->SetDirection(eDirection::UP);
 					}
 				}
@@ -120,7 +124,7 @@ void PathfindingState::UpdatePathfinding()
 
 			for (int direction = 0; direction < eDirection::NONE; direction++)
 			{
-				TilePosition curTilePos = { tileCell->GetTileX(), tileCell->GetTileY() };
+				TilePosition curTilePos = { command.tileCell->GetTileX(), command.tileCell->GetTileY() };
 				TilePosition nextTilePos = GetNextTilePosition(curTilePos, (eDirection)direction);
 
 				Map* map = GameSystem::GetInstance().GetStage()->GetMap();
@@ -129,18 +133,21 @@ void PathfindingState::UpdatePathfinding()
 				if ((true == map->CanMoveTileMap(nextTilePos) && false == nextTileCell->IsPathfindingMark()) ||
 					(nextTileCell->GetTileX() == _targetTileCell->GetTileX() && nextTileCell->GetTileY() == _targetTileCell->GetTileY()))
 				{
-					float distanceFromStart = tileCell->GetDistanceFromStart() + tileCell->GetDistanceWeight();	//거리우선
+					float distanceFromStart = command.tileCell->GetDistanceFromStart() + command.tileCell->GetDistanceWeight();	//거리우선
 					//float heuristic = CalcSimpleHeuristic(tileCell, nextTileCell, _targetTileCell);
 					//float heuristic = CalcComplexHeuristic(nextTileCell, _targetTileCell);
 					float heuristic = CalcAStarHeuristic(distanceFromStart, nextTileCell, _targetTileCell);
-
 
 					if (NULL == nextTileCell->GetPrevPathfindingCell())
 					{
 						nextTileCell->SetDistanceFromStart(distanceFromStart);	//거리우선
 						nextTileCell->SetHeuristic(heuristic);
-						nextTileCell->SetPrevPathfindingCell(tileCell);
-						_pathfindingTileQueue.push(nextTileCell);
+						nextTileCell->SetPrevPathfindingCell(command.tileCell);
+
+						sPathCommand newCommand;
+						newCommand.heuristic = heuristic;
+						newCommand.tileCell = nextTileCell;
+						_pathfindingTileQueue.push(newCommand);
 
 						if (
 							!(nextTileCell->GetTileX() == _targetTileCell->GetTileX() && nextTileCell->GetTileY() == _targetTileCell->GetTileY())
@@ -149,19 +156,24 @@ void PathfindingState::UpdatePathfinding()
 							)
 						{
 							//검색범위를 그려준다.
-							GameSystem::GetInstance().GetStage()->CreatePathfindNPC(nextTileCell);
+							//GameSystem::GetInstance().GetStage()->CreatePathfindNPC(nextTileCell);
+						}
+					}	
+					else
+					{
+						if (distanceFromStart < nextTileCell->GetDistanceFromStart())
+						{
+							//다시 검사(큐에 삽입) : heuristic 값을 다시 계산해서 비교
+							nextTileCell->SetDistanceFromStart(distanceFromStart);
+							nextTileCell->SetPrevPathfindingCell(command.tileCell);
+							//nextTileCell->SetHeuristic() 포인터가 들어가고 포인터에서 비교하는 값을 조작하면 우선순위 큐가 망가진다.
+
+							sPathCommand newCommand;
+							newCommand.heuristic = CalcAStarHeuristic(distanceFromStart, nextTileCell, _targetTileCell);
+							newCommand.tileCell = nextTileCell;
+							_pathfindingTileQueue.push(newCommand);
 						}
 					}
-					//else
-					//{
-					//	if (distanceFromStart < nextTileCell->GetDistanceFromStart())
-					//	{
-					//		//다시 검사(큐에 삽입)
-					//		nextTileCell->SetDistanceFromStart(distanceFromStart);
-					//		nextTileCell->SetPrevPathfindingCell(tileCell);
-					//		_pathfindingTileQueue.push(nextTileCell);
-					//	}
-					//}
 				}
 			}
 		}
@@ -174,6 +186,7 @@ void PathfindingState::UpdateBuildPath()
 {
 	if (NULL != _reverseTileCell)
 	{
+		/*
 		if (_reverseTileCell->GetTileX() != _targetTileCell->GetTileX() ||
 			_reverseTileCell->GetTileY() != _targetTileCell->GetTileY())
 		{
@@ -181,6 +194,9 @@ void PathfindingState::UpdateBuildPath()
 			GameSystem::GetInstance().GetStage()->CreatePathfindMark(_reverseTileCell);
 			_character->PushPathTileCell(_reverseTileCell);
 		}
+		*/
+		//GameSystem::GetInstance().GetStage()->CreatePathfindMark(_reverseTileCell);
+		_character->PushPathTileCell(_reverseTileCell);
 		_reverseTileCell = _reverseTileCell->GetPrevPathfindingCell();
 	}
 	else

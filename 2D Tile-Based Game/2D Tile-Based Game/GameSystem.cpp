@@ -7,8 +7,20 @@
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	int mouseX;
+	int mouseY;
+
 	switch (msg)
 	{
+	case WM_LBUTTONDOWN:
+		mouseX = LOWORD(lParam);
+		mouseY = HIWORD(lParam);
+		GameSystem::GetInstance().MouseDown(mouseX, mouseY);
+		return 0;
+	case WM_LBUTTONUP:
+		GameSystem::GetInstance().MouseUp();
+		return 0;
+
 	case WM_KEYDOWN:
 		if (VK_ESCAPE == wParam)
 		{
@@ -89,8 +101,8 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 		style,
 		CW_USEDEFAULT,			//x
 		CW_USEDEFAULT,			//y
-		CW_USEDEFAULT,			//Width
-		CW_USEDEFAULT,			//Height
+		_clientWidth,			//Width
+		_clientHeight,			//Height
 		0,
 		0,
 		hInstance,
@@ -344,6 +356,10 @@ void GameSystem::CheckDeviceLost()
 
 void GameSystem::InitInput()
 {
+	_isMouseDown = false;
+	_mouseX = 0;
+	_mouseY = 0;
+
 	for (int i = 0; i < 256; i++)
 		_eKeyState[i] = eKeyState::KEY_UP;
 }
@@ -363,7 +379,35 @@ bool GameSystem::IsKeyDown(unsigned int keyCode)
 	return (eKeyState::KEY_DOWN == _eKeyState[keyCode]);
 }
 
+void GameSystem::MouseDown(int mouseX, int mouseY)
+{
+	_isMouseDown = true;
+
+	_mouseX = mouseX;
+	_mouseY = mouseY;
+}
+
+void GameSystem::MouseUp()
+{
+	_isMouseDown = false;
+}
+
 Stage* GameSystem::GetStage()
 {
 	return _stage;
+}
+
+bool GameSystem::IsMouseDown()
+{
+	return _isMouseDown;
+}
+
+int GameSystem::GetMouseX()
+{
+	return _mouseX;
+}
+
+int GameSystem::GetMouseY()
+{
+	return _mouseY;
 }

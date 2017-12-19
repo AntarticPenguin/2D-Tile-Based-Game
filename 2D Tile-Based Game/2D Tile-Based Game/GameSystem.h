@@ -60,12 +60,22 @@ public:
 private:
 	eKeyState _eKeyState[256];
 
+	bool _isMouseDown;
+	int _mouseX;
+	int _mouseY;
+
 public:
 	void InitInput();
+
 	void KeyDown(unsigned int keyCode);
 	void KeyUp(unsigned int keyCode);
-
 	bool IsKeyDown(unsigned int keyCode);
+
+	void MouseDown(int mouseX, int mouseY);
+	void MouseUp();
+	bool IsMouseDown();
+	int GetMouseX();
+	int GetMouseY();
 
 	//Stage
 private:

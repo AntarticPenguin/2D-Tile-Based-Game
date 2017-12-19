@@ -318,6 +318,46 @@ TileCell* Map::GetTileCell(TilePosition nextTilePos)
 	return GetTileCell(nextTilePos.x, nextTilePos.y);
 }
 
+TileCell* Map::FindTileCellWithMousePosition(int mouseX, int mouseY)
+{
+	int midX = GameSystem::GetInstance().GetClientWidth() / 2;
+	int midY = GameSystem::GetInstance().GetClientHeight() / 2;
+
+	int minX = _viewer->GetTileX() - (midX / _tileSize) - 3;
+	int maxX = _viewer->GetTileX() + (midX / _tileSize) + 3;
+	int minY = _viewer->GetTileY() - (midY / _tileSize) - 3;
+	int maxY = _viewer->GetTileY() + (midY / _tileSize) + 3;
+
+	//예외처리(범위 밖으로 벗어났을 경우)
+	if (minX < 0)
+		minX = 0;
+	if (_mapWidth <= maxX)
+		maxX = _mapWidth;
+	if (minY < 0)
+		minY = 0;
+	if (_mapHeight <= maxY)
+		maxY = _mapHeight;
+
+	for (int y = minY; y < maxY; y++)
+	{
+		for (int x = minX; x < maxX; x++)
+		{
+			//타일 사각형 영역에 마우스 클릭이 되었는가?
+			RECT rect;
+			rect.left = _tileMap[y][x]->GetPositionX() - _tileSize / 2.0f;
+			rect.right = rect.left + _tileSize;
+			rect.top = _tileMap[y][x]->GetPositionY() - _tileSize / 2.0f;
+			rect.bottom = rect.top + _tileSize;
+
+			if (rect.left <= mouseX && mouseX <= rect.right &&
+				rect.top <= mouseY && mouseY <= rect.bottom)
+			{
+				return _tileMap[y][x];
+			}
+		}
+	}
+}
+
 void Map::SetTileComponent(int tileX, int tileY, Component* component, bool isRender)
 {
 	_tileMap[tileY][tileX]->AddComponent(component, isRender);
