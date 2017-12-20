@@ -40,8 +40,7 @@ public:
 		}
 	};
 
-private:
-	//std::priority_queue<TileCell*, std::vector<TileCell*>, compare> _pathfindingTileQueue;
+protected:
 	std::priority_queue<sPathCommand, std::vector<sPathCommand>, compare> _pathfindingTileQueue;
 	TileCell* _targetTileCell;
 	TileCell* _reverseTileCell;

@@ -9,7 +9,7 @@
 
 PathfindingState::PathfindingState()
 {
-
+	_reverseTileCell = NULL;
 }
 
 PathfindingState::~PathfindingState()
@@ -99,7 +99,7 @@ void PathfindingState::UpdatePathfinding()
 			if (command.tileCell->GetTileX() == _targetTileCell->GetTileX() &&
 				command.tileCell->GetTileY() == _targetTileCell->GetTileY())
 			{
-				std::list<Component*> comList = command.tileCell->GetComponentList();
+				/*std::list<Component*> comList = command.tileCell->GetComponentList();
 				for (std::list<Component*>::iterator itr = comList.begin(); itr != comList.end(); itr++)
 				{
 					Component* component = (*itr);
@@ -114,7 +114,7 @@ void PathfindingState::UpdatePathfinding()
 						else if (command.tileCell->GetTileY() > command.tileCell->GetPrevPathfindingCell()->GetTileY())
 							((Character*)component)->SetDirection(eDirection::UP);
 					}
-				}
+				}*/
 
 				OutputDebugString(L"Find Goal\n");
 				_updateState = eUpdateState::BUILD_PATH;
@@ -149,15 +149,17 @@ void PathfindingState::UpdatePathfinding()
 						newCommand.tileCell = nextTileCell;
 						_pathfindingTileQueue.push(newCommand);
 
+						//검색범위를 그려준다.
+						/*
 						if (
 							!(nextTileCell->GetTileX() == _targetTileCell->GetTileX() && nextTileCell->GetTileY() == _targetTileCell->GetTileY())
 							&&
 							!(nextTileCell->GetTileX() == _character->GetTileX() && nextTileCell->GetTileY() == _character->GetTileY())
 							)
 						{
-							//검색범위를 그려준다.
-							//GameSystem::GetInstance().GetStage()->CreatePathfindNPC(nextTileCell);
+							GameSystem::GetInstance().GetStage()->CreatePathfindNPC(nextTileCell);
 						}
+						*/
 					}	
 					else
 					{
@@ -195,7 +197,9 @@ void PathfindingState::UpdateBuildPath()
 			_character->PushPathTileCell(_reverseTileCell);
 		}
 		*/
+		//찾은 경로를 그려준다.
 		//GameSystem::GetInstance().GetStage()->CreatePathfindMark(_reverseTileCell);
+
 		_character->PushPathTileCell(_reverseTileCell);
 		_reverseTileCell = _reverseTileCell->GetPrevPathfindingCell();
 	}

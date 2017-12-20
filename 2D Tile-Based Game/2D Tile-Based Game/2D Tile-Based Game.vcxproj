@@ -26,6 +26,7 @@
     <ClCompile Include="PathfinderMonster.cpp" />
     <ClCompile Include="PathfinderPlayer.cpp" />
     <ClCompile Include="PathfinderStageParts.cpp" />
+    <ClCompile Include="PathfindingImmediateState.cpp" />
     <ClCompile Include="PathfindingMoveState.cpp" />
     <ClCompile Include="PathfindingState.cpp" />
     <ClCompile Include="StageParts.cpp" />
@@ -69,6 +70,7 @@
     <ClInclude Include="PathfinderMonster.h" />
     <ClInclude Include="PathfinderPlayer.h" />
     <ClInclude Include="PathfinderStageParts.h" />
+    <ClInclude Include="PathfindingImmediateState.h" />
     <ClInclude Include="PathfindingMoveState.h" />
     <ClInclude Include="PathfindingState.h" />
     <ClInclude Include="StageParts.h" />

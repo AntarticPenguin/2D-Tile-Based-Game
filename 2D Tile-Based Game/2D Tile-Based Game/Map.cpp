@@ -356,6 +356,7 @@ TileCell* Map::FindTileCellWithMousePosition(int mouseX, int mouseY)
 			}
 		}
 	}
+	return NULL;
 }
 
 void Map::SetTileComponent(int tileX, int tileY, Component* component, bool isRender)

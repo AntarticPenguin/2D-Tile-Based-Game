@@ -49,8 +49,11 @@ void PathfindingMoveState::Update(float deltaTime)
 			if(eDirection::NONE != direction)
 				_character->SetDirection(direction);
 
-			_character->MoveStart(tileCell->GetTileX(), tileCell->GetTileY());
-			_character->MoveStop();
+			if (true == tileCell->CanMove())
+			{
+				_character->MoveStart(tileCell->GetTileX(), tileCell->GetTileY());
+				_character->MoveStop();
+			}
 		}
 		else
 		{
