@@ -1,3 +1,5 @@
+#include <list>
+
 #include "PathfindingMoveState.h"
 #include "Character.h"
 #include "Map.h"
@@ -54,6 +56,25 @@ void PathfindingMoveState::Update(float deltaTime)
 				_character->MoveStart(tileCell->GetTileX(), tileCell->GetTileY());
 				_character->MoveStop();
 			}
+			else
+			{
+				std::list<Component*> collisionList;
+				bool canMove = tileCell->GetCollisionList(collisionList);
+				if (false == canMove)
+				{
+					Component* target = _character->Collision(collisionList);
+					if (NULL != target && _character->IsAttackCooltime())
+					{
+						_character->ResetAttackCooltime();
+						_character->SetTarget(target);
+						_nextState = eStateType::ET_ATTACK;
+					}
+					else
+					{
+						_nextState = eStateType::ET_IDLE;
+					}
+				}
+			}
 		}
 		else
 		{
@@ -74,7 +95,9 @@ void PathfindingMoveState::Start()
 	_movingDuration = 0.0f;
 
 	_pathTileCellStack = _character->GetPathTileCellStack();
-	_pathTileCellStack.pop();	//자기위치는 제외
+
+	if(0 < _pathTileCellStack.size())
+		_pathTileCellStack.pop();	//자기위치는 제외
 }
 
 void PathfindingMoveState::Stop()

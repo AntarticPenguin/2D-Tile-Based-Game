@@ -33,6 +33,7 @@ Character::Character(std::wstring name, std::wstring scriptName, std::wstring sp
 	{
 		_attackPoint = 10;
 		_attackedPoint = 0;
+		_attackRange = 1;
 		_maxHp = 20;
 		_hp = _maxHp;
 
@@ -379,6 +380,11 @@ void Character::ResetTarget()
 int Character::GetAttackPoint()
 {
 	return _attackPoint;
+}
+
+int Character::GetAttackRange()
+{
+	return _attackRange;
 }
 
 void Character::UpdateAttackCooltime(float deltaTime)

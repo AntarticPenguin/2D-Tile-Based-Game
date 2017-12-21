@@ -99,23 +99,6 @@ void PathfindingState::UpdatePathfinding()
 			if (command.tileCell->GetTileX() == _targetTileCell->GetTileX() &&
 				command.tileCell->GetTileY() == _targetTileCell->GetTileY())
 			{
-				/*std::list<Component*> comList = command.tileCell->GetComponentList();
-				for (std::list<Component*>::iterator itr = comList.begin(); itr != comList.end(); itr++)
-				{
-					Component* component = (*itr);
-					if (component->GetType() == eComponentType::CT_MONSTER)
-					{
-						if (command.tileCell->GetTileX() < command.tileCell->GetPrevPathfindingCell()->GetTileX())
-							((Character*)component)->SetDirection(eDirection::RIGHT);
-						else if (command.tileCell->GetTileX() > command.tileCell->GetPrevPathfindingCell()->GetTileX())
-							((Character*)component)->SetDirection(eDirection::LEFT);
-						else if (command.tileCell->GetTileY() < command.tileCell->GetPrevPathfindingCell()->GetTileY())
-							((Character*)component)->SetDirection(eDirection::DOWN);
-						else if (command.tileCell->GetTileY() > command.tileCell->GetPrevPathfindingCell()->GetTileY())
-							((Character*)component)->SetDirection(eDirection::UP);
-					}
-				}*/
-
 				OutputDebugString(L"Find Goal\n");
 				_updateState = eUpdateState::BUILD_PATH;
 				_reverseTileCell = _targetTileCell;

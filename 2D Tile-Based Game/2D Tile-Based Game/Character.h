@@ -126,6 +126,7 @@ protected:
 	int _attackPoint;
 	float _attackCooltimeDuration;
 	float _attackCooltime;
+	int _attackRange;
 
 public:
 	Component* GetTarget();
@@ -133,6 +134,7 @@ public:
 	void SetTarget(Component* target);
 	void ResetTarget();
 	int GetAttackPoint();
+	int GetAttackRange();
 
 	void UpdateAttackCooltime(float deltaTime);
 	bool IsAttackCooltime();
