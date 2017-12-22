@@ -1,4 +1,5 @@
 #include <list>
+#include <vector>
 
 #include "PathfindingMoveState.h"
 #include "Character.h"
@@ -45,13 +46,14 @@ void PathfindingMoveState::Update(float deltaTime)
 			TileCell* tileCell = _pathTileCellStack.top();
 			_pathTileCellStack.pop();
 
+			//방향 세팅
 			TilePosition to = { tileCell->GetTileX(), tileCell->GetTileY() };		//도착
 			TilePosition from = { _character->GetTileX(), _character->GetTileY() };	//시작
 			eDirection direction = GetDirection(to, from);
 			if(eDirection::NONE != direction)
 				_character->SetDirection(direction);
 
-			if (true == tileCell->CanMove())
+			/*if (true == tileCell->CanMove())
 			{
 				_character->MoveStart(tileCell->GetTileX(), tileCell->GetTileY());
 				_character->MoveStop();
@@ -74,7 +76,15 @@ void PathfindingMoveState::Update(float deltaTime)
 						_nextState = eStateType::ET_IDLE;
 					}
 				}
-			}
+			}*/
+			/*
+				1. 공격범위 내에 타겟타일셀이 들어왔는지 체크
+				2. 타겟타일셀이 갈 수 있다 -> 그냥 간다.
+							  갈 수 없다 -> 타일셀에 있는 컴포넌트 리스트 가져온다.
+					3. 몬스터다 -> 공격 state로
+					   그 외 -> 움직인다.
+			*/
+			
 		}
 		else
 		{

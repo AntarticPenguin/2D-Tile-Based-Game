@@ -10,7 +10,7 @@
 PathfinderPlayer::PathfinderPlayer(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
 	Player(name, scriptName, spriteFileName)
 {
-	_attackRange = 3;
+	_attackRange = 2;
 }
 
 PathfinderPlayer::~PathfinderPlayer()

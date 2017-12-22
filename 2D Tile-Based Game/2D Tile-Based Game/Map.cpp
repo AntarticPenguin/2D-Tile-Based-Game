@@ -1,6 +1,7 @@
 #include <fstream>
 
 #include "GameSystem.h"
+#include "GlobalTile.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "TileCell.h"

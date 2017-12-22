@@ -1,4 +1,8 @@
 #include "GlobalTile.h"
+#include "GameSystem.h"
+#include "Component.h"
+#include "Stage.h"
+#include "Map.h"
 
 TilePosition GetNextTilePosition(TilePosition curTilePos, eDirection direction)
 {
