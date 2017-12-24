@@ -52,38 +52,65 @@ void PathfindingMoveState::Update(float deltaTime)
 			eDirection direction = GetDirection(to, from);
 			if(eDirection::NONE != direction)
 				_character->SetDirection(direction);
+			/*
+				1. 공격범위 내에 타겟타일셀이 들어왔는지 체크
+					- 없다 ->2번으로
+					- 있다.
+						->타일셀에 있는 컴포넌트 검사.
+							-몬스터다. ->공격
+							-그외 -> 2번으로
+				2. 움직인다.
+			*/
+			Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 
-			/*if (true == tileCell->CanMove())
+			int range = _character->GetAttackRange();
+			int minTileX = _character->GetTileX() - range;
+			int maxTileX = _character->GetTileX() + range;
+			int minTileY = _character->GetTileY() - range;
+			int maxTileY = _character->GetTileY() + range;
+
+			if (minTileX < 0)
+				minTileX = 0;
+			if (map->GetWidth() <= maxTileX)
+				maxTileX = map->GetWidth() - 1;
+			if (minTileY < 0)
+				minTileY = 0;
+			if (map->GetHeight() <= maxTileY)
+				maxTileY = map->GetHeight() - 1;
+			
+			for (int y = minTileY; y <= maxTileY; y++)
+			{
+				for (int x = minTileX; x <= maxTileX; x++)
+				{
+					TileCell* checkTileCell = map->GetTileCell(x, y);
+					if (checkTileCell == _character->GetTargetCell())
+					{
+						std::list<Component*> collisionList;
+						bool canMove = checkTileCell->GetCollisionList(collisionList);
+						if (false == canMove)
+						{
+							Component* target = _character->Collision(collisionList);
+							if (NULL != target && _character->IsAttackCooltime())
+							{
+								_character->ResetAttackCooltime();
+								_character->SetTarget(target);
+								_nextState = eStateType::ET_ATTACK;
+								return;
+							}
+						}
+					}
+				}
+			}
+
+			if (true == tileCell->CanMove())
 			{
 				_character->MoveStart(tileCell->GetTileX(), tileCell->GetTileY());
 				_character->MoveStop();
 			}
 			else
 			{
-				std::list<Component*> collisionList;
-				bool canMove = tileCell->GetCollisionList(collisionList);
-				if (false == canMove)
-				{
-					Component* target = _character->Collision(collisionList);
-					if (NULL != target && _character->IsAttackCooltime())
-					{
-						_character->ResetAttackCooltime();
-						_character->SetTarget(target);
-						_nextState = eStateType::ET_ATTACK;
-					}
-					else
-					{
-						_nextState = eStateType::ET_IDLE;
-					}
-				}
-			}*/
-			/*
-				1. 공격범위 내에 타겟타일셀이 들어왔는지 체크
-				2. 타겟타일셀이 갈 수 있다 -> 그냥 간다.
-							  갈 수 없다 -> 타일셀에 있는 컴포넌트 리스트 가져온다.
-					3. 몬스터다 -> 공격 state로
-					   그 외 -> 움직인다.
-			*/
+				_nextState = eStateType::ET_IDLE;
+			}
 			
 		}
 		else
