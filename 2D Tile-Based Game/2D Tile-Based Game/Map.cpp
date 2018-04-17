@@ -6,7 +6,6 @@
 #include "Sprite.h"
 #include "TileCell.h"
 #include "TileObject.h"
-#include "LifeTileObject.h"
 
 Map::Map(std::wstring name) : Component(name)
 {
@@ -149,17 +148,8 @@ void Map::Init()
 						wsprintf(componentName, L"map_layer_02_%d_%d", line, x);
 						if (0 <= index)
 						{
-							if (100100 == index)
-							{
-								LifeTileObject* tileObject = new LifeTileObject(componentName, _spriteList[14], x, row);
-								tileCell->AddComponent(tileObject, true);
-								tileObject->SetCanMove(true);
-							}
-							else
-							{
-								TileObject* tileObject = new TileObject(componentName, _spriteList[index], x, row);
-								tileCell->AddComponent(tileObject, true);
-							}
+							TileObject* tileObject = new TileObject(componentName, _spriteList[index], x, row);
+							tileCell->AddComponent(tileObject, true);
 						}
 						token = strtok(NULL, ",");
 					}
@@ -237,10 +227,10 @@ void Map::Render()
 	int midX = GameSystem::GetInstance().GetClientWidth() / 2;
 	int midY = GameSystem::GetInstance().GetClientHeight() / 2;
 
-	int minX = _viewer->GetTileX() - (midX / _tileSize) - 3;
-	int maxX = _viewer->GetTileX() + (midX / _tileSize) + 3;
-	int minY = _viewer->GetTileY() - (midY / _tileSize) - 3;
-	int maxY = _viewer->GetTileY() + (midY / _tileSize) + 3;
+	int minX = _viewer->GetTileX() - 5;//(midX / _tileSize) - 3;
+	int maxX = _viewer->GetTileX() + 5;//(midX / _tileSize) + 3;
+	int minY = _viewer->GetTileY() - 5;//(midY / _tileSize) - 3;
+	int maxY = _viewer->GetTileY() + 5;//(midY / _tileSize) + 3;
 
 	//예외처리(범위 밖으로 벗어났을 경우)
 	if (minX < 0)

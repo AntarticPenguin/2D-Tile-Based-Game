@@ -20,16 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttackState.cpp" />
-    <ClCompile Include="DefaultStageParts.cpp" />
+    <ClCompile Include="DefaultStageLoader.cpp" />
     <ClCompile Include="GlobalTile.cpp" />
-    <ClCompile Include="LifeStageParts.cpp" />
-    <ClCompile Include="PathfinderMonster.cpp" />
-    <ClCompile Include="PathfinderPlayer.cpp" />
-    <ClCompile Include="PathfinderStageParts.cpp" />
-    <ClCompile Include="PathfindingImmediateState.cpp" />
-    <ClCompile Include="PathfindingMoveState.cpp" />
     <ClCompile Include="PathfindingState.cpp" />
-    <ClCompile Include="StageParts.cpp" />
+    <ClCompile Include="PathfindingMoveState.cpp" />
+    <ClCompile Include="Pathfinding.cpp" />
+    <ClCompile Include="StageLoader.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentSystem.cpp" />
@@ -41,9 +37,6 @@
     <ClCompile Include="GameSystem.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="IdleState.cpp" />
-    <ClCompile Include="LifeNPC.cpp" />
-    <ClCompile Include="LifePlayer.cpp" />
-    <ClCompile Include="LifeTileObject.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MoveState.cpp" />
@@ -64,16 +57,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AttackState.h" />
-    <ClInclude Include="DefaultStageParts.h" />
+    <ClInclude Include="DefaultStageLoader.h" />
     <ClInclude Include="GlobalTile.h" />
-    <ClInclude Include="LifeStageParts.h" />
-    <ClInclude Include="PathfinderMonster.h" />
-    <ClInclude Include="PathfinderPlayer.h" />
-    <ClInclude Include="PathfinderStageParts.h" />
-    <ClInclude Include="PathfindingImmediateState.h" />
-    <ClInclude Include="PathfindingMoveState.h" />
     <ClInclude Include="PathfindingState.h" />
-    <ClInclude Include="StageParts.h" />
+    <ClInclude Include="PathfindingMoveState.h" />
+    <ClInclude Include="Pathfinding.h" />
+    <ClInclude Include="StageLoader.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentMessage.h" />
@@ -86,9 +75,6 @@
     <ClInclude Include="GameSystem.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="IdleState.h" />
-    <ClInclude Include="LifeNPC.h" />
-    <ClInclude Include="LifePlayer.h" />
-    <ClInclude Include="LifeTileObject.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MoveState.h" />
@@ -178,7 +164,6 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -191,7 +176,6 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

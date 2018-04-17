@@ -176,6 +176,7 @@ int	GameSystem::Update()
 
 			_stage->Update(deltaTime);
 
+			//60 Frame Update
 			float secPerFrame = 1.0f / 60.0f;
 			if (secPerFrame <= _frameDuration)
 			{
@@ -211,31 +212,6 @@ int	GameSystem::Update()
 				CheckDeviceLost();
 
 				_device3d->Present(NULL, NULL, NULL, NULL);
-			}
-
-			//Stage 교체 테스트
-			{
-				if (IsKeyDown(VK_F1))
-				{
-					ComponentSystem::GetInstance().ClearMessageQueue();
-					delete _stage;
-					_stage = new Stage();
-					_stage->Init(L"Map2");
-				}
-				if (IsKeyDown(VK_F2))
-				{
-					ComponentSystem::GetInstance().ClearMessageQueue();
-					delete _stage;
-					_stage = new Stage();
-					_stage->Init(L"Map3");
-				}
-				if (IsKeyDown(VK_F3))
-				{
-					ComponentSystem::GetInstance().ClearMessageQueue();
-					delete _stage;
-					_stage = new Stage();
-					_stage->Init(L"Map4");
-				}
 			}
 		}
 	}

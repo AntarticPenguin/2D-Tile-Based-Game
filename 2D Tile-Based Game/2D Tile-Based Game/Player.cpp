@@ -5,6 +5,8 @@
 #include "Player.h"
 
 #include "State.h"
+#include "PathfindingState.h"
+#include "PathfindingMoveState.h"
 #include "DeadState.h"
 #include "CounterAttackState.h"
 #include "RecoveryState.h"
@@ -32,6 +34,7 @@ Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFi
 
 		_attackCooltimeDuration = 0.0f;
 		_attackCooltime = 1.0f;				//attackSpeed
+		_attackRange = 2;
 
 		_recoveryCooltimeDuration = 0.0f;
 		_recoveryCooltime = 3.0f;
@@ -46,7 +49,9 @@ Player::~Player()
 void Player::InitState()
 {
 	ReplaceState(eStateType::ET_IDLE, new IdleState());
-	ReplaceState(eStateType::ET_MOVE, new MoveState());
+	ReplaceState(eStateType::ET_MOVE, new PathfindingMoveState());
+	ReplaceState(eStateType::ET_PATHFINDING, new PathfindingState());
+
 	ReplaceState(eStateType::ET_ATTACK, new AttackState());
 	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
 	ReplaceState(eStateType::ET_COUNTERATTACK, new CounterAttackState());
@@ -56,49 +61,39 @@ void Player::InitState()
 
 void Player::UpdateAI(float deltaTime)
 {
-	eDirection direction = eDirection::NONE;
-	if (GameSystem::GetInstance().IsKeyDown(VK_UP))
-	{
-		direction = eDirection::UP;
-	}
-	if (GameSystem::GetInstance().IsKeyDown(VK_DOWN))
-	{
-		direction = eDirection::DOWN;
-	}
-	if (GameSystem::GetInstance().IsKeyDown(VK_LEFT))
-	{
-		direction = eDirection::LEFT;
-	}
-	if (GameSystem::GetInstance().IsKeyDown(VK_RIGHT))
-	{
-		direction = eDirection::RIGHT;
-	}
+	////아이템 먹기 및 장착
+	//if (GameSystem::GetInstance().IsKeyDown(VK_SPACE))
+	//{
+	//	Map* map = GameSystem::GetInstance().GetStage()->GetMap();
 
-	//아이템 먹기 및 장착
-	if (GameSystem::GetInstance().IsKeyDown(VK_SPACE))
-	{
-		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
+	//	std::list<Component*> componentList = map->GetTileComponentList(_tileX, _tileY);
+	//	for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
+	//	{
+	//		Component* component = (*itr);
+	//		if (eComponentType::CT_ITEM == component->GetType() ||
+	//			eComponentType::CT_ITEM_WEAPON == component->GetType())
+	//		{
+	//			sComponentMsgParam msgParam;
+	//			msgParam.sender = (Component*)this;
+	//			msgParam.receiver = component;
+	//			msgParam.message = L"Use";
+	//			ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
+	//		}
+	//	}
+	//}
 
-		std::list<Component*> componentList = map->GetTileComponentList(_tileX, _tileY);
-		for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
+	// 마우스 키처리
+	if (GameSystem::GetInstance().IsMouseDown())
+	{
+		int mouseX = GameSystem::GetInstance().GetMouseX();
+		int mouseY = GameSystem::GetInstance().GetMouseY();
+		TileCell* targetTileCell = GameSystem::GetInstance().GetStage()->GetMap()
+			->FindTileCellWithMousePosition(mouseX, mouseY);
+
+		if (NULL != targetTileCell)
 		{
-			Component* component = (*itr);
-			if (eComponentType::CT_ITEM == component->GetType() ||
-				eComponentType::CT_ITEM_WEAPON == component->GetType())
-			{
-				sComponentMsgParam msgParam;
-				msgParam.sender = (Component*)this;
-				msgParam.receiver = component;
-				msgParam.message = L"Use";
-				ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
-			}
+			SetTargetTileCell(targetTileCell);
 		}
-	}
-
-	if (eDirection::NONE != direction)
-	{
-		_curDirection = direction;
-		_state->NextState(eStateType::ET_MOVE);
 	}
 }
 

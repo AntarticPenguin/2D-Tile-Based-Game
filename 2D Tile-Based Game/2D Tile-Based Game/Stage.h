@@ -5,7 +5,7 @@
 
 class Component;
 class Map;
-class StageParts;
+class StageLoader;
 class TileCell;
 
 class Stage
@@ -29,26 +29,12 @@ public:
 	Map* GetMap();
 	void SetMap(Map* map);
 
-	//lifegame
+	//Stage Loader
 private:
-	std::list<Component*> _removeComponentList;
-	std::list<Component*> _createBaseComponentList;
-
-public:
-	void CreatePathfindNPC(TileCell* tileCell);
-	void CreatePathfindMark(TileCell* tileCell);
-	void CreateLifeNPC(Component* component);
-	void DestroyLifeNPC(int tileX, int tileY, Component* tileCharacter);
-	void CheckDestroyLifeNPC(Component* tileCharacter);
-	void UpdateBaseComponentList();
-	void UpdateRemoveComponentList();
-
-	//ºÎÇ°
-private:
-	std::map<std::wstring, StageParts*> _partsMap;
-	StageParts* _partsLoader;
+	std::map<std::wstring, StageLoader*> _stageMap;
+	StageLoader* _partsLoader;
 
 public:
 	void AddStageComponent(Component* component);
-	StageParts* GetStageParts(std::wstring mapName);
+	StageLoader* GetStageLoader(std::wstring mapName);
 };

@@ -129,43 +129,22 @@
     <ClCompile Include="Sword.cpp">
       <Filter>소스 파일\Game\Item</Filter>
     </ClCompile>
-    <ClCompile Include="LifeTileObject.cpp">
-      <Filter>소스 파일\Game\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="LifeNPC.cpp">
-      <Filter>소스 파일\Game\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="LifePlayer.cpp">
-      <Filter>소스 파일\Game\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="StageParts.cpp">
-      <Filter>소스 파일\Game\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="LifeStageParts.cpp">
-      <Filter>소스 파일\Game\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="DefaultStageParts.cpp">
-      <Filter>소스 파일\Game\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="PathfinderStageParts.cpp">
-      <Filter>소스 파일\Game\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="PathfinderPlayer.cpp">
-      <Filter>소스 파일\Game\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="PathfinderMonster.cpp">
-      <Filter>소스 파일\Game\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="PathfindingState.cpp">
-      <Filter>소스 파일\Game\Character\State</Filter>
-    </ClCompile>
     <ClCompile Include="GlobalTile.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PathfindingMoveState.cpp">
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClCompile>
-    <ClCompile Include="PathfindingImmediateState.cpp">
+    <ClCompile Include="StageLoader.cpp">
+      <Filter>소스 파일\Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultStageLoader.cpp">
+      <Filter>소스 파일\Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Pathfinding.cpp">
+      <Filter>소스 파일\Game\Character\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PathfindingState.cpp">
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClCompile>
   </ItemGroup>
@@ -257,43 +236,22 @@
     <ClInclude Include="Sword.h">
       <Filter>소스 파일\Game\Item</Filter>
     </ClInclude>
-    <ClInclude Include="LifeTileObject.h">
-      <Filter>소스 파일\Game\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="LifeNPC.h">
-      <Filter>소스 파일\Game\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="LifePlayer.h">
-      <Filter>소스 파일\Game\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="StageParts.h">
-      <Filter>소스 파일\Game\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="LifeStageParts.h">
-      <Filter>소스 파일\Game\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="DefaultStageParts.h">
-      <Filter>소스 파일\Game\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="PathfinderStageParts.h">
-      <Filter>소스 파일\Game\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="PathfinderPlayer.h">
-      <Filter>소스 파일\Game\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="PathfinderMonster.h">
-      <Filter>소스 파일\Game\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="PathfindingState.h">
-      <Filter>소스 파일\Game\Character\State</Filter>
-    </ClInclude>
     <ClInclude Include="GlobalTile.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="PathfindingMoveState.h">
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClInclude>
-    <ClInclude Include="PathfindingImmediateState.h">
+    <ClInclude Include="StageLoader.h">
+      <Filter>소스 파일\Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultStageLoader.h">
+      <Filter>소스 파일\Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Pathfinding.h">
+      <Filter>소스 파일\Game\Character\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PathfindingState.h">
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClInclude>
   </ItemGroup>
