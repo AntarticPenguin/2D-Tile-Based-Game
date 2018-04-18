@@ -1,4 +1,6 @@
 #include <fstream>
+#include <string>
+#include <vector>
 
 #include "GameSystem.h"
 #include "GlobalTile.h"
@@ -25,16 +27,16 @@ Map::~Map()
 void Map::Init()
 {
 	//맵용 스프라이트 리스트 작업
-	//512 x 512 이미지를 32x32 크기의 타일로 쪼갬
-	//16 x 16 = 256개의 타일 생성
+	//1024 x 1024 이미지를 32x32 크기의 타일로 쪼갬
+	//32 x 32 개의 타일 생성
 	int srcX = 0;
 	int srcY = 0;
 	_tileSize = 32;
-	for (int y = 0; y < 16; y++)
+	for (int y = 0; y < 32; y++)
 	{
-		for (int x = 0; x < 16; x++)
+		for (int x = 0; x < 32; x++)
 		{
-			Sprite* sprite = new Sprite(L"mountain_landscape.png", L"MapSprite.json");
+			Sprite* sprite = new Sprite(L"MapSprite01.png", L"MapSprite.json");
 			sprite->Init(srcX, srcY, _tileSize, _tileSize, 1.0f);
 			_spriteList.push_back(sprite);
 			srcX += _tileSize;
@@ -49,116 +51,99 @@ void Map::Init()
 	name.assign(wname.begin(), wname.end());
 
 	char layer01Name[256];
-	sprintf(layer01Name, "%sData_layer1.csv", name.c_str());	//sprintf는 유니코드 못씀
-
-	char layer02Name[256];
-	sprintf(layer02Name, "%sData_layer2.csv", name.c_str());
+	sprintf(layer01Name, "%sData_layer.csv", name.c_str());	//sprintf는 유니코드 못씀
 
 	//Load Map Script 1층
 	{
 		int line = 0;
 		int row = 0;
 		char record[1024];
+		ZeroMemory(record, 1024);
 		std::ifstream infile(layer01Name);
-		while (!infile.eof())
+
+		//맵 크기 정보
 		{
 			infile.getline(record, 1024);
-			
 			char* token = strtok(record, ",");
-			switch (line)
+
+			if (NULL != token)
 			{
-			case 0:
-				if (NULL != token)
-				{
-					token = strtok(NULL, ",");
-					_mapWidth = atoi(token);
-					token = strtok(NULL, ",");
-					_mapHeight = atoi(token);
-				}
-				break;
-			case 1:
-				break;
-			default:
-				//Map Data
-				if(NULL != token)
-				{
-					std::vector<TileCell*> rowList;
-					for (int x = 0; x < _mapWidth; x++)
-					{
-						int index = atoi(token);
-						TileCell* tileCell = new TileCell(x, row);
-
-						WCHAR componentName[256];
-						wsprintf(componentName, L"map_layer_01_%d_%d", line, x);
-						TileObject* tileObject = new TileObject(componentName, _spriteList[index], x, row);
-
-						//TEST
-						switch (index)
-						{
-						case 78:	//잔디
-							tileObject->SetDistanceWeight(1.5f);
-							break;
-						case 183:	//돌길
-							tileObject->SetDistanceWeight(0.5f);
-							break;
-						}
-
-						tileObject->SetCanMove(true);
-
-						tileCell->AddComponent(tileObject, true);
-						rowList.push_back(tileCell);
-						token = strtok(NULL, ",");
-					}
-					_tileMap.push_back(rowList);
-					row++;
-				}
-				break;
+				token = strtok(NULL, ",");
+				_mapWidth = atoi(token);
+				token = strtok(NULL, ",");
+				_mapHeight = atoi(token);
 			}
-			line++;
 		}
-	}
 
-	//1층(바닥)을 기반으로 2층을 로드
-	{
-		char record[1024];
-		int line = 0;
-		int row = 0;
-		std::ifstream infile(layer02Name);
+		//1층
+		//첫줄은 레이어 층수
+		infile.getline(record, 1024);
+
 		while (!infile.eof())
 		{
+			//타일정보 파싱 시작
 			infile.getline(record, 1024);
-
 			char* token = strtok(record, ",");
-			switch (line)
+
+			if (NULL != token)
 			{
-			case 0:
-				break;
-			case 1:
-				break;
-			default:
-				//Map Data
-				if (NULL != token)
+				std::vector<TileCell*> rowList;
+				for (int x = 0; x < _mapWidth; x++)
 				{
-					std::vector<TileCell*> rowList = _tileMap[row];
-					for (int x = 0; x < _mapWidth; x++)
-					{
-						int index = atoi(token);
-						TileCell* tileCell = rowList[x];
-						WCHAR componentName[256];
-						wsprintf(componentName, L"map_layer_02_%d_%d", line, x);
-						if (0 <= index)
-						{
-							TileObject* tileObject = new TileObject(componentName, _spriteList[index], x, row);
-							tileCell->AddComponent(tileObject, true);
-						}
-						token = strtok(NULL, ",");
-					}
-					row++;
+					int index = atoi(token);
+					TileCell* tileCell = new TileCell(x, row);
+
+					WCHAR componentName[256];
+					wsprintf(componentName, L"map_layer_01_%d_%d", line, x);
+					TileObject* tileObject = new TileObject(componentName, _spriteList[index], x, row);
+					tileObject->SetCanMove(true);
+
+					tileCell->AddComponent(tileObject, true);
+					rowList.push_back(tileCell);
+					token = strtok(NULL, ",");
 				}
-				break;
+				_tileMap.push_back(rowList);
+				row++;
+				line++;
+				if (_mapHeight <= row)
+					break;
 			}
-			line++;
 		}
+
+		////2층
+		////첫줄은 레이어 층수
+		//line = 0;
+		//row = 0;
+		//infile.getline(record, 1024);
+		//
+		//while (!infile.eof())
+		//{
+		//	//타일정보 파싱 시작
+		//	infile.getline(record, 1024);
+		//	char* token = strtok(record, ",");
+
+		//	if (NULL != token)
+		//	{
+		//		std::vector<TileCell*> rowList = _tileMap[row];
+		//		for (int x = 0; x < _mapWidth; x++)
+		//		{
+		//			int index = atoi(token);
+		//			TileCell* tileCell = rowList[x];
+		//			WCHAR componentName[256];
+		//			wsprintf(componentName, L"map_layer_02_%d_%d", line, x);
+		//			if (0 <= index)
+		//			{
+		//				TileObject* tileObject = new TileObject(componentName, _spriteList[index], x, row);
+		//				tileCell->AddComponent(tileObject, true);
+		//			}
+		//			token = strtok(NULL, ",");
+		//		}
+		//		row++;
+		//		line++;
+		//	}
+		//}
+
+		infile.close();
 	}
 }
 

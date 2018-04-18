@@ -138,7 +138,7 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 
 	//Stage
 	_stage = new Stage();
-	_stage->Init(L"Map1");
+	_stage->Init(L"Map02");
 
 	return true;
 }
