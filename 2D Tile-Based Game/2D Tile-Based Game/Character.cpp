@@ -274,42 +274,12 @@ void Character::MoveStart(int newTileX, int newTileY)
 	_tileX = newTileX;
 	_tileY = newTileY;
 
-	//애니메이션 이동 보간
-	{
-		map->SetTileComponent(_tileX, _tileY, this, false);
-
-		//이동거리 계산
-		_targetX = map->GetPositionX(_tileX, _tileY);
-		_targetY = map->GetPositionY(_tileX, _tileY);
-
-		float distanceX = _targetX - _x;		//절대값 필요없음.
-		float distanceY = _targetY - _y;
-
-		//단위이동시간
-		_moveDistancePerTimeX = distanceX / _moveTime;
-		_moveDistancePerTimeY = distanceY / _moveTime;
-	}
+	map->SetTileComponent(_tileX, _tileY, this, false);
 }
 
 void Character::MoveStop()
 {
 	_isMoving = false;
-
-	//이동후 도착하면 타일의 정확한 위치에 찍어줘야 한다.
-	Map* map = GameSystem::GetInstance().GetStage()->GetMap();
-	_x = map->GetPositionX(_tileX, _tileY);
-	_y = map->GetPositionY(_tileX, _tileY);
-
-	_moveDistancePerTimeX = 0.0f;
-	_moveDistancePerTimeY = 0.0f;
-}
-
-void Character::Moving(float deltaTime)
-{
-	float moveDistanceX = _moveDistancePerTimeX * deltaTime;
-	float moveDistanceY = _moveDistancePerTimeY * deltaTime;
-	_x += moveDistanceX;
-	_y += moveDistanceY;
 }
 
 Component* Character::Collision(std::list<Component*>& collisionList)

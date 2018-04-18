@@ -99,7 +99,6 @@ void Pathfinding::UpdatePathfinding()
 			if (command.tileCell->GetTileX() == _targetTileCell->GetTileX() &&
 				command.tileCell->GetTileY() == _targetTileCell->GetTileY())
 			{
-				OutputDebugString(L"Find Goal\n");
 				_updateState = eUpdateState::BUILD_PATH;
 				_reverseTileCell = _targetTileCell;
 				return;

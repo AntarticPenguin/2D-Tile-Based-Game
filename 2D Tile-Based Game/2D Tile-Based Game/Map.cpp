@@ -227,10 +227,10 @@ void Map::Render()
 	int midX = GameSystem::GetInstance().GetClientWidth() / 2;
 	int midY = GameSystem::GetInstance().GetClientHeight() / 2;
 
-	int minX = _viewer->GetTileX() - 5;//(midX / _tileSize) - 3;
-	int maxX = _viewer->GetTileX() + 5;//(midX / _tileSize) + 3;
-	int minY = _viewer->GetTileY() - 5;//(midY / _tileSize) - 3;
-	int maxY = _viewer->GetTileY() + 5;//(midY / _tileSize) + 3;
+	int minX = _viewer->GetTileX() - (midX / _tileSize) - 3;
+	int maxX = _viewer->GetTileX() + (midX / _tileSize) + 3;
+	int minY = _viewer->GetTileY() - (midY / _tileSize) - 3;
+	int maxY = _viewer->GetTileY() + (midY / _tileSize) + 3;
 
 	//예외처리(범위 밖으로 벗어났을 경우)
 	if (minX < 0)

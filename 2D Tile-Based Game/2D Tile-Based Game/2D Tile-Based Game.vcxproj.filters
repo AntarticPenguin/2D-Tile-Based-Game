@@ -120,14 +120,8 @@
     <ClCompile Include="RecoveryItem.cpp">
       <Filter>소스 파일\Game\Item</Filter>
     </ClCompile>
-    <ClCompile Include="PoisonItem.cpp">
-      <Filter>소스 파일\Game\Item</Filter>
-    </ClCompile>
     <ClCompile Include="Stage.cpp">
       <Filter>소스 파일\Game\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="Sword.cpp">
-      <Filter>소스 파일\Game\Item</Filter>
     </ClCompile>
     <ClCompile Include="GlobalTile.cpp">
       <Filter>소스 파일</Filter>
@@ -227,14 +221,8 @@
     <ClInclude Include="RecoveryItem.h">
       <Filter>소스 파일\Game\Item</Filter>
     </ClInclude>
-    <ClInclude Include="PoisonItem.h">
-      <Filter>소스 파일\Game\Item</Filter>
-    </ClInclude>
     <ClInclude Include="Stage.h">
       <Filter>소스 파일\Game\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="Sword.h">
-      <Filter>소스 파일\Game\Item</Filter>
     </ClInclude>
     <ClInclude Include="GlobalTile.h">
       <Filter>소스 파일</Filter>

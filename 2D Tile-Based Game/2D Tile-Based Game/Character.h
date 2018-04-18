@@ -106,7 +106,6 @@ protected:
 public:
 	void MoveStart(int newTileX, int newTileY);
 	void MoveStop();
-	void Moving(float deltaTime);
 
 	virtual Component* Collision(std::list<Component*>& collisionList);
 

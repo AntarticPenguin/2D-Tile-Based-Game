@@ -33,7 +33,6 @@ void MoveState::Update(float deltaTime)
 
 	if (false == _character->IsLive())
 		return;
-
 	
 	if (false == _character->IsMoving())
 		return;
@@ -47,7 +46,6 @@ void MoveState::Update(float deltaTime)
 	else
 	{
 		_movingDuration += deltaTime;
-		_character->Moving(deltaTime);
 	}
 	
 }
