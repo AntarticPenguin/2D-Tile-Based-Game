@@ -18,7 +18,7 @@
 Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
 	Character(name, scriptName, spriteFileName)
 {
-	_moveTime = 0.1f;
+	_moveTime = 0.0f;
 	_tileX = 32;
 	_tileY = 15;
 	_eType = eComponentType::CT_PLAYER;
