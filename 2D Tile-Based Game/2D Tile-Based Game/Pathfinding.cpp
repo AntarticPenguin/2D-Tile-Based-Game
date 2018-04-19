@@ -132,16 +132,17 @@ void Pathfinding::UpdatePathfinding()
 						_pathfindingTileQueue.push(newCommand);
 
 						//검색범위를 그려준다.
-						/*
+						
 						if (
 							!(nextTileCell->GetTileX() == _targetTileCell->GetTileX() && nextTileCell->GetTileY() == _targetTileCell->GetTileY())
 							&&
 							!(nextTileCell->GetTileX() == _character->GetTileX() && nextTileCell->GetTileY() == _character->GetTileY())
 							)
 						{
-							GameSystem::GetInstance().GetStage()->CreatePathfindNPC(nextTileCell);
+							//GameSystem::GetInstance().GetStage()->CreatePathfindNPC(nextTileCell);
+							nextTileCell->ColorTile();
 						}
-						*/
+						
 					}	
 					else
 					{
@@ -170,18 +171,6 @@ void Pathfinding::UpdateBuildPath()
 {
 	if (NULL != _reverseTileCell)
 	{
-		/*
-		if (_reverseTileCell->GetTileX() != _targetTileCell->GetTileX() ||
-			_reverseTileCell->GetTileY() != _targetTileCell->GetTileY())
-		{
-			//찾은 경로를 그려준다.
-			GameSystem::GetInstance().GetStage()->CreatePathfindMark(_reverseTileCell);
-			_character->PushPathTileCell(_reverseTileCell);
-		}
-		*/
-		//찾은 경로를 그려준다.
-		//GameSystem::GetInstance().GetStage()->CreatePathfindMark(_reverseTileCell);
-
 		_character->PushPathTileCell(_reverseTileCell);
 		_reverseTileCell = _reverseTileCell->GetPrevPathfindingCell();
 	}

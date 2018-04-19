@@ -142,7 +142,6 @@ void Map::Init()
 				line++;
 			}
 		}
-
 		infile.close();
 	}
 }

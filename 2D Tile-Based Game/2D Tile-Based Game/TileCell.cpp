@@ -196,3 +196,14 @@ void TileCell::SetHeuristic(float heuristic)
 {
 	_heuristic = heuristic;
 }
+
+void TileCell::ColorTile()
+{
+	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
+	{
+		if (CT_TILE_OBJECT == (*itr)->GetType())
+		{
+			(TileObject*)(*itr)->ColorTile();
+		}
+	}
+}

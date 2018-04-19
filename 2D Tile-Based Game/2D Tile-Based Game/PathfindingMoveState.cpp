@@ -111,7 +111,6 @@ void PathfindingMoveState::Update(float deltaTime)
 			{
 				_nextState = eStateType::ET_IDLE;
 			}
-			
 		}
 		else
 		{

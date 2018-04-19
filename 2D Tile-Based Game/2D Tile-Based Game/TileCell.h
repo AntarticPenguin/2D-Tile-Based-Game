@@ -64,4 +64,7 @@ public:
 	float GetDistanceWeight();
 	float GetHeuristic();
 	void SetHeuristic(float heuristic);
+
+public:
+	void ColorTile();
 };
