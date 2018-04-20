@@ -26,6 +26,7 @@ private:
 	float _rotate;
 
 public:
+	Sprite(std::wstring textureFileName);
 	Sprite(std::wstring textureFileName, std::wstring scriptFileName, float rotate = 0.0f);
 	~Sprite();
 
@@ -41,4 +42,8 @@ public:
 	void Release();
 
 	void SetPosition(float x, float y);
+
+	//Color
+public:
+	void SetColor(D3DCOLOR color);
 };

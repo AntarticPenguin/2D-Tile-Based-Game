@@ -25,6 +25,7 @@ Character::Character(std::wstring name, std::wstring scriptName, std::wstring sp
 	_scriptFileName = scriptName;
 
 	_moveTime = 1.0f;
+	_travelDistance = 0;
 
 	_tileX = 10;
 	_tileY = 10;

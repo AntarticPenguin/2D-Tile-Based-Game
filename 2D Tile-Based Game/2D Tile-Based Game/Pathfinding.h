@@ -5,6 +5,14 @@
 
 class TileCell;
 
+enum ePathMethod
+{
+	DISTANCE,
+	SIMPLE,
+	COMPLEX,
+	ASTAR,
+};
+
 class Pathfinding : public State
 {
 public:

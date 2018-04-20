@@ -8,7 +8,7 @@ Texture::Texture()
 
 Texture::~Texture()
 {
-
+	
 }
 
 void Texture::Init(std::wstring fileName)

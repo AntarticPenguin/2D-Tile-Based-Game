@@ -7,6 +7,11 @@
 #include "Sprite.h"
 #include "Frame.h"
 
+Sprite::Sprite(std::wstring textureFileName) :
+	_textureFileName(textureFileName)
+{
+	_rotate = 0.0f;
+}
 
 Sprite::Sprite(std::wstring textureFileName, std::wstring scriptFileName, float rotate) :
 	_textureFileName(textureFileName), _scriptFileName(scriptFileName), _curFrame(0), _frameTime(0.0f), _srcTexture(NULL), _rotate(rotate)
@@ -140,4 +145,10 @@ void Sprite::SetPosition(float x, float y)
 {
 	_x = x;
 	_y = y;
+}
+
+void Sprite::SetColor(D3DCOLOR color)
+{
+	for (int i = 0; i < _frameList.size(); i++)
+		_frameList[i]->SetColor(color);
 }

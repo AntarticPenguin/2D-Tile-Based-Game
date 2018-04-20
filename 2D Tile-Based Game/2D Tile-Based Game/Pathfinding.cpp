@@ -118,16 +118,18 @@ void Pathfinding::UpdatePathfinding()
 					float distanceFromStart = command.tileCell->GetDistanceFromStart() + command.tileCell->GetDistanceWeight();	//거리우선
 					//float heuristic = CalcSimpleHeuristic(tileCell, nextTileCell, _targetTileCell);
 					//float heuristic = CalcComplexHeuristic(nextTileCell, _targetTileCell);
-					float heuristic = CalcAStarHeuristic(distanceFromStart, nextTileCell, _targetTileCell);
+					//float heuristic = CalcAStarHeuristic(distanceFromStart, nextTileCell, _targetTileCell);
 
 					if (NULL == nextTileCell->GetPrevPathfindingCell())
 					{
 						nextTileCell->SetDistanceFromStart(distanceFromStart);	//거리우선
-						nextTileCell->SetHeuristic(heuristic);
+						//nextTileCell->SetHeuristic(heuristic);
+						nextTileCell->SetHeuristic(distanceFromStart);
 						nextTileCell->SetPrevPathfindingCell(command.tileCell);
 
 						sPathCommand newCommand;
-						newCommand.heuristic = heuristic;
+						//newCommand.heuristic = heuristic;
+						newCommand.heuristic = nextTileCell->GetDistanceFromStart();
 						newCommand.tileCell = nextTileCell;
 						_pathfindingTileQueue.push(newCommand);
 
@@ -139,10 +141,8 @@ void Pathfinding::UpdatePathfinding()
 							!(nextTileCell->GetTileX() == _character->GetTileX() && nextTileCell->GetTileY() == _character->GetTileY())
 							)
 						{
-							//GameSystem::GetInstance().GetStage()->CreatePathfindNPC(nextTileCell);
-							nextTileCell->ColorTile();
+							nextTileCell->TurnOnColorTile(D3DCOLOR_ARGB(100, 255, 0, 0));
 						}
-						
 					}	
 					else
 					{
@@ -154,7 +154,8 @@ void Pathfinding::UpdatePathfinding()
 							//nextTileCell->SetHeuristic() 포인터가 들어가고 포인터에서 비교하는 값을 조작하면 우선순위 큐가 망가진다.
 
 							sPathCommand newCommand;
-							newCommand.heuristic = CalcAStarHeuristic(distanceFromStart, nextTileCell, _targetTileCell);
+							//newCommand.heuristic = CalcAStarHeuristic(distanceFromStart, nextTileCell, _targetTileCell);
+							newCommand.heuristic = nextTileCell->GetDistanceFromStart();
 							newCommand.tileCell = nextTileCell;
 							_pathfindingTileQueue.push(newCommand);
 						}

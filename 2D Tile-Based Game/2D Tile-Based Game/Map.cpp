@@ -76,8 +76,7 @@ void Map::Init()
 		}
 
 		//1類
-		//羅還擎 溯檜橫 類熱
-		infile.getline(record, 1024);
+		infile.getline(record, 1024); //羅還擎 溯檜橫 類熱
 
 		while (!infile.eof())
 		{
@@ -111,10 +110,9 @@ void Map::Init()
 		}
 
 		//2類
-		//羅還擎 溯檜橫 類熱
 		line = 0;
 		row = 0;
-		infile.getline(record, 1024);
+		infile.getline(record, 1024); //羅還擎 溯檜橫 類熱
 		
 		while (!infile.eof())
 		{

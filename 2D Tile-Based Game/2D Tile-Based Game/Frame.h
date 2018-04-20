@@ -34,4 +34,8 @@ public:
 
 	float GetFrameDelay();
 	void SetPosition(float x, float y);
+
+	//Color
+public:
+	void SetColor(D3DCOLOR color);
 };

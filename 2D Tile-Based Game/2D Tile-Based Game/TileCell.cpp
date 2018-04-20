@@ -8,7 +8,9 @@ TileCell::TileCell(int tileX, int tileY)
 	_componentList.clear();
 	_tileX = tileX;
 	_tileY = tileY;
-	_distanceWeight = 1.0f;
+	_distanceWeight = 0.0f;
+
+	InitColorTile();
 }
 
 TileCell::~TileCell()
@@ -35,6 +37,9 @@ void TileCell::Render()
 	{
 		(*itr)->Render();
 	}
+
+	_colorSprite->SetPosition(_posX, _posY);
+	_colorSprite->Render();
 }
 
 void TileCell::Release()
@@ -197,13 +202,19 @@ void TileCell::SetHeuristic(float heuristic)
 	_heuristic = heuristic;
 }
 
-void TileCell::ColorTile()
+void TileCell::InitColorTile()
 {
-	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
-	{
-		if (CT_TILE_OBJECT == (*itr)->GetType())
-		{
-			(TileObject*)(*itr)->ColorTile();
-		}
-	}
+	_colorSprite = new Sprite(L"ColorTile.png");
+	_colorSprite->Init(0, 0, 32, 32, 1.0f);
+	_colorSprite->SetColor(D3DCOLOR_ARGB(0, 0, 0, 0));
+}
+
+void TileCell::TurnOnColorTile(D3DCOLOR color)
+{
+	_colorSprite->SetColor(color);
+}
+
+void TileCell::TurnOffColorTile()
+{
+	_colorSprite->SetColor(D3DCOLOR_ARGB(0, 0, 0, 0));
 }

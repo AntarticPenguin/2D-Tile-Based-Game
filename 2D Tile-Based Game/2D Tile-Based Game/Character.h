@@ -97,6 +97,7 @@ public:
 protected:
 	bool _isMoving;
 	float _moveTime;
+	int _travelDistance;
 
 	float _targetX;
 	float _targetY;

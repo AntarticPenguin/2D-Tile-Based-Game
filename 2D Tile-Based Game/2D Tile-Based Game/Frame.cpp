@@ -82,3 +82,8 @@ void Frame::SetPosition(float x, float y)
 	_x = x;
 	_y = y;
 }
+
+void Frame::SetColor(D3DCOLOR color)
+{
+	_textureColor = color;
+}

@@ -19,6 +19,8 @@ Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFi
 	Character(name, scriptName, spriteFileName)
 {
 	_moveTime = 0.0f;
+	_travelDistance = 6;
+
 	_tileX = 32;
 	_tileY = 15;
 	_eType = eComponentType::CT_PLAYER;

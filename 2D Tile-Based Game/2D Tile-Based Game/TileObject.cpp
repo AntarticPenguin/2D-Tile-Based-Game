@@ -8,7 +8,7 @@ TileObject::TileObject(std::wstring name, Sprite* sprite, int tileX, int tileY)
 	_sprite = sprite;
 	_tileX = tileX;
 	_tileY = tileY;
-	_distanceWeight = 0.0f;
+	_distanceWeight = 1.0f;
 }
 
 TileObject::~TileObject()

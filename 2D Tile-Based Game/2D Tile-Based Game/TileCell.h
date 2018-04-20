@@ -1,4 +1,5 @@
 #pragma once
+#include <d3dx9.h>
 #include <list>
 
 class Component;
@@ -65,6 +66,12 @@ public:
 	float GetHeuristic();
 	void SetHeuristic(float heuristic);
 
+	//FOR DUNGEON
+private:
+	Sprite* _colorSprite;
+
 public:
-	void ColorTile();
+	void InitColorTile();
+	void TurnOnColorTile(D3DCOLOR color);
+	void TurnOffColorTile();
 };
