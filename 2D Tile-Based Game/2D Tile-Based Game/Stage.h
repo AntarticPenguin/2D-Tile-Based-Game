@@ -32,7 +32,7 @@ public:
 	//Stage Loader
 private:
 	std::map<std::wstring, StageLoader*> _stageMap;
-	StageLoader* _partsLoader;
+	StageLoader* _stageLoader;
 
 public:
 	void AddStageComponent(Component* component);

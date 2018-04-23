@@ -1,31 +1,29 @@
 #pragma once
 #include <queue>
-#include "TileCell.h"
 
 class TileCell;
 class Character;
+class Map;
+struct TilePosition;
+
+enum ePathMode
+{
+	VIEW_RANGE,
+	FIND_PATH,
+};
+
+enum eFindMethod
+{
+	DISTANCE,
+	SIMPLE,
+	COMPLEX,
+	ASTAR,
+};
 
 class Pathfinding
 {
-public:
-	Pathfinding(Character* character);
-	~Pathfinding();
-
-public:
-	void Init();
-	void Update(float deltaTime);
-
-	void Start();
-	void Stop();
-
 	//pathfinding
 public:
-	enum eUpdateState
-	{
-		PATHFINDING,
-		BUILD_PATH,
-	};
-
 	typedef struct _sPathCommand
 	{
 		float heuristic;
@@ -40,24 +38,25 @@ public:
 		}
 	};
 
-protected:
-	std::priority_queue<sPathCommand, std::vector<sPathCommand>, compare> _pathfindingTileQueue;
-	TileCell* _targetTileCell;
+public:
+	Pathfinding(Character* character);
+	~Pathfinding();
+
+private:
+	Character * _character;
 	TileCell* _reverseTileCell;
-	eUpdateState _updateState;
+	Map* _map;
+	std::priority_queue<sPathCommand, std::vector<sPathCommand>, compare> _pathfindingTileQueue;
 
 public:
-	void UpdatePathfinding();
-	void UpdateBuildPath();
+	void Init();
+	void FindPath(ePathMode mode, eFindMethod method = eFindMethod::DISTANCE);
+	void BuildPath();
+	bool CheckPreCondition(ePathMode mode, TilePosition nextTilePos, TileCell* nextTileCell, TileCell* targetTileCell);
+	void Reset();
+
+	float CalcHeuristic(eFindMethod eMethod, float distanceFromStart, TileCell* tileCell, TileCell* nextTileCell, TileCell* targetTileCell);
 	float CalcSimpleHeuristic(TileCell* tileCell, TileCell* nextTileCell, TileCell*_targetTileCell);
 	float CalcComplexHeuristic(TileCell* nextTileCell, TileCell* targetTileCell);
 	float CalcAStarHeuristic(float distanceFromStart, TileCell* nextTileCell, TileCell* targetTileCell);
-
-//test
-private:
-	Character* _character;
-
-public:
-	void Reset();
-	void ViewMoveRange();
 };

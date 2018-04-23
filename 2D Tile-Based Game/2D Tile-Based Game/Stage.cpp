@@ -9,7 +9,7 @@
 
 Stage::Stage()
 {
-	_partsLoader = NULL;
+	_stageLoader = NULL;
 	_stageMap.clear();
 }
 
@@ -33,8 +33,8 @@ void Stage::Init(std::wstring mapName)
 
 	_componentList.clear();
 
-	_partsLoader = GetStageLoader(mapName);
-	_partsLoader->CreateComponents(mapName);
+	_stageLoader = GetStageLoader(mapName);
+	_stageLoader->CreateComponents(mapName);
 }
 
 void Stage::Update(float deltaTime)

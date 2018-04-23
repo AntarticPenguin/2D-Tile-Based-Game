@@ -40,9 +40,8 @@ void Frame::Deinit()
 
 void Frame::Render()
 {
-
 	//Sprite 출력 전 모양(위치, 크기, 회전) 조정
-	D3DXVECTOR2  spriteCenter = D3DXVECTOR2((float)_width / 2.0f, (float)_height / 2.0f);	//행렬계산용 Sprite 중심좌표
+	D3DXVECTOR2 spriteCenter = D3DXVECTOR2((float)_width / 2.0f, (float)_height / 2.0f);			//행렬계산용 Sprite 중심좌표
 	D3DXVECTOR2 translate = D3DXVECTOR2(_x - (float)_width / 2.0f, _y - (float)_height / 2.0f);		//위치
 	D3DXVECTOR2 scaling = D3DXVECTOR2(1.0f, 1.0f);	//크기
 
@@ -53,13 +52,12 @@ void Frame::Render()
 		0.0f,				//회전없음
 		&scaling,
 		&spriteCenter,
-		_rotate,				//회전각도
+		_rotate,			//회전각도
 		&translate
 	);
 
 	_sprite->SetTransform(&matrix);
 	_sprite->Draw(_texture->GetTextureDX(), &_srcTextureRect, NULL, NULL, _textureColor);
-	
 }
 
 void Frame::Reset()

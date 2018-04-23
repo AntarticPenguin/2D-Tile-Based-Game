@@ -18,7 +18,7 @@ Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFi
 	Character(name, scriptName, spriteFileName)
 {
 	_moveTime = 0.0f;
-	_moveRange = 6;
+	_moveRange = 10;
 
 	_tileX = 32;
 	_tileY = 15;
@@ -71,11 +71,8 @@ void Player::UpdateCharacter()
 		}
 		else
 		{
-			TileCell* targetTileCell = GameSystem::GetInstance().GetStage()->GetMap()
-				->FindTileCellWithMousePosition(mouseX, mouseY);
-
-			if (CheckMoveRange(targetTileCell))
-				SetTargetTileCell(targetTileCell);
+			if (CheckMoveRange(ClickedTileCell))
+				SetTargetTileCell(ClickedTileCell);
 			else
 				SetTargetTileCell(NULL);
 		}
