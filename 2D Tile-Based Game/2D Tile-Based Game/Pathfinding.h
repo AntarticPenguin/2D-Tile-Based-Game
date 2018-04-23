@@ -1,26 +1,18 @@
 #pragma once
 #include <queue>
-#include "State.h"
 #include "TileCell.h"
 
 class TileCell;
+class Character;
 
-enum ePathMethod
-{
-	DISTANCE,
-	SIMPLE,
-	COMPLEX,
-	ASTAR,
-};
-
-class Pathfinding : public State
+class Pathfinding
 {
 public:
-	Pathfinding();
+	Pathfinding(Character* character);
 	~Pathfinding();
 
 public:
-	void Init(Character* character);
+	void Init();
 	void Update(float deltaTime);
 
 	void Start();
@@ -60,4 +52,12 @@ public:
 	float CalcSimpleHeuristic(TileCell* tileCell, TileCell* nextTileCell, TileCell*_targetTileCell);
 	float CalcComplexHeuristic(TileCell* nextTileCell, TileCell* targetTileCell);
 	float CalcAStarHeuristic(float distanceFromStart, TileCell* nextTileCell, TileCell* targetTileCell);
+
+//test
+private:
+	Character* _character;
+
+public:
+	void Reset();
+	void ViewMoveRange();
 };

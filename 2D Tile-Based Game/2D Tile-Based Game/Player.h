@@ -9,6 +9,7 @@ public:
 
 public:
 	void InitState();
-	void UpdateAI(float deltaTime);
+	void UpdateCharacter();
+	//void UpdateAI(float deltaTime);
 	Component* Collision(std::list<Component*>& collisionList);
 };

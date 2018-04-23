@@ -61,6 +61,7 @@ private:
 	eKeyState _eKeyState[256];
 
 	bool _isMouseDown;
+	bool _isRightMouseDown;
 	int _mouseX;
 	int _mouseY;
 
@@ -74,6 +75,11 @@ public:
 	void MouseDown(int mouseX, int mouseY);
 	void MouseUp();
 	bool IsMouseDown();
+
+	void RightMouseDown();
+	void RightMouseUp();
+	bool IsRightMouseDown();
+
 	int GetMouseX();
 	int GetMouseY();
 

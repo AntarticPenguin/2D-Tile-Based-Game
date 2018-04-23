@@ -9,12 +9,12 @@
 
 #include "DeadState.h"
 #include "CounterAttackState.h"
-#include "RecoveryState.h"
 #include "DefenseState.h"
 #include "AttackState.h"
 #include "MoveState.h"
 #include "IdleState.h"
 #include "Character.h"
+#include "TileCell.h"
 
 Character::Character(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
 	Component(name), _x(0.0f), _y(0.0f)
@@ -25,7 +25,7 @@ Character::Character(std::wstring name, std::wstring scriptName, std::wstring sp
 	_scriptFileName = scriptName;
 
 	_moveTime = 1.0f;
-	_travelDistance = 0;
+	_moveRange = 6;
 
 	_tileX = 10;
 	_tileY = 10;
@@ -38,16 +38,14 @@ Character::Character(std::wstring name, std::wstring scriptName, std::wstring sp
 		_maxHp = 20;
 		_hp = _maxHp;
 
-		_recoveryStat = 5;
-
 		_attackCooltimeDuration = 0.0f;
 		_attackCooltime = 1.0f;				//attackSpeed
-
-		_recoveryCooltimeDuration = 0.0f;
-		_recoveryCooltime = 3.0f;
 	}
 
+	_targetTileCell = NULL;
 	_counterTarget = NULL;
+	_turnOnMenu = false;
+	_colorTileList.clear();
 }
 
 Character::~Character()
@@ -119,8 +117,8 @@ void Character::Deinit()
 
 void Character::Update(float deltaTime)
 {
+	UpdateCharacter();
 	UpdateAttackCooltime(deltaTime);
-	UpdateRecoveryCooltime(deltaTime);
 	_state->Update(deltaTime);
 
 	UpdateText();
@@ -142,6 +140,11 @@ void Character::Release()
 void Character::Reset()
 {
 	_state->Reset();
+}
+
+void Character::UpdateCharacter()
+{
+
 }
 
 std::wstring Character::GetTextureFileName()
@@ -231,7 +234,6 @@ void Character::InitState()
 	ReplaceState(eStateType::ET_ATTACK, new AttackState());
 	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
 	ReplaceState(eStateType::ET_COUNTERATTACK, new CounterAttackState());
-	ReplaceState(eStateType::ET_RECOVERY, new RecoveryState());
 	ReplaceState(eStateType::ET_DEAD, new DeadState());
 }
 
@@ -248,12 +250,12 @@ void Character::ReplaceState(eStateType changeType, State* replaceState)
 	state->Init(this);
 	_stateMap[changeType] = state;
 }
-
-void Character::UpdateAI(float deltaTime)
-{
-	_curDirection = (eDirection)(rand() % 4);
-	_state->NextState(eStateType::ET_MOVE);
-}
+//
+//void Character::UpdateAI(float deltaTime)
+//{
+//	_curDirection = (eDirection)(rand() % 4);
+//	_state->NextState(eStateType::ET_MOVE);
+//}
 
 void Character::ChangeState(eStateType stateType)
 {
@@ -316,6 +318,11 @@ float Character::GetMoveTime()
 bool Character::IsMoving()
 {
 	return _isMoving;
+}
+
+int Character::GetMoveRange()
+{
+	return _moveRange;
 }
 
 void Character::ReceiveMessage(const sComponentMsgParam& msgParam)
@@ -382,40 +389,6 @@ void Character::ResetAttackCooltime()
 	_attackCooltimeDuration = 0.0f;
 }
 
-void Character::UpdateRecoveryCooltime(float deltaTime)
-{
-	if (_recoveryCooltimeDuration < _recoveryCooltime)
-	{
-		_recoveryCooltimeDuration += deltaTime;
-	}
-	else
-	{
-		_recoveryCooltimeDuration = _recoveryCooltime;
-	}
-}
-
-bool Character::IsHpFull()
-{
-	if (_maxHp == _hp)
-		return true;
-	return false;
-}
-
-bool Character::IsRecoveryCoolTime()
-{
-	if (_recoveryCooltime <= _recoveryCooltimeDuration)
-		return true;
-	return false;
-}
-
-void Character::RecoveryHP()
-{
-	_hp += _recoveryStat;
-
-	if (_maxHp < _hp)
-		_hp = _maxHp;
-}
-
 void Character::RecoveryHP(int hp)
 {
 	_hp += hp;
@@ -424,15 +397,9 @@ void Character::RecoveryHP(int hp)
 		_hp = _maxHp;
 }
 
-void Character::ResetRecoveryCooltime()
-{
-	_recoveryCooltimeDuration = 0.0f;
-}
-
 void Character::UpdateText()
 {
 	int coolTime = (int)(_attackCooltimeDuration * 1000.0f);
-	int RecoveryTime = (int)(_recoveryCooltimeDuration * 1000.0f);
 
 	WCHAR state[100];
 	ZeroMemory(state, sizeof(state));
@@ -457,15 +424,11 @@ void Character::UpdateText()
 	case eStateType::ET_MOVE:
 		wsprintf(state, L"MOVE");
 		break;
-	case eStateType::ET_RECOVERY:
-		wsprintf(state, L"RECOVERY");
-		break;
 	}
 
 
 	WCHAR text[255];
 	wsprintf(text, L"HP:%d\nCool: %d\nState::%s", _hp, coolTime, state);
-	//wsprintf(text, L"HP:%d\nCool: %d\nState:%s\nRecovery:%d\nATK:%d", _hp, coolTime, state, RecoveryTime, _attackPoint);
 
 	_font->SetText(text);
 }
@@ -478,7 +441,6 @@ TileCell* Character::GetTargetCell()
 void Character::SetTargetTileCell(TileCell* tileCell)
 {
 	_targetTileCell = tileCell;
-	_state->NextState(eStateType::ET_PATHFINDING);
 }
 
 std::stack<TileCell*> Character::GetPathTileCellStack()
@@ -495,4 +457,43 @@ void Character::ClearPathTileCellStack()
 {
 	while (false == _pathTileCellStack.empty())
 		_pathTileCellStack.pop();
+}
+
+bool Character::IsClickCharacter(TileCell* tileCell)
+{
+	if ((tileCell->GetTileX() == _tileX) && (tileCell->GetTileY() == _tileY))
+	{
+		_turnOnMenu = true;
+		return true;
+	}
+	return false;
+}
+
+bool Character::IsMenuUp()
+{
+	return _turnOnMenu;
+}
+
+void Character::TurnOffMenu()
+{
+	for (int i = 0; i < _colorTileList.size(); i++)
+		_colorTileList[i]->TurnOffColorTile();
+	_colorTileList.clear();
+	
+	_turnOnMenu = false;
+}
+
+void Character::PushColorTileCell(TileCell* tileCell)
+{
+	_colorTileList.push_back(tileCell);
+}
+
+bool Character::CheckMoveRange(TileCell* tileCell)
+{
+	for (int i = 0; i < _colorTileList.size(); i++)
+	{
+		if (_colorTileList[i] == tileCell)
+			return true;
+	}
+	return false;
 }

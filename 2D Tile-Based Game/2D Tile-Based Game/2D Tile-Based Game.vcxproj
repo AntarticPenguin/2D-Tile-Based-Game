@@ -38,12 +38,9 @@
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MoveState.cpp" />
-    <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RecoveryItem.cpp" />
-    <ClCompile Include="RecoveryState.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Stage.cpp" />
@@ -74,12 +71,9 @@
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="Map.h" />
-    <ClInclude Include="Monster.h" />
     <ClInclude Include="MoveState.h" />
-    <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RecoveryItem.h" />
-    <ClInclude Include="RecoveryState.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Stage.h" />

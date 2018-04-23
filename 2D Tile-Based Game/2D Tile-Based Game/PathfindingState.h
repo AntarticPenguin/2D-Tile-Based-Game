@@ -1,13 +1,20 @@
 #pragma once
-#include "Pathfinding.h"
+#include "State.h"
 
-class PathfindingState : public Pathfinding
+class Pathfinding;
+
+class PathfindingState : public State
 {
+private:
+	Pathfinding* _pathfinder;
+
 public:
 	PathfindingState();
 	~PathfindingState();
 
 public:
+	void Init(Character* character);
+	void Update(float deltaTime);
 	void Start();
 };
 

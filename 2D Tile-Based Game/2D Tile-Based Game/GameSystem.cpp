@@ -20,6 +20,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONUP:
 		GameSystem::GetInstance().MouseUp();
 		return 0;
+	case WM_RBUTTONDOWN:
+		GameSystem::GetInstance().RightMouseDown();
+		return 0;
+	case WM_RBUTTONUP:
+		GameSystem::GetInstance().RightMouseUp();
+		return 0;
 
 	case WM_KEYDOWN:
 		if (VK_ESCAPE == wParam)
@@ -333,6 +339,7 @@ void GameSystem::CheckDeviceLost()
 void GameSystem::InitInput()
 {
 	_isMouseDown = false;
+	_isRightMouseDown = false;
 	_mouseX = 0;
 	_mouseY = 0;
 
@@ -376,6 +383,21 @@ Stage* GameSystem::GetStage()
 bool GameSystem::IsMouseDown()
 {
 	return _isMouseDown;
+}
+
+void GameSystem::RightMouseDown()
+{
+	_isRightMouseDown = true;
+}
+
+void GameSystem::RightMouseUp()
+{
+	_isRightMouseDown = false;
+}
+
+bool GameSystem::IsRightMouseDown()
+{
+	return _isRightMouseDown;
 }
 
 int GameSystem::GetMouseX()

@@ -78,17 +78,11 @@
     <ClCompile Include="Character.cpp">
       <Filter>소스 파일\Game\Character</Filter>
     </ClCompile>
-    <ClCompile Include="NPC.cpp">
-      <Filter>소스 파일\Game\Character</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>소스 파일\Game\Character</Filter>
     </ClCompile>
     <ClCompile Include="TileObject.cpp">
       <Filter>소스 파일\Game\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster.cpp">
-      <Filter>소스 파일\Game\Character</Filter>
     </ClCompile>
     <ClCompile Include="MoveState.cpp">
       <Filter>소스 파일\Game\Character\State</Filter>
@@ -113,9 +107,6 @@
     </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>소스 파일\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="RecoveryState.cpp">
-      <Filter>소스 파일\Game\Character\State</Filter>
     </ClCompile>
     <ClCompile Include="RecoveryItem.cpp">
       <Filter>소스 파일\Game\Item</Filter>
@@ -176,17 +167,11 @@
     <ClInclude Include="Character.h">
       <Filter>소스 파일\Game\Character</Filter>
     </ClInclude>
-    <ClInclude Include="NPC.h">
-      <Filter>소스 파일\Game\Character</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>소스 파일\Game\Character</Filter>
     </ClInclude>
     <ClInclude Include="TileObject.h">
       <Filter>소스 파일\Game\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster.h">
-      <Filter>소스 파일\Game\Character</Filter>
     </ClInclude>
     <ClInclude Include="ComponentMessage.h">
       <Filter>소스 파일\System\ComponentSystem</Filter>
@@ -214,9 +199,6 @@
     </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>소스 파일\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="RecoveryState.h">
-      <Filter>소스 파일\Game\Character\State</Filter>
     </ClInclude>
     <ClInclude Include="RecoveryItem.h">
       <Filter>소스 파일\Game\Item</Filter>

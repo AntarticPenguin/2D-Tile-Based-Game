@@ -4,6 +4,7 @@
 #include <list>
 #include <map>
 #include <stack>
+#include <vector>
 
 #include "Component.h"
 #include "GlobalTile.h"
@@ -16,7 +17,6 @@ enum eStateType
 	ET_ATTACK,
 	ET_DEFENSE,
 	ET_COUNTERATTACK,
-	ET_RECOVERY,
 	ET_PATHFINDING,
 	ET_DEAD,
 };
@@ -48,6 +48,8 @@ public:
 	void Release();
 	void Reset();
 
+	virtual void UpdateCharacter();
+
 	std::wstring GetTextureFileName();
 	std::wstring GetScriptFileName();
 	float GetX();
@@ -65,10 +67,6 @@ protected:
 	int _maxHp;
 	int _hp;
 	int _attackedPoint;
-	int _recoveryStat;
-
-	float _recoveryCooltimeDuration;
-	float _recoveryCooltime;
 
 public:
 	int GetAttackedPoint();
@@ -81,7 +79,7 @@ protected:
 public:
 	void Equip(Component* weapon);
 
-	//AI & State
+	//State
 protected:
 	std::map<eStateType, State*> _stateMap;
 	State* _state;
@@ -90,14 +88,13 @@ public:
 	void InitMove();
 	virtual void InitState();
 	void ReplaceState(eStateType changeType, State* replaceState);
-	virtual void UpdateAI(float deltaTime);
 	void ChangeState(eStateType stateType);
 
 	//Move
 protected:
 	bool _isMoving;
 	float _moveTime;
-	int _travelDistance;
+	int _moveRange;
 
 	float _targetX;
 	float _targetY;
@@ -114,6 +111,8 @@ public:
 	void SetDirection(eDirection direction);
 	float GetMoveTime();
 	bool IsMoving();
+
+	int GetMoveRange();
 
 	//Message
 public:
@@ -140,12 +139,7 @@ public:
 	bool IsAttackCooltime();
 	void ResetAttackCooltime();
 
-	void UpdateRecoveryCooltime(float deltaTime);
-	bool IsHpFull();
-	bool IsRecoveryCoolTime();
-	void RecoveryHP();
 	void RecoveryHP(int hp);
-	void ResetRecoveryCooltime();
 
 	//UI(Font)
 private:
@@ -166,4 +160,16 @@ public:
 	std::stack<TileCell*> GetPathTileCellStack();
 	void PushPathTileCell(TileCell* tileCell);
 	void ClearPathTileCellStack();
+
+	//In Dungeon
+private:
+	bool _turnOnMenu;
+	std::vector<TileCell*> _colorTileList;
+
+public:
+	bool IsClickCharacter(TileCell* tileCell);
+	bool IsMenuUp();
+	void TurnOffMenu();
+	void PushColorTileCell(TileCell* tileCell);
+	bool CheckMoveRange(TileCell* tileCell);
 };

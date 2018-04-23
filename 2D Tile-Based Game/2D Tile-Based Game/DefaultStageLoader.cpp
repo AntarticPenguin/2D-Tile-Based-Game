@@ -7,8 +7,6 @@
 #include "RecoveryItem.h"
 #include "PoisonItem.h"
 #include "Sword.h"
-#include "NPC.h"
-#include "Monster.h"
 
 
 DefaultStageLoader::DefaultStageLoader(Stage* stage) :
