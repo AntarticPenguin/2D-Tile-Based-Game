@@ -1,6 +1,7 @@
 #include "PathfindingState.h"
 #include "Pathfinding.h"
 #include "GameSystem.h"
+#include "Stage.h"
 #include "Character.h"
 
 PathfindingState::PathfindingState()
@@ -25,7 +26,9 @@ void PathfindingState::Start()
 	State::Start();
 
 	_pathfinder->Reset();
-	_pathfinder->FindPath(ePathMode::VIEW_RANGE);	//캐릭터 최대 이동 거리에 따른 타일 범위를 보여준다.
+
+	if(eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo())
+		_pathfinder->FindPath(ePathMode::VIEW_RANGE);	//캐릭터 최대 이동 거리에 따른 타일 범위를 보여준다.
 }
 
 void PathfindingState::Update(float deltaTime)

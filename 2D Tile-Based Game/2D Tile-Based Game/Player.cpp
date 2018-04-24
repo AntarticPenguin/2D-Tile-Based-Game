@@ -62,19 +62,27 @@ void Player::UpdateCharacter()
 		int mouseX = GameSystem::GetInstance().GetMouseX();
 		int mouseY = GameSystem::GetInstance().GetMouseY();
 
-		TileCell* ClickedTileCell = GameSystem::GetInstance().GetStage()->GetMap()
+		TileCell* targetTileCell = GameSystem::GetInstance().GetStage()->GetMap()
 			->FindTileCellWithMousePosition(mouseX, mouseY);
-		
-		if ((false == IsMenuUp()) && IsClickCharacter(ClickedTileCell))
+
+		if (eStage::TOWN == GameSystem::GetInstance().GetStage()->GetStageInfo())
 		{
+			SetTargetTileCell(targetTileCell);
 			ChangeState(eStateType::ET_PATHFINDING);
 		}
-		else
+		else if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo())
 		{
-			if (CheckMoveRange(ClickedTileCell))
-				SetTargetTileCell(ClickedTileCell);
+			if ((false == IsMenuUp()) && IsClickCharacter(targetTileCell))
+			{
+				ChangeState(eStateType::ET_PATHFINDING);
+			}
 			else
-				SetTargetTileCell(NULL);
+			{
+				if (CheckMoveRange(targetTileCell))
+					SetTargetTileCell(targetTileCell);
+				else
+					SetTargetTileCell(NULL);
+			}
 		}
 	}
 }

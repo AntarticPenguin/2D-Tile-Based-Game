@@ -22,7 +22,7 @@ DefaultStageLoader::~DefaultStageLoader()
 
 void DefaultStageLoader::CreateComponents(std::wstring mapName)
 {
-	StageLoader::CreateComponents(mapName);
+	StageLoader::CreateComponents(L"Map01");
 
 	/*
 	//Recovery Item

@@ -144,7 +144,7 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 
 	//Stage
 	_stage = new Stage();
-	_stage->Init(L"Map01");
+	_stage->Init(L"Map01", eStage::TOWN);
 
 	return true;
 }
@@ -218,6 +218,25 @@ int	GameSystem::Update()
 				CheckDeviceLost();
 
 				_device3d->Present(NULL, NULL, NULL, NULL);
+
+				//TEST STAGE LOAD
+				{
+					if (IsKeyDown(VK_F1))
+					{
+						ComponentSystem::GetInstance().ClearMessageQueue();
+						delete _stage;
+						_stage = new Stage();
+						_stage->Init(L"", eStage::TOWN);
+					}
+
+					if (IsKeyDown(VK_F2))
+					{
+						ComponentSystem::GetInstance().ClearMessageQueue();
+						delete _stage;
+						_stage = new Stage();
+						_stage->Init(L"", eStage::DUNGEON);
+					}
+				}
 			}
 		}
 	}

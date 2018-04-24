@@ -27,14 +27,16 @@ Stage::~Stage()
 }
 
 
-void Stage::Init(std::wstring mapName)
+void Stage::Init(std::wstring mapName, eStage stageInfo)
 {
-	_stageMap[L"default"] = new DefaultStageLoader(this);
+	_stageMap[L"Map01"] = new DefaultStageLoader(this);
 
 	_componentList.clear();
 
 	_stageLoader = GetStageLoader(mapName);
 	_stageLoader->CreateComponents(mapName);
+
+	_stageInfo = stageInfo;
 }
 
 void Stage::Update(float deltaTime)
@@ -79,6 +81,11 @@ void Stage::SetMap(Map* map)
 	_map = map;
 }
 
+eStage Stage::GetStageInfo()
+{
+	return _stageInfo;
+}
+
 void Stage::AddStageComponent(Component* component)
 {
 	component->Init();
@@ -91,5 +98,5 @@ StageLoader* Stage::GetStageLoader(std::wstring mapName)
 	if (itr != _stageMap.end())
 		return _stageMap[mapName];
 	else
-		return _stageMap[L"default"];
+		return _stageMap[L"Map01"];
 }

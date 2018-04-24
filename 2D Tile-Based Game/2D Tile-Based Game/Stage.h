@@ -8,18 +8,25 @@ class Map;
 class StageLoader;
 class TileCell;
 
+enum eStage
+{
+	TOWN,
+	DUNGEON,
+};
+
 class Stage
 {
 private:
 	std::list<Component*> _componentList;
 	Map* _map;
+	eStage _stageInfo;
 
 public:
 	Stage();
 	~Stage();
 
 public:
-	void Init(std::wstring mapName);
+	void Init(std::wstring mapName, eStage stageInfo);
 	void Update(float deltaTime);
 	void Render();
 	void Release();
@@ -28,6 +35,8 @@ public:
 public:
 	Map* GetMap();
 	void SetMap(Map* map);
+
+	eStage GetStageInfo();
 
 	//Stage Loader
 private:
