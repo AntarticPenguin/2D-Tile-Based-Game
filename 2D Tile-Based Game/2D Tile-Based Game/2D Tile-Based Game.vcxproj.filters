@@ -102,9 +102,6 @@
     <ClCompile Include="DeadState.cpp">
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClCompile>
-    <ClCompile Include="CounterAttackState.cpp">
-      <Filter>소스 파일\Game\Character\State</Filter>
-    </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>소스 파일\Graphics</Filter>
     </ClCompile>
@@ -131,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="PathfindingState.cpp">
       <Filter>소스 파일\Game\Character\State</Filter>
+    </ClCompile>
+    <ClCompile Include="UISystem.cpp">
+      <Filter>소스 파일\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -194,9 +194,6 @@
     <ClInclude Include="DeadState.h">
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClInclude>
-    <ClInclude Include="CounterAttackState.h">
-      <Filter>소스 파일\Game\Character\State</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>소스 파일\Graphics</Filter>
     </ClInclude>
@@ -223,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="PathfindingState.h">
       <Filter>소스 파일\Game\Character\State</Filter>
+    </ClInclude>
+    <ClInclude Include="UISystem.h">
+      <Filter>소스 파일\System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

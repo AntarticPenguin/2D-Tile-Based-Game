@@ -29,6 +29,8 @@ void IdleState::Update(float deltaTime)
 	if (false == _character->IsLive())
 		return;
 
+	_character->ChargeBehavior(deltaTime);
+
 	//if (false == _character->IsMoving())
 	//{
 	//	_character->UpdateAI(deltaTime);

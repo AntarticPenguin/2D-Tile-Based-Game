@@ -139,5 +139,9 @@ void PathfindingMoveState::Start()
 void PathfindingMoveState::Stop()
 {
 	State::Stop();
+
+	if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo())
+		_character->DecreaseBehaviorPoint(2);
+
 	_character->ClearPathTileCellStack();
 }

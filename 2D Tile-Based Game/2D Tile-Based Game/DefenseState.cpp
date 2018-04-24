@@ -46,14 +46,6 @@ void DefenseState::Start()
 {
 	State::Start();
 
-	int counter = (rand() % 100) + 1;
-
-	if (0 == (counter % 4))
-	{
-		_nextState = eStateType::ET_COUNTERATTACK;
-		return;
-	}
-
 	_curState = eStateType::ET_DEFENSE;
 	
 	int defenseRate = (rand() % 100) + 1;

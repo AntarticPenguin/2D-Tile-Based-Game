@@ -1,5 +1,6 @@
 #include "GameSystem.h"
 #include "ComponentSystem.h"
+#include "UISystem.h"
 #include "Stage.h"
 #include "Map.h"
 #include "Player.h"
@@ -8,7 +9,6 @@
 #include "PathfindingState.h"
 #include "PathfindingMoveState.h"
 #include "DeadState.h"
-#include "CounterAttackState.h"
 #include "DefenseState.h"
 #include "AttackState.h"
 #include "MoveState.h"
@@ -50,7 +50,6 @@ void Player::InitState()
 
 	ReplaceState(eStateType::ET_ATTACK, new AttackState());
 	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
-	ReplaceState(eStateType::ET_COUNTERATTACK, new CounterAttackState());
 	ReplaceState(eStateType::ET_DEAD, new DeadState());
 }
 
@@ -62,6 +61,10 @@ void Player::UpdateCharacter()
 		int mouseX = GameSystem::GetInstance().GetMouseX();
 		int mouseY = GameSystem::GetInstance().GetMouseY();
 
+		//Check UI
+		if (true == UISystem::GetInstance().CheckUIClick(mouseX, mouseY))
+			return;
+
 		TileCell* targetTileCell = GameSystem::GetInstance().GetStage()->GetMap()
 			->FindTileCellWithMousePosition(mouseX, mouseY);
 
@@ -72,6 +75,9 @@ void Player::UpdateCharacter()
 		}
 		else if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo())
 		{
+			if (10 != _behaviorPoint)
+				return;
+
 			if ((false == IsMenuUp()) && IsClickCharacter(targetTileCell))
 			{
 				ChangeState(eStateType::ET_PATHFINDING);

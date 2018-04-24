@@ -1,5 +1,6 @@
 #include "Stage.h"
 #include "ComponentSystem.h"
+#include "UISystem.h"
 
 #include "Map.h"
 #include "TileCell.h"
@@ -53,6 +54,8 @@ void Stage::Render()
 	{
 		(*itr)->Render();
 	}
+
+	UISystem::GetInstance().Render();
 }
 
 void Stage::Release()

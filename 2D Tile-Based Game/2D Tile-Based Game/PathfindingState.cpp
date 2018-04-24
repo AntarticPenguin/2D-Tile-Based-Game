@@ -35,7 +35,8 @@ void PathfindingState::Update(float deltaTime)
 {
 	State::Update(deltaTime);
 
-	if (GameSystem::GetInstance().IsRightMouseDown())
+	if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo()
+		&& GameSystem::GetInstance().IsRightMouseDown())
 	{
 		if (_character->IsMenuUp())
 		{

@@ -8,7 +8,6 @@
 #include "Font.h"
 
 #include "DeadState.h"
-#include "CounterAttackState.h"
 #include "DefenseState.h"
 #include "AttackState.h"
 #include "MoveState.h"
@@ -32,6 +31,8 @@ Character::Character(std::wstring name, std::wstring scriptName, std::wstring sp
 
 	//Stat Info
 	{
+		_behaviorPoint = 10;
+		_behaviorDuration = 0.0f;
 		_attackPoint = 10;
 		_attackedPoint = 0;
 		_attackRange = 1;
@@ -96,7 +97,7 @@ void Character::Init(int tileX, int tileY)
 	//Font
 	{
 		D3DCOLOR color = D3DCOLOR_ARGB(255, 0, 0, 0);
-		_font = new Font(L"Arial", 15, color);
+		_font = new Font(L"Arial", 20, color);
 
 		_font->SetRect(100, 100, 400, 100);
 		UpdateText();
@@ -184,7 +185,6 @@ void Character::InitTilePosition(int tileX, int tileY)
 	}
 }
 
-
 void Character::MoveDeltaPosition(float deltaX, float deltaY)
 {
 	_x += deltaX;
@@ -195,6 +195,53 @@ void Character::SetPosition(float posX, float posY)
 {
 	_x = posX;
 	_y = posY;
+}
+
+
+void Character::InitMove()
+{
+	_isMoving = false;
+	_curDirection = eDirection::DOWN;
+}
+
+void Character::InitState()
+{
+	ReplaceState(eStateType::ET_IDLE, new IdleState());
+	ReplaceState(eStateType::ET_MOVE, new MoveState());
+	ReplaceState(eStateType::ET_ATTACK, new AttackState());
+	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
+	ReplaceState(eStateType::ET_DEAD, new DeadState());
+}
+
+void Character::ReplaceState(eStateType changeType, State* replaceState)
+{
+	std::map<eStateType, State*>::iterator itr = _stateMap.find(changeType);
+	if (itr != _stateMap.end())
+	{
+		delete itr->second;
+		_stateMap.erase(changeType);
+	}
+
+	State* state = replaceState;
+	state->Init(this);
+	_stateMap[changeType] = state;
+}
+
+//void Character::UpdateAI(float deltaTime)
+//{
+//	_curDirection = (eDirection)(rand() % 4);
+//	_state->NextState(eStateType::ET_MOVE);
+//}
+
+void Character::ChangeState(eStateType stateType)
+{
+	if (NULL != _state)
+	{
+		_state->Stop();
+	}
+
+	_state = _stateMap[stateType];
+	_state->Start();
 }
 
 int Character::GetAttackedPoint()
@@ -216,56 +263,33 @@ void Character::DecreaseHP(int decreaseHP)
 	}
 }
 
-void Character::Equip(Component* weapon)
+void Character::DecreaseBehaviorPoint(int point)
 {
-	_equipList.push_back(weapon);
-}
+	_behaviorPoint -= point;
 
-void Character::InitMove()
-{
-	_isMoving = false;
-	_curDirection = eDirection::DOWN;
-}
-
-void Character::InitState()
-{
-	ReplaceState(eStateType::ET_IDLE, new IdleState());
-	ReplaceState(eStateType::ET_MOVE, new MoveState());
-	ReplaceState(eStateType::ET_ATTACK, new AttackState());
-	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
-	ReplaceState(eStateType::ET_COUNTERATTACK, new CounterAttackState());
-	ReplaceState(eStateType::ET_DEAD, new DeadState());
-}
-
-void Character::ReplaceState(eStateType changeType, State* replaceState)
-{
-	std::map<eStateType, State*>::iterator itr = _stateMap.find(changeType);
-	if (itr != _stateMap.end())
+	if (_behaviorPoint <= 0)
 	{
-		delete itr->second;
-		_stateMap.erase(changeType);
+		_behaviorPoint = 0;
+	}
+}
+
+void Character::ChargeBehavior(float deltaTime)
+{
+	if (10 <= _behaviorPoint)
+	{
+		_behaviorPoint = 10;
+		return;
 	}
 
-	State* state = replaceState;
-	state->Init(this);
-	_stateMap[changeType] = state;
-}
-//
-//void Character::UpdateAI(float deltaTime)
-//{
-//	_curDirection = (eDirection)(rand() % 4);
-//	_state->NextState(eStateType::ET_MOVE);
-//}
-
-void Character::ChangeState(eStateType stateType)
-{
-	if (NULL != _state)
+	if (_behaviorDuration < 1.0f)
 	{
-		_state->Stop();
+		_behaviorDuration += deltaTime;
 	}
-
-	_state = _stateMap[stateType];
-	_state->Start();
+	else
+	{
+		_behaviorPoint++;
+		_behaviorDuration = 0.0f;
+	}
 }
 
 void Character::MoveStart(int newTileX, int newTileY)
@@ -399,7 +423,7 @@ void Character::RecoveryHP(int hp)
 
 void Character::UpdateText()
 {
-	int coolTime = (int)(_attackCooltimeDuration * 1000.0f);
+	//int coolTime = (int)(_attackCooltimeDuration * 1000.0f);
 
 	WCHAR state[100];
 	ZeroMemory(state, sizeof(state));
@@ -408,9 +432,6 @@ void Character::UpdateText()
 	{
 	case eStateType::ET_ATTACK:
 		wsprintf(state, L"ATTACK");
-		break;
-	case eStateType::ET_COUNTERATTACK:
-		wsprintf(state, L"COUNTER");
 		break;
 	case eStateType::ET_DEAD:
 		wsprintf(state, L"DEAD");
@@ -426,9 +447,9 @@ void Character::UpdateText()
 		break;
 	}
 
-
 	WCHAR text[255];
-	wsprintf(text, L"HP:%d\nCool: %d\nState::%s", _hp, coolTime, state);
+	//wsprintf(text, L"HP:%d\nCool: %d\nState::%s", _hp, coolTime, state);
+	wsprintf(text, L"BehaviorPoint: %d\n State: %s\n", _behaviorPoint, state);
 
 	_font->SetText(text);
 }

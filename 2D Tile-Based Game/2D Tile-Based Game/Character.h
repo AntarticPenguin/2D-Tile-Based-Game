@@ -16,7 +16,6 @@ enum eStateType
 	ET_MOVE,
 	ET_ATTACK,
 	ET_DEFENSE,
-	ET_COUNTERATTACK,
 	ET_PATHFINDING,
 	ET_DEAD,
 };
@@ -62,23 +61,6 @@ public:
 	void MoveDeltaPosition(float deltaX, float deltaY);
 	void SetPosition(float posX, float posY);
 
-	//Character Info
-protected:
-	int _maxHp;
-	int _hp;
-	int _attackedPoint;
-
-public:
-	int GetAttackedPoint();
-	void DecreaseHP(int decreaseHP);
-
-	//Character Item
-protected:
-	std::list<Component*> _equipList;
-
-public:
-	void Equip(Component* weapon);
-
 	//State
 protected:
 	std::map<eStateType, State*> _stateMap;
@@ -90,15 +72,25 @@ public:
 	void ReplaceState(eStateType changeType, State* replaceState);
 	void ChangeState(eStateType stateType);
 
+	//Character Info
+protected:
+	int _behaviorPoint;
+	float _behaviorDuration;
+	int _maxHp;
+	int _hp;
+	int _attackedPoint;
+
+public:
+	int GetAttackedPoint();
+	void DecreaseHP(int decreaseHP);
+	void DecreaseBehaviorPoint(int point);
+	void ChargeBehavior(float deltaTime);
+
 	//Move
 protected:
 	bool _isMoving;
 	float _moveTime;
 	int _moveRange;
-
-	float _targetX;
-	float _targetY;
-
 	eDirection _curDirection;
 
 public:
