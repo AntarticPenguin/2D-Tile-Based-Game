@@ -108,7 +108,7 @@ void Map::Init()
 					break;
 			}
 		}
-
+		
 		//2Ãþ
 		line = 0;
 		row = 0;

@@ -40,6 +40,9 @@
     <Filter Include="소스 파일\Game\Stage">
       <UniqueIdentifier>{3997058d-5aab-47f5-9379-0e3969e6fbfc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\System\UISystem">
+      <UniqueIdentifier>{17acc49d-c940-4444-bffa-d7ea013e14f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -130,7 +133,10 @@
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClCompile>
     <ClCompile Include="UISystem.cpp">
-      <Filter>소스 파일\System</Filter>
+      <Filter>소스 파일\System\UISystem</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>소스 파일\System\UISystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,7 +228,10 @@
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClInclude>
     <ClInclude Include="UISystem.h">
-      <Filter>소스 파일\System</Filter>
+      <Filter>소스 파일\System\UISystem</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>소스 파일\System\UISystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

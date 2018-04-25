@@ -357,8 +357,8 @@ void GameSystem::CheckDeviceLost()
 
 void GameSystem::InitInput()
 {
-	_isMouseDown = false;
-	_isRightMouseDown = false;
+	_mouseState = eMouseState::UP;
+	_rightMouseState = eMouseState::UP;
 	_mouseX = 0;
 	_mouseY = 0;
 
@@ -383,7 +383,7 @@ bool GameSystem::IsKeyDown(unsigned int keyCode)
 
 void GameSystem::MouseDown(int mouseX, int mouseY)
 {
-	_isMouseDown = true;
+	_mouseState = eMouseState::DOWN;
 
 	_mouseX = mouseX;
 	_mouseY = mouseY;
@@ -391,7 +391,7 @@ void GameSystem::MouseDown(int mouseX, int mouseY)
 
 void GameSystem::MouseUp()
 {
-	_isMouseDown = false;
+	_mouseState = eMouseState::UP;
 }
 
 Stage* GameSystem::GetStage()
@@ -401,22 +401,32 @@ Stage* GameSystem::GetStage()
 
 bool GameSystem::IsMouseDown()
 {
-	return _isMouseDown;
+	if (eMouseState::DOWN == _mouseState)
+	{
+		_mouseState = eMouseState::HOLD;
+		return true;
+	}
+	return false;
 }
 
 void GameSystem::RightMouseDown()
 {
-	_isRightMouseDown = true;
+	_rightMouseState = eMouseState::DOWN;
 }
 
 void GameSystem::RightMouseUp()
 {
-	_isRightMouseDown = false;
+	_rightMouseState = eMouseState::UP;
 }
 
 bool GameSystem::IsRightMouseDown()
 {
-	return _isRightMouseDown;
+	if (eMouseState::DOWN == _rightMouseState)
+	{
+		_rightMouseState = eMouseState::HOLD;
+		return true;
+	}
+	return false;
 }
 
 int GameSystem::GetMouseX()

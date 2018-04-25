@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "UISystem.h"
+#include "UI.h"
 
 #include "Sprite.h"
 
@@ -7,9 +8,7 @@ UISystem* UISystem::_instance = NULL;
 
 UISystem::UISystem()
 {
-	_moveButton = new Sprite(L"menu_MOVE.png");
-	_moveButton->Init(0, 0, 32, 32, 1.0f);
-	_moveButton->SetPosition(650, 500);
+	InitBattleMenu();
 }
 
 UISystem::~UISystem()
@@ -18,7 +17,8 @@ UISystem::~UISystem()
 
 void UISystem::Render()
 {
-	_moveButton->Render();
+	for (int i = 0; i < _battleMenuList.size(); i++)
+		_battleMenuList[i]->Render();
 }
 
 UISystem& UISystem::GetInstance()
@@ -30,29 +30,26 @@ UISystem& UISystem::GetInstance()
 
 bool UISystem::CheckUIClick(int mouseX, int mouseY)
 {
-	//해당되는 좌표에 UI가 존재하는가?
-	if (CheckCollision(mouseX, mouseY))
-		return true;
+	for (int i = 0; i < _battleMenuList.size(); i++)
+	{
+		if (true == _battleMenuList[i]->CheckCollision(mouseX, mouseY))
+			return true;
+	}
 	return false;
 }
 
-bool UISystem::CheckCollision(int mouseX, int mouseY)
+void UISystem::InitBattleMenu()
 {
-	int tileSize = 32;
-
-	int left = 650 - (tileSize / 2);
-	int top = 500 - (tileSize / 2);
-	int right = 650 + (tileSize / 2);
-	int bottom = 500 + (tileSize / 2);
-
-	if (mouseX < left)
-		return false;
-	if (right < mouseX)
-		return false;
-	if (mouseY < top)
-		return false;
-	if (bottom < mouseY)
-		return false;
-
-	return true;
+	int width = 32;
+	int height = 32;
+	{
+		UI* button = new UI(L"이동", L"menu_MOVE.png", width, height);
+		button->SetPosition(650, 500);
+		_battleMenuList.push_back(button);
+	}
+	{
+		UI* button = new UI(L"공격", L"menu_ATTACK.png", width, height);
+		button->SetPosition(750, 500);
+		_battleMenuList.push_back(button);
+	}
 }

@@ -3,6 +3,7 @@
 #include "GameSystem.h"
 #include "Stage.h"
 #include "Character.h"
+#include "TileCell.h"
 
 PathfindingState::PathfindingState()
 {
@@ -27,7 +28,7 @@ void PathfindingState::Start()
 
 	_pathfinder->Reset();
 
-	if(eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo())
+	if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo())
 		_pathfinder->FindPath(ePathMode::VIEW_RANGE);	//캐릭터 최대 이동 거리에 따른 타일 범위를 보여준다.
 }
 
@@ -46,7 +47,10 @@ void PathfindingState::Update(float deltaTime)
 	}
 
 	//보여준 타일 내에서 클릭할 때까지 대기
-	if (NULL != _character->GetTargetCell())
+	TileCell* targetCell = _character->GetTargetCell();
+	if ((NULL != targetCell)
+		&& !(targetCell->GetTileX() == _character->GetTileX() && targetCell->GetTileY() == _character->GetTileY())
+		)
 	{
 		_pathfinder->Reset();
 		_pathfinder->FindPath(ePathMode::FIND_PATH, eFindMethod::ASTAR);	//타일이 클릭되면 경로를 탐색 : Astar

@@ -1,12 +1,13 @@
 #pragma once
+#include <vector>
 
-class Sprite;
+class UI;
 
 class UISystem
 {
 private:
 	static UISystem* _instance;
-	Sprite* _moveButton;
+	std::vector<UI*> _battleMenuList;
 
 public:
 	void Render();
@@ -14,7 +15,10 @@ public:
 public:
 	static UISystem& GetInstance();
 	bool CheckUIClick(int mouseX, int mouseY);
-	bool CheckCollision(int mouseX, int mouseY);
+
+	//Init UI
+public:
+	void InitBattleMenu();
 
 	//Constructor & Destroyer
 private:

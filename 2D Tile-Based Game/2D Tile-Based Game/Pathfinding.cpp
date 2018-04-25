@@ -15,7 +15,7 @@ Pathfinding::Pathfinding(Character* character)
 
 Pathfinding::~Pathfinding()
 {
-
+	
 }
 
 void Pathfinding::Init()

@@ -57,11 +57,22 @@ public:
 		KEY_UP,
 	};
 
+
+	//INPUT
+private:
+	enum eMouseState
+	{
+		DOWN,
+		HOLD,
+		UP,
+	};
+
 private:
 	eKeyState _eKeyState[256];
 
-	bool _isMouseDown;
-	bool _isRightMouseDown;
+	//bool _isMouseDown;
+	eMouseState _mouseState;
+	eMouseState _rightMouseState;
 	int _mouseX;
 	int _mouseY;
 

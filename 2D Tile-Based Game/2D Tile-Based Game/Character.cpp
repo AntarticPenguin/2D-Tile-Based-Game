@@ -96,7 +96,7 @@ void Character::Init(int tileX, int tileY)
 
 	//Font
 	{
-		D3DCOLOR color = D3DCOLOR_ARGB(255, 0, 0, 0);
+		D3DCOLOR color = D3DCOLOR_ARGB(255, 255, 255, 0);
 		_font = new Font(L"Arial", 20, color);
 
 		_font->SetRect(100, 100, 400, 100);

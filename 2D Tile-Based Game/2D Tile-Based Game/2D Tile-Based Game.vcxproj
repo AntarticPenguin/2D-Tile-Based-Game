@@ -47,6 +47,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TileCell.cpp" />
     <ClCompile Include="TileObject.cpp" />
+    <ClCompile Include="UI.cpp" />
     <ClCompile Include="UISystem.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
@@ -80,6 +81,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TileCell.h" />
     <ClInclude Include="TileObject.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="UISystem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
