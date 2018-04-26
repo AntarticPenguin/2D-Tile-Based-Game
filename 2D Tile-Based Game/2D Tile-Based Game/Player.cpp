@@ -75,12 +75,9 @@ void Player::UpdateCharacter()
 		}
 		else if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo())
 		{
-			if (10 != _behaviorPoint)
-				return;
-
-			if ((false == IsMenuUp()) && IsClickCharacter(targetTileCell))
+			if (false == UISystem::GetInstance().IsBattleMenuOn() && IsClickCharacter(targetTileCell))
 			{
-				ChangeState(eStateType::ET_PATHFINDING);
+				UISystem::GetInstance().TurnOnBattleMenu();
 			}
 			else
 			{
@@ -89,6 +86,7 @@ void Player::UpdateCharacter()
 				else
 					SetTargetTileCell(NULL);
 			}
+
 		}
 	}
 }

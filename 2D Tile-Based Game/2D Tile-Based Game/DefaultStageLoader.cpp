@@ -2,6 +2,7 @@
 
 #include "Stage.h"
 #include "Map.h"
+#include "UISystem.h"
 
 #include "Player.h"
 #include "RecoveryItem.h"
@@ -55,6 +56,7 @@ void DefaultStageLoader::CreateComponents(std::wstring mapName)
 	
 	Player* player = new Player(L"Player", L"Player", L"Player");	//(컴포넌트이름, 스크립트 이름, 스프라이트이름)
 	_stage->AddStageComponent(player);
-	
+
+	UISystem::GetInstance().SetActor(player);
 	_map->InitViewer(player);
 }

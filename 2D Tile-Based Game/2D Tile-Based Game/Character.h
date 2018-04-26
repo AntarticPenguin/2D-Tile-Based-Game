@@ -85,6 +85,7 @@ public:
 	void DecreaseHP(int decreaseHP);
 	void DecreaseBehaviorPoint(int point);
 	void ChargeBehavior(float deltaTime);
+	int GetBehaviorPoint();
 
 	//Move
 protected:
@@ -155,13 +156,11 @@ public:
 
 	//In Dungeon
 private:
-	bool _turnOnMenu;
 	std::vector<TileCell*> _colorTileList;
 
 public:
 	bool IsClickCharacter(TileCell* tileCell);
-	bool IsMenuUp();
-	void TurnOffMenu();
+	void ClearColorTile();
 	void PushColorTileCell(TileCell* tileCell);
 	bool CheckMoveRange(TileCell* tileCell);
 };

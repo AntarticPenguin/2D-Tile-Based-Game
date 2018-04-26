@@ -1,6 +1,7 @@
 #include "PathfindingState.h"
 #include "Pathfinding.h"
 #include "GameSystem.h"
+#include "UISystem.h"
 #include "Stage.h"
 #include "Character.h"
 #include "TileCell.h"
@@ -39,11 +40,8 @@ void PathfindingState::Update(float deltaTime)
 	if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo()
 		&& GameSystem::GetInstance().IsRightMouseDown())
 	{
-		if (_character->IsMenuUp())
-		{
-			_character->TurnOffMenu();
-			_character->ChangeState(eStateType::ET_IDLE);
-		}
+		_character->ClearColorTile();
+		_character->ChangeState(eStateType::ET_IDLE);
 	}
 
 	//보여준 타일 내에서 클릭할 때까지 대기
@@ -55,6 +53,8 @@ void PathfindingState::Update(float deltaTime)
 		_pathfinder->Reset();
 		_pathfinder->FindPath(ePathMode::FIND_PATH, eFindMethod::ASTAR);	//타일이 클릭되면 경로를 탐색 : Astar
 		_pathfinder->BuildPath();											//경로를 도출하여 움직인다.
-		_character->TurnOffMenu();
+
+		_character->ClearColorTile();
+		UISystem::GetInstance().TurnOffBattleMenu();
 	}
 }

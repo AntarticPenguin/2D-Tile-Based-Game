@@ -2,12 +2,13 @@
 #include <vector>
 
 class UI;
+class Character;
 
 class UISystem
 {
 private:
 	static UISystem* _instance;
-	std::vector<UI*> _battleMenuList;
+	Character* _character;
 
 public:
 	void Render();
@@ -15,10 +16,18 @@ public:
 public:
 	static UISystem& GetInstance();
 	bool CheckUIClick(int mouseX, int mouseY);
+	void SetActor(Character* character);
 
-	//Init UI
+	//UI
+private:
+	std::vector<UI*> _battleMenuList;
+	bool _IsBattle;
+
 public:
 	void InitBattleMenu();
+	void TurnOnBattleMenu();
+	void TurnOffBattleMenu();
+	bool IsBattleMenuOn();
 
 	//Constructor & Destroyer
 private:

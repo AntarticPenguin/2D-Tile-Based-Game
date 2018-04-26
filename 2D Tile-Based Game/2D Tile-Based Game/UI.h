@@ -3,6 +3,7 @@
 #include <string>
 
 class Sprite;
+class Character;
 
 class UI
 {
@@ -30,4 +31,5 @@ public:
 public:
 	void SetPosition(float posX, float posY);
 	bool CheckCollision(int mouseX, int mouseY);
+	virtual void Action(Character* character);
 };

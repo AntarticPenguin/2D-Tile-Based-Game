@@ -3,6 +3,7 @@
 
 #include "GameSystem.h"
 #include "ComponentSystem.h"
+#include "UISystem.h"
 #include "Stage.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -235,6 +236,7 @@ int	GameSystem::Update()
 						delete _stage;
 						_stage = new Stage();
 						_stage->Init(L"", eStage::DUNGEON);
+						UISystem::GetInstance().InitBattleMenu();
 					}
 				}
 			}

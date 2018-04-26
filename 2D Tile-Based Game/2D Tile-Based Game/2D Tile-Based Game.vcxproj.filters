@@ -138,6 +138,9 @@
     <ClCompile Include="UI.cpp">
       <Filter>소스 파일\System\UISystem</Filter>
     </ClCompile>
+    <ClCompile Include="MoveUI.cpp">
+      <Filter>소스 파일\System\UISystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -231,6 +234,9 @@
       <Filter>소스 파일\System\UISystem</Filter>
     </ClInclude>
     <ClInclude Include="UI.h">
+      <Filter>소스 파일\System\UISystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveUI.h">
       <Filter>소스 파일\System\UISystem</Filter>
     </ClInclude>
   </ItemGroup>

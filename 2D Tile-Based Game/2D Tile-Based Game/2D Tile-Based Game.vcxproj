@@ -22,6 +22,7 @@
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="DefaultStageLoader.cpp" />
     <ClCompile Include="GlobalTile.cpp" />
+    <ClCompile Include="MoveUI.cpp" />
     <ClCompile Include="PathfindingState.cpp" />
     <ClCompile Include="PathfindingMoveState.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
@@ -55,6 +56,7 @@
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="DefaultStageLoader.h" />
     <ClInclude Include="GlobalTile.h" />
+    <ClInclude Include="MoveUI.h" />
     <ClInclude Include="PathfindingState.h" />
     <ClInclude Include="PathfindingMoveState.h" />
     <ClInclude Include="Pathfinding.h" />

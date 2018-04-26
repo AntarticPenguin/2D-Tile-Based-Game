@@ -48,3 +48,8 @@ bool UI::CheckCollision(int mouseX, int mouseY)
 
 	return true;
 }
+
+void UI::Action(Character* character)
+{
+
+}

@@ -45,7 +45,6 @@ Character::Character(std::wstring name, std::wstring scriptName, std::wstring sp
 
 	_targetTileCell = NULL;
 	_counterTarget = NULL;
-	_turnOnMenu = false;
 	_colorTileList.clear();
 }
 
@@ -70,9 +69,7 @@ void Character::Init()
 		canMove = map->CanMoveTileMap(tileX, tileY);
 
 		if (true == canMove)
-		{
 			break;
-		}
 	}
 	Init(tileX, tileY);
 }
@@ -292,6 +289,11 @@ void Character::ChargeBehavior(float deltaTime)
 	}
 }
 
+int Character::GetBehaviorPoint()
+{
+	return _behaviorPoint;
+}
+
 void Character::MoveStart(int newTileX, int newTileY)
 {
 	_isMoving = true;
@@ -483,25 +485,15 @@ void Character::ClearPathTileCellStack()
 bool Character::IsClickCharacter(TileCell* tileCell)
 {
 	if ((tileCell->GetTileX() == _tileX) && (tileCell->GetTileY() == _tileY))
-	{
-		_turnOnMenu = true;
 		return true;
-	}
 	return false;
 }
 
-bool Character::IsMenuUp()
-{
-	return _turnOnMenu;
-}
-
-void Character::TurnOffMenu()
+void Character::ClearColorTile()
 {
 	for (int i = 0; i < _colorTileList.size(); i++)
 		_colorTileList[i]->TurnOffColorTile();
 	_colorTileList.clear();
-	
-	_turnOnMenu = false;
 }
 
 void Character::PushColorTileCell(TileCell* tileCell)
