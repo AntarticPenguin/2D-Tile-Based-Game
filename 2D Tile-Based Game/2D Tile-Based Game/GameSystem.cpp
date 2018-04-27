@@ -177,8 +177,7 @@ int	GameSystem::Update()
 			_frameDuration += _gameTimer.GetDeltaTime();
 
 			//게임 업데이트
-			//들어온 메세지들을 큐에 쌓아놓고 처리
-			//컴포넌트들이 공평하게 동작
+			//들어온 메세지들을 큐에 쌓아놓고 처리, 컴포넌트들이 공평하게 동작
 			ComponentSystem::GetInstance().Update(deltaTime);
 
 			_stage->Update(deltaTime);
@@ -187,10 +186,6 @@ int	GameSystem::Update()
 			float secPerFrame = 1.0f / 60.0f;
 			if (secPerFrame <= _frameDuration)
 			{
-				//wchar_t timeCheck[256];
-				//swprintf(timeCheck, L"FrameDuration: %f\n", _frameDuration);
-				//OutputDebugString(timeCheck);
-
 				_frameDuration = 0.0f;
 
 				//DX9
@@ -204,15 +199,11 @@ int	GameSystem::Update()
 
 				//Begin과 End 사이에 출력작업
 				_device3d->BeginScene();
-
 				_sprite->Begin(D3DXSPRITE_ALPHABLEND);
-
 				{
 					_stage->Render();
 				}
-
 				_sprite->End();
-
 				_device3d->EndScene();
 
 				//출력 직전에 Device Lost 체크

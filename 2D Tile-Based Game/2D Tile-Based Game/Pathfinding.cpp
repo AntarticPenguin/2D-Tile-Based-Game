@@ -83,7 +83,7 @@ void Pathfinding::FindPath(ePathMode mode, eFindMethod method)
 							if ( !(nextTileCell->GetTileX() == _character->GetTileX()
 								&& nextTileCell->GetTileY() == _character->GetTileY()) )
 							{
-								nextTileCell->TurnOnColorTile(D3DCOLOR_ARGB(100, 255, 0, 0));
+								nextTileCell->TurnOnColorTile(D3DCOLOR_ARGB(100, 0, 0, 255));
 								_character->PushColorTileCell(nextTileCell);
 							}
 						}

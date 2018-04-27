@@ -233,9 +233,7 @@ void Character::ReplaceState(eStateType changeType, State* replaceState)
 void Character::ChangeState(eStateType stateType)
 {
 	if (NULL != _state)
-	{
 		_state->Stop();
-	}
 
 	_state = _stateMap[stateType];
 	_state->Start();
@@ -446,6 +444,12 @@ void Character::UpdateText()
 		break;
 	case eStateType::ET_MOVE:
 		wsprintf(state, L"MOVE");
+		break;
+	case eStateType::ET_PATHFINDING:
+		wsprintf(state, L"PATHFINDING");
+		break;
+	case eStateType::ET_SELECT_TARGET:
+		wsprintf(state, L"WAITING SELECT");
 		break;
 	}
 

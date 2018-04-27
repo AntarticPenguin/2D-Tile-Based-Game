@@ -86,7 +86,6 @@ void Player::UpdateCharacter()
 				else
 					SetTargetTileCell(NULL);
 			}
-
 		}
 	}
 }

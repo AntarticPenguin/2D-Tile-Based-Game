@@ -19,5 +19,4 @@ void MoveUI::Action(Character* character)
 		UISystem::GetInstance().TurnOffBattleMenu();
 		character->ChangeState(eStateType::ET_PATHFINDING);
 	}
-		
 }
