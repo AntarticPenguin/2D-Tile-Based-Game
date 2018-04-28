@@ -91,6 +91,8 @@ public:
 	void RightMouseUp();
 	bool IsRightMouseDown();
 
+	void SetMousePosition(int mouseX, int mouseY);
+
 	int GetMouseX();
 	int GetMouseY();
 

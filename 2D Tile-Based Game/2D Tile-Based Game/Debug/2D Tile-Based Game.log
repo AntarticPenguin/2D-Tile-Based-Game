@@ -1,19 +1,7 @@
-﻿  MoveUI.cpp
+﻿  AttackUI.cpp
+  Player.cpp
   코드를 생성하고 있습니다...
-  건너뛰고 있습니다... (관련된 변경 내용 없음)
-  WinMain.cpp
-  TileObject.cpp
-  TileCell.cpp
-  Texture.cpp
-  StageLoader.cpp
-  ResourceManager.cpp
-  GlobalTile.cpp
-  GameTimer.cpp
-  Frame.cpp
-  Font.cpp
-  ComponentSystem.cpp
-  Component.cpp
-json_vc71_libmtd.lib(json_reader.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_reader.obj)' 또는 'D:\ProgrammingFolder\2DTileGame\2D Tile-Based Game\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-json_vc71_libmtd.lib(json_value.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_value.obj)' 또는 'D:\ProgrammingFolder\2DTileGame\2D Tile-Based Game\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-json_vc71_libmtd.lib(json_writer.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_writer.obj)' 또는 'D:\ProgrammingFolder\2DTileGame\2D Tile-Based Game\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-  2D Tile-Based Game.vcxproj -> D:\ProgrammingFolder\2DTileGame\2D Tile-Based Game\Debug\2D Tile-Based Game.exe
+json_vc71_libmtd.lib(json_reader.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_reader.obj)' 또는 'E:\Github\2D-Tile-Based-Game\2D Tile-Based Game\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+json_vc71_libmtd.lib(json_value.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_value.obj)' 또는 'E:\Github\2D-Tile-Based-Game\2D Tile-Based Game\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+json_vc71_libmtd.lib(json_writer.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_writer.obj)' 또는 'E:\Github\2D-Tile-Based-Game\2D Tile-Based Game\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+  2D Tile-Based Game.vcxproj -> E:\Github\2D-Tile-Based-Game\2D Tile-Based Game\Debug\2D Tile-Based Game.exe

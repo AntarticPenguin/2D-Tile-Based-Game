@@ -8,14 +8,12 @@
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	int mouseX;
-	int mouseY;
+	int mouseX = LOWORD(lParam);
+	int mouseY = HIWORD(lParam);
 
 	switch (msg)
 	{
 	case WM_LBUTTONDOWN:
-		mouseX = LOWORD(lParam);
-		mouseY = HIWORD(lParam);
 		GameSystem::GetInstance().MouseDown(mouseX, mouseY);
 		return 0;
 	case WM_LBUTTONUP:
@@ -26,6 +24,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_RBUTTONUP:
 		GameSystem::GetInstance().RightMouseUp();
+		return 0;
+	case WM_MOUSEMOVE:
+		GameSystem::GetInstance().SetMousePosition(mouseX, mouseY);
 		return 0;
 
 	case WM_KEYDOWN:
@@ -53,8 +54,8 @@ GameSystem::GameSystem()
 {
 	//_isEnable4xMSAA = false;
 	_isFullScreen = false;
-	_clientWidth = 1600;
-	_clientHeight = 900;
+	_clientWidth = 800;
+	_clientHeight = 600;
 	_frameDuration = 0.0f;
 }
 
@@ -126,9 +127,11 @@ bool GameSystem::InitSystem(HINSTANCE hInstance, int nCmdShow)
 	{
 		RECT clientRect;
 		GetClientRect(_hMainWnd, &clientRect);
-
 		int addWidth = _clientWidth - clientRect.right;
 		int addHeight = _clientHeight - clientRect.bottom;
+		if (addHeight < 0)
+			addHeight *= -1;
+
 		int finalWidth = _clientWidth + addWidth;
 		int finalHeight = _clientHeight + addHeight;
 
@@ -420,6 +423,12 @@ bool GameSystem::IsRightMouseDown()
 		return true;
 	}
 	return false;
+}
+
+void GameSystem::SetMousePosition(int mouseX, int mouseY)
+{
+	_mouseX = mouseX;
+	_mouseY = mouseY;
 }
 
 int GameSystem::GetMouseX()

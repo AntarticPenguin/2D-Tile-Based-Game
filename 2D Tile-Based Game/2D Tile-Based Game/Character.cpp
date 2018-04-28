@@ -514,3 +514,20 @@ bool Character::CheckMoveRange(TileCell* tileCell)
 	}
 	return false;
 }
+
+bool Character::CheckAttackRange(TileCell* tileCell)
+{
+	Map* map = GameSystem::GetInstance().GetStage()->GetMap();
+	int checkTileX = tileCell->GetTileX();
+	int checkTileY = tileCell->GetTileY();
+
+	int minRangeX = _tileX - _attackRange;
+	int maxRangeX = _tileX + _attackRange;
+	int minRangeY = _tileY - _attackRange;
+	int maxRangeY = _tileY + _attackRange;
+
+	if ((minRangeX <= checkTileX && checkTileX <= maxRangeX)
+		&& (minRangeY <= checkTileY && checkTileY <= maxRangeY))
+		return true;
+	return false;
+}

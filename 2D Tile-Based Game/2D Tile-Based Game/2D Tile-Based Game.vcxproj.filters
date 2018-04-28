@@ -144,6 +144,9 @@
     <ClCompile Include="SelectTargetState.cpp">
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClCompile>
+    <ClCompile Include="AttackUI.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="SelectTargetState.h">
       <Filter>소스 파일\Game\Character\State</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackUI.h">
+      <Filter>소스 파일\System\UISystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

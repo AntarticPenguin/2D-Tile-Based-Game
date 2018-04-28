@@ -2,6 +2,8 @@
 #include "UISystem.h"
 #include "UI.h"
 #include "MoveUI.h"
+#include "AttackUI.h"
+
 #include "Character.h"
 #include "Sprite.h"
 
@@ -67,7 +69,7 @@ void UISystem::InitBattleMenu()
 		_battleMenuList.push_back(button);
 	}
 	{
-		UI* button = new UI(L"공격", L"menu_ATTACK.png", width, height);
+		UI* button = new AttackUI(L"공격", L"menu_ATTACK.png", width, height);
 		button->SetPosition(_character->GetX() + 32.0f, _character->GetY() - 32.0f);
 		_battleMenuList.push_back(button);
 	}

@@ -164,4 +164,5 @@ public:
 	void ClearColorTile();
 	void PushColorTileCell(TileCell* tileCell);
 	bool CheckMoveRange(TileCell* tileCell);
+	bool CheckAttackRange(TileCell* tileCell);
 };

@@ -50,7 +50,7 @@ private:
 
 public:
 	void Init();
-	void FindPath(ePathMode mode, eFindMethod method = eFindMethod::DISTANCE);
+	void FindPath(ePathMode mode, int range, eFindMethod method = eFindMethod::DISTANCE);
 	void BuildPath();
 	bool CheckPreCondition(ePathMode mode, TilePosition nextTilePos, TileCell* nextTileCell, TileCell* targetTileCell);
 	void Reset();

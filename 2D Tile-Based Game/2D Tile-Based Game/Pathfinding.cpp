@@ -23,7 +23,7 @@ void Pathfinding::Init()
 	_map = GameSystem::GetInstance().GetStage()->GetMap();
 }
 
-void Pathfinding::FindPath(ePathMode mode, eFindMethod method)
+void Pathfinding::FindPath(ePathMode mode, int range, eFindMethod method)
 {
 	TileCell* targetTileCell = _character->GetTargetCell();
 	TileCell* startTileCell = _map->GetTileCell(_character->GetTileX(), _character->GetTileY());
@@ -64,7 +64,7 @@ void Pathfinding::FindPath(ePathMode mode, eFindMethod method)
 					float distanceFromStart = command.tileCell->GetDistanceFromStart() + command.tileCell->GetDistanceWeight();	//거리우선
 					float heuristic = CalcHeuristic(method, distanceFromStart, command.tileCell, nextTileCell, targetTileCell);
 
-					if (ePathMode::VIEW_RANGE == mode && (_character->GetMoveRange() < distanceFromStart))
+					if (ePathMode::VIEW_RANGE == mode && (range < distanceFromStart))
 						return;
 
 					if (NULL == nextTileCell->GetPrevPathfindingCell())

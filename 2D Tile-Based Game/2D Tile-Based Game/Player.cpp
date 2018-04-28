@@ -8,6 +8,7 @@
 #include "State.h"
 #include "PathfindingState.h"
 #include "PathfindingMoveState.h"
+#include "SelectTargetState.h"
 #include "DeadState.h"
 #include "DefenseState.h"
 #include "AttackState.h"
@@ -33,7 +34,7 @@ Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFi
 
 		_attackCooltimeDuration = 0.0f;
 		_attackCooltime = 1.0f;				//attackSpeed
-		_attackRange = 2;
+		_attackRange = 1;
 	}
 }
 
@@ -47,7 +48,8 @@ void Player::InitState()
 	ReplaceState(eStateType::ET_IDLE, new IdleState());
 	ReplaceState(eStateType::ET_MOVE, new PathfindingMoveState());
 	ReplaceState(eStateType::ET_PATHFINDING, new PathfindingState());
-
+	
+	ReplaceState(eStateType::ET_SELECT_TARGET, new SelectTargetState());
 	ReplaceState(eStateType::ET_ATTACK, new AttackState());
 	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
 	ReplaceState(eStateType::ET_DEAD, new DeadState());

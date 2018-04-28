@@ -1,8 +1,13 @@
 #pragma once
 #include "State.h"
 
+class TileCell;
+
 class SelectTargetState : public State
 {
+private:
+	TileCell* _mouseOverCell;
+
 public:
 	SelectTargetState();
 	~SelectTargetState();
