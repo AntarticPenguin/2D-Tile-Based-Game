@@ -55,7 +55,7 @@ void Frame::Render()
 		_rotate,			//회전각도
 		&translate
 	);
-
+	
 	_sprite->SetTransform(&matrix);
 	_sprite->Draw(_texture->GetTextureDX(), &_srcTextureRect, NULL, NULL, _textureColor);
 }

@@ -59,4 +59,11 @@ public:
 	float CalcSimpleHeuristic(TileCell* tileCell, TileCell* nextTileCell, TileCell*_targetTileCell);
 	float CalcComplexHeuristic(TileCell* nextTileCell, TileCell* targetTileCell);
 	float CalcAStarHeuristic(float distanceFromStart, TileCell* nextTileCell, TileCell* targetTileCell);
+
+private:
+	TileCell* _prevOverCell;
+	TileCell* _mouseOverCell;
+
+public:
+	void ColorMouseOverCell();
 };

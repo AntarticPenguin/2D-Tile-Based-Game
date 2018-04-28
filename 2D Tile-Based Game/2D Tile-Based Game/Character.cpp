@@ -505,29 +505,12 @@ void Character::PushColorTileCell(TileCell* tileCell)
 	_colorTileList.push_back(tileCell);
 }
 
-bool Character::CheckMoveRange(TileCell* tileCell)
+bool Character::CheckRange(TileCell* tileCell)
 {
 	for (int i = 0; i < _colorTileList.size(); i++)
 	{
 		if (_colorTileList[i] == tileCell)
 			return true;
 	}
-	return false;
-}
-
-bool Character::CheckAttackRange(TileCell* tileCell)
-{
-	Map* map = GameSystem::GetInstance().GetStage()->GetMap();
-	int checkTileX = tileCell->GetTileX();
-	int checkTileY = tileCell->GetTileY();
-
-	int minRangeX = _tileX - _attackRange;
-	int maxRangeX = _tileX + _attackRange;
-	int minRangeY = _tileY - _attackRange;
-	int maxRangeY = _tileY + _attackRange;
-
-	if ((minRangeX <= checkTileX && checkTileX <= maxRangeX)
-		&& (minRangeY <= checkTileY && checkTileY <= maxRangeY))
-		return true;
 	return false;
 }

@@ -74,4 +74,5 @@ public:
 	void InitColorTile();
 	void TurnOnColorTile(D3DCOLOR color);
 	void TurnOffColorTile();
+	void SetMouseOver(bool mouseOver);
 };

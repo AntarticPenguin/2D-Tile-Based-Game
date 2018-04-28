@@ -163,6 +163,5 @@ public:
 	bool IsClickCharacter(TileCell* tileCell);
 	void ClearColorTile();
 	void PushColorTileCell(TileCell* tileCell);
-	bool CheckMoveRange(TileCell* tileCell);
-	bool CheckAttackRange(TileCell* tileCell);
+	bool CheckRange(TileCell* tileCell);
 };

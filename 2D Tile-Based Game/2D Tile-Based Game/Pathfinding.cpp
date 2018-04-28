@@ -11,6 +11,8 @@ Pathfinding::Pathfinding(Character* character)
 {
 	_character = character;
 	_reverseTileCell = NULL;
+
+	_prevOverCell = NULL;
 }
 
 Pathfinding::~Pathfinding()
@@ -25,6 +27,8 @@ void Pathfinding::Init()
 
 void Pathfinding::FindPath(ePathMode mode, int range, eFindMethod method)
 {
+	_prevOverCell = NULL;
+
 	TileCell* targetTileCell = _character->GetTargetCell();
 	TileCell* startTileCell = _map->GetTileCell(_character->GetTileX(), _character->GetTileY());
 
@@ -245,4 +249,22 @@ float Pathfinding::CalcComplexHeuristic(TileCell* nextTileCell, TileCell* target
 float Pathfinding::CalcAStarHeuristic(float distanceFromStart, TileCell* nextTileCell, TileCell* targetTileCell)
 {
 	return distanceFromStart + CalcComplexHeuristic(nextTileCell, targetTileCell);
+}
+
+void Pathfinding::ColorMouseOverCell()
+{
+	int mouseX = GameSystem::GetInstance().GetMouseX();
+	int mouseY = GameSystem::GetInstance().GetMouseY();
+
+	_map = GameSystem::GetInstance().GetStage()->GetMap();
+	_mouseOverCell = _map->FindTileCellWithMousePosition(mouseX, mouseY);
+
+	if (_character->CheckRange(_mouseOverCell))
+	{
+		if (NULL != _prevOverCell && _prevOverCell != _mouseOverCell)
+			_prevOverCell->SetMouseOver(false);
+
+		_mouseOverCell->SetMouseOver(true);
+		_prevOverCell = _mouseOverCell;
+	}
 }

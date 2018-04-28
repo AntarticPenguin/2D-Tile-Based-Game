@@ -23,25 +23,19 @@ void PathfindingState::Init(Character* character)
 	_pathfinder->Init();
 }
 
-void PathfindingState::Start()
-{
-	State::Start();
-
-	_pathfinder->Reset();
-
-	if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo())
-		_pathfinder->FindPath(ePathMode::VIEW_RANGE, _character->GetMoveRange());	//캐릭터 최대 이동 거리에 따른 타일 범위를 보여준다.
-}
-
 void PathfindingState::Update(float deltaTime)
 {
 	State::Update(deltaTime);
 
-	if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo()
-		&& GameSystem::GetInstance().IsRightMouseDown())
+	if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo())
 	{
-		_character->ClearColorTile();
-		_character->ChangeState(eStateType::ET_IDLE);
+		_pathfinder->ColorMouseOverCell();
+
+		if (GameSystem::GetInstance().IsRightMouseDown())
+		{
+			_character->ClearColorTile();
+			_character->ChangeState(eStateType::ET_IDLE);
+		}
 	}
 
 	//보여준 타일 내에서 클릭할 때까지 대기
@@ -57,4 +51,14 @@ void PathfindingState::Update(float deltaTime)
 		_character->ClearColorTile();
 		UISystem::GetInstance().TurnOffBattleMenu();
 	}
+}
+
+void PathfindingState::Start()
+{
+	State::Start();
+
+	_pathfinder->Reset();
+
+	if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo())
+		_pathfinder->FindPath(ePathMode::VIEW_RANGE, _character->GetMoveRange());	//캐릭터 최대 이동 거리에 따른 타일 범위를 보여준다.
 }

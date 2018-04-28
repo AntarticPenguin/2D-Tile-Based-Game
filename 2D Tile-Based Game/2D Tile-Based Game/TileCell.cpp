@@ -1,7 +1,11 @@
 #include "TileCell.h"
-#include "Sprite.h"
+#include "GameSystem.h"
+#include "Stage.h"
+#include "Map.h"
 #include "Component.h"
 #include "TileObject.h"
+
+#include "Sprite.h"
 
 TileCell::TileCell(int tileX, int tileY)
 {
@@ -88,14 +92,10 @@ void TileCell::AddComponent(Component* component, bool isRender)
 	_componentList.push_back(component);
 
 	if (eComponentType::CT_TILE_OBJECT == component->GetType())
-	{
 		_distanceWeight = ((TileObject*)component)->GetDistanceWeight();
-	}
 
 	if (isRender)
-	{
 		_renderList.push_back(component);
-	}
 }
 
 void TileCell::RemoveComponent(Component* component)
@@ -110,9 +110,7 @@ void TileCell::MoveDeltaPosition(float deltaX, float deltaY)
 	_posY += deltaY;
 
 	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
-	{
 		(*itr)->MoveDeltaPosition(deltaX, deltaY);
-	}
 }
 
 bool TileCell::CanMove()
@@ -133,15 +131,12 @@ bool TileCell::GetCollisionList(std::list<Component*>& collisionList)
 	for (std::list<Component*>::iterator itr = _componentList.begin(); itr != _componentList.end(); itr++)
 	{
 		if (false == (*itr)->CanMove())
-		{
 			collisionList.push_back((*itr));
-		}
 	}
 
 	if (0 == collisionList.size())
 		return true;
 	return false;
-
 }
 
 std::list<Component*> TileCell::GetComponentList()
@@ -217,4 +212,12 @@ void TileCell::TurnOnColorTile(D3DCOLOR color)
 void TileCell::TurnOffColorTile()
 {
 	_colorSprite->SetColor(D3DCOLOR_ARGB(0, 0, 0, 0));
+}
+
+void TileCell::SetMouseOver(bool mouseOver)
+{
+	if(true == mouseOver)
+		_colorSprite->SetColor(D3DCOLOR_ARGB(100, 255, 0, 0));
+	else
+		_colorSprite->SetColor(D3DCOLOR_ARGB(100, 0, 0, 255));
 }

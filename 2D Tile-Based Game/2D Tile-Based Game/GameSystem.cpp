@@ -54,8 +54,8 @@ GameSystem::GameSystem()
 {
 	//_isEnable4xMSAA = false;
 	_isFullScreen = false;
-	_clientWidth = 800;
-	_clientHeight = 600;
+	_clientWidth = 1600;
+	_clientHeight = 900;
 	_frameDuration = 0.0f;
 }
 

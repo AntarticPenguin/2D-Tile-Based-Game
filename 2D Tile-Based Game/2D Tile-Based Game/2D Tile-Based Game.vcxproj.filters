@@ -126,9 +126,6 @@
     <ClCompile Include="DefaultStageLoader.cpp">
       <Filter>소스 파일\Game\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Pathfinding.cpp">
-      <Filter>소스 파일\Game\Character\State</Filter>
-    </ClCompile>
     <ClCompile Include="PathfindingState.cpp">
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClCompile>
@@ -145,7 +142,10 @@
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClCompile>
     <ClCompile Include="AttackUI.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\System\UISystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Pathfinding.cpp">
+      <Filter>소스 파일\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -230,9 +230,6 @@
     <ClInclude Include="DefaultStageLoader.h">
       <Filter>소스 파일\Game\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Pathfinding.h">
-      <Filter>소스 파일\Game\Character\State</Filter>
-    </ClInclude>
     <ClInclude Include="PathfindingState.h">
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClInclude>
@@ -250,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="AttackUI.h">
       <Filter>소스 파일\System\UISystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Pathfinding.h">
+      <Filter>소스 파일\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

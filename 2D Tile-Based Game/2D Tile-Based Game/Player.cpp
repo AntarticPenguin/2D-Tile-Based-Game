@@ -34,7 +34,7 @@ Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFi
 
 		_attackCooltimeDuration = 0.0f;
 		_attackCooltime = 1.0f;				//attackSpeed
-		_attackRange = 1;
+		_attackRange = 2;
 	}
 }
 
@@ -83,7 +83,7 @@ void Player::UpdateCharacter()
 			}
 			else
 			{
-				if (CheckMoveRange(targetTileCell))
+				if (CheckRange(targetTileCell))
 					SetTargetTileCell(targetTileCell);
 				else
 					SetTargetTileCell(NULL);
