@@ -16,7 +16,8 @@ void MoveUI::Action(Character* character)
 {
 	if (10 == character->GetBehaviorPoint())
 	{
+		UISystem::GetInstance().SetClickedUI(eUIType::MOVE);
 		UISystem::GetInstance().TurnOffBattleMenu();
-		character->ChangeState(eStateType::ET_PATHFINDING);
+		character->ChangeState(eStateType::ET_SELECT_TARGET);
 	}
 }

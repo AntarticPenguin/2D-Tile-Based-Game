@@ -1,6 +1,13 @@
 #pragma once
 #include <vector>
 
+enum class eUIType
+{
+	NONE,
+	MOVE,
+	ATTACK,
+};
+
 class UI;
 class Character;
 
@@ -9,6 +16,7 @@ class UISystem
 private:
 	static UISystem* _instance;
 	Character* _character;
+	eUIType	_clickedUI;
 
 public:
 	void Render();
@@ -16,9 +24,11 @@ public:
 public:
 	static UISystem& GetInstance();
 	bool CheckUIClick(int mouseX, int mouseY);
+	eUIType GetClickedUI();
+	void SetClickedUI(eUIType type);
 	void SetActor(Character* character);
 
-	//UI
+	//Battle UI
 private:
 	std::vector<UI*> _battleMenuList;
 	bool _IsBattle;

@@ -87,9 +87,6 @@
     <ClCompile Include="TileObject.cpp">
       <Filter>소스 파일\Game\Map</Filter>
     </ClCompile>
-    <ClCompile Include="MoveState.cpp">
-      <Filter>소스 파일\Game\Character\State</Filter>
-    </ClCompile>
     <ClCompile Include="IdleState.cpp">
       <Filter>소스 파일\Game\Character\State</Filter>
     </ClCompile>
@@ -147,6 +144,9 @@
     <ClCompile Include="Pathfinding.cpp">
       <Filter>소스 파일\Game</Filter>
     </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>소스 파일\Game\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -190,9 +190,6 @@
     </ClInclude>
     <ClInclude Include="ComponentMessage.h">
       <Filter>소스 파일\System\ComponentSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveState.h">
-      <Filter>소스 파일\Game\Character\State</Filter>
     </ClInclude>
     <ClInclude Include="IdleState.h">
       <Filter>소스 파일\Game\Character\State</Filter>
@@ -250,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="Pathfinding.h">
       <Filter>소스 파일\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>소스 파일\Game\Character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

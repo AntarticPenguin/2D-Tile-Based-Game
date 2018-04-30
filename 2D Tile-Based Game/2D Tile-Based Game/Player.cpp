@@ -1,29 +1,30 @@
-#include "GameSystem.h"
-#include "ComponentSystem.h"
-#include "UISystem.h"
-#include "Stage.h"
-#include "Map.h"
 #include "Player.h"
 
-#include "State.h"
+#include "ComponentSystem.h"
+#include "GameSystem.h"
+#include "UISystem.h"
+
+#include "Stage.h"
+#include "Map.h"
+
+#include "AttackState.h"
+#include "DefenseState.h"
+#include "DeadState.h"
+#include "IdleState.h"
 #include "PathfindingState.h"
 #include "PathfindingMoveState.h"
 #include "SelectTargetState.h"
-#include "DeadState.h"
-#include "DefenseState.h"
-#include "AttackState.h"
-#include "MoveState.h"
-#include "IdleState.h"
 
 Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
 	Character(name, scriptName, spriteFileName)
 {
+	_eType = eComponentType::CT_PLAYER;
+
 	_moveTime = 0.0f;
 	_moveRange = 10;
 
 	_tileX = 32;
 	_tileY = 15;
-	_eType = eComponentType::CT_PLAYER;
 
 	//Stat Info
 	{
@@ -32,8 +33,6 @@ Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFi
 		_maxHp = 50;
 		_hp = _maxHp - 40;
 
-		_attackCooltimeDuration = 0.0f;
-		_attackCooltime = 1.0f;				//attackSpeed
 		_attackRange = 2;
 	}
 }
@@ -77,6 +76,9 @@ void Player::UpdateCharacter()
 		}
 		else if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo())
 		{
+			if (NULL == targetTileCell)
+				return;
+
 			if (false == UISystem::GetInstance().IsBattleMenuOn() && IsClickCharacter(targetTileCell))
 			{
 				UISystem::GetInstance().TurnOnBattleMenu();

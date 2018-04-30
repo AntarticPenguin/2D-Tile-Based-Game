@@ -23,6 +23,7 @@
     <ClCompile Include="AttackUI.cpp" />
     <ClCompile Include="DefaultStageLoader.cpp" />
     <ClCompile Include="GlobalTile.cpp" />
+    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MoveUI.cpp" />
     <ClCompile Include="PathfindingState.cpp" />
     <ClCompile Include="PathfindingMoveState.cpp" />
@@ -40,7 +41,6 @@
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="MoveState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RecoveryItem.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
@@ -59,6 +59,7 @@
     <ClInclude Include="AttackUI.h" />
     <ClInclude Include="DefaultStageLoader.h" />
     <ClInclude Include="GlobalTile.h" />
+    <ClInclude Include="Monster.h" />
     <ClInclude Include="MoveUI.h" />
     <ClInclude Include="PathfindingState.h" />
     <ClInclude Include="PathfindingMoveState.h" />
@@ -77,7 +78,6 @@
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="Map.h" />
-    <ClInclude Include="MoveState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RecoveryItem.h" />
     <ClInclude Include="ResourceManager.h" />

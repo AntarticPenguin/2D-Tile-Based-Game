@@ -21,7 +21,6 @@ enum eStateType
 	ET_DEAD,
 };
 
-class Sprite;
 class State;
 class Font;
 class TileCell;
@@ -117,8 +116,6 @@ protected:
 	Component* _target;
 	Component* _counterTarget;	//나에게 공격을 날린 대상(카운터공격에 사용됨)
 	int _attackPoint;
-	float _attackCooltimeDuration;
-	float _attackCooltime;
 	int _attackRange;
 
 public:
@@ -128,10 +125,6 @@ public:
 	void ResetTarget();
 	int GetAttackPoint();
 	int GetAttackRange();
-
-	void UpdateAttackCooltime(float deltaTime);
-	bool IsAttackCooltime();
-	void ResetAttackCooltime();
 
 	void RecoveryHP(int hp);
 

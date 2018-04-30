@@ -30,11 +30,6 @@ void IdleState::Update(float deltaTime)
 		return;
 
 	_character->ChargeBehavior(deltaTime);
-
-	//if (false == _character->IsMoving())
-	//{
-	//	_character->UpdateAI(deltaTime);
-	//}
 }
 
 void IdleState::Start()

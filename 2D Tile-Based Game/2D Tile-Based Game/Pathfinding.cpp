@@ -2,9 +2,10 @@
 
 #include "GameSystem.h"
 #include "GlobalTile.h"
-#include "Stage.h"
+
 #include "Character.h"
 #include "Map.h"
+#include "Stage.h"
 #include "TileCell.h"
 
 Pathfinding::Pathfinding(Character* character)
@@ -56,7 +57,7 @@ void Pathfinding::FindPath(ePathMode mode, int range, eFindMethod method)
 				return;
 			}
 
-			for (int direction = 0; direction < eDirection::NONE; direction++)
+			for (int direction = 0; direction < (int)eDirection::NONE; direction++)
 			{
 				TilePosition curTilePos = { command.tileCell->GetTileX(), command.tileCell->GetTileY() };
 				TilePosition nextTilePos = GetNextTilePosition(curTilePos, (eDirection)direction);
@@ -177,6 +178,8 @@ float Pathfinding::CalcHeuristic(eFindMethod eMethod, float distanceFromStart, T
 	case eFindMethod::ASTAR:
 		return CalcAStarHeuristic(distanceFromStart, nextTileCell, targetTileCell);
 	}
+
+	return 0;
 }
 
 float Pathfinding::CalcSimpleHeuristic(TileCell* tileCell, TileCell* nextTileCell, TileCell* targetTileCell)

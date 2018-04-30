@@ -14,7 +14,6 @@ public:
 
 public:
 	void Init(Character* character);
-	void Update(float deltaTime);
 	void Start();
 };
 

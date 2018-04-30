@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
 
+enum class eUIType;
 class Pathfinding;
 
 class SelectTargetState : public State
@@ -18,4 +19,8 @@ public:
 
 	void Start();
 	void Stop();
+
+public:
+	int GetViewRange();
+	void SetNextStateByType();
 };

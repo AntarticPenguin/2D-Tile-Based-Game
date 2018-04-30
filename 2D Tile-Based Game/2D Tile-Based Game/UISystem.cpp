@@ -1,8 +1,10 @@
 #include <stdio.h>
+
 #include "UISystem.h"
 #include "UI.h"
-#include "MoveUI.h"
+
 #include "AttackUI.h"
+#include "MoveUI.h"
 
 #include "Character.h"
 #include "Sprite.h"
@@ -13,6 +15,7 @@ UISystem::UISystem()
 {
 	_character = NULL;
 	_IsBattle = false;
+	_clickedUI = eUIType::NONE;
 }
 
 UISystem::~UISystem()
@@ -47,6 +50,16 @@ bool UISystem::CheckUIClick(int mouseX, int mouseY)
 		}
 	}
 	return false;
+}
+
+eUIType UISystem::GetClickedUI()
+{
+	return _clickedUI;
+}
+
+void UISystem::SetClickedUI(eUIType type)
+{
+	_clickedUI = type;
 }
 
 void UISystem::SetActor(Character* character)

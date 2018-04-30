@@ -2,7 +2,7 @@
 
 class Component;
 
-enum eDirection
+enum class eDirection
 {
 	LEFT,
 	RIGHT,

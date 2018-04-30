@@ -1,19 +1,20 @@
+#include "Character.h"
+
 #include "ComponentSystem.h"
 #include "ComponentMessage.h"
 #include "GameSystem.h"
-#include "Stage.h"
 
 #include "Map.h"
-#include "Sprite.h"
-#include "Font.h"
-
-#include "DeadState.h"
-#include "DefenseState.h"
-#include "AttackState.h"
-#include "MoveState.h"
-#include "IdleState.h"
-#include "Character.h"
+#include "Stage.h"
 #include "TileCell.h"
+
+#include "AttackState.h"
+#include "DefenseState.h"
+#include "DeadState.h"
+#include "IdleState.h"
+#include "PathfindingMoveState.h"
+
+#include "Font.h"
 
 Character::Character(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
 	Component(name), _x(0.0f), _y(0.0f)
@@ -38,9 +39,6 @@ Character::Character(std::wstring name, std::wstring scriptName, std::wstring sp
 		_attackRange = 1;
 		_maxHp = 20;
 		_hp = _maxHp;
-
-		_attackCooltimeDuration = 0.0f;
-		_attackCooltime = 1.0f;				//attackSpeed
 	}
 
 	_targetTileCell = NULL;
@@ -116,7 +114,6 @@ void Character::Deinit()
 void Character::Update(float deltaTime)
 {
 	UpdateCharacter();
-	UpdateAttackCooltime(deltaTime);
 	_state->Update(deltaTime);
 
 	UpdateText();
@@ -204,7 +201,7 @@ void Character::InitMove()
 void Character::InitState()
 {
 	ReplaceState(eStateType::ET_IDLE, new IdleState());
-	ReplaceState(eStateType::ET_MOVE, new MoveState());
+	ReplaceState(eStateType::ET_MOVE, new PathfindingMoveState());
 	ReplaceState(eStateType::ET_ATTACK, new AttackState());
 	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
 	ReplaceState(eStateType::ET_DEAD, new DeadState());
@@ -387,30 +384,6 @@ int Character::GetAttackPoint()
 int Character::GetAttackRange()
 {
 	return _attackRange;
-}
-
-void Character::UpdateAttackCooltime(float deltaTime)
-{
-	if (_attackCooltimeDuration < _attackCooltime)
-	{
-		_attackCooltimeDuration += deltaTime;
-	}
-	else
-	{
-		_attackCooltimeDuration = _attackCooltime;
-	}
-}
-
-bool Character::IsAttackCooltime()
-{
-	if (_attackCooltime <= _attackCooltimeDuration)
-		return true;
-	return false;
-}
-
-void Character::ResetAttackCooltime()
-{
-	_attackCooltimeDuration = 0.0f;
 }
 
 void Character::RecoveryHP(int hp)

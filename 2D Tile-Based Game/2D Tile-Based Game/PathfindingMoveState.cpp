@@ -2,11 +2,13 @@
 #include <vector>
 
 #include "PathfindingMoveState.h"
+
+#include "ComponentSystem.h"
+#include "GameSystem.h"
+
 #include "Character.h"
 #include "Map.h"
 #include "Stage.h"
-#include "ComponentSystem.h"
-#include "GameSystem.h"
 #include "TileCell.h"
 
 PathfindingMoveState::PathfindingMoveState()
@@ -52,55 +54,6 @@ void PathfindingMoveState::Update(float deltaTime)
 			eDirection direction = GetDirection(to, from);
 			if(eDirection::NONE != direction)
 				_character->SetDirection(direction);
-			/*
-				1. 공격범위 내에 타겟타일셀이 들어왔는지 체크
-					- 없다 ->2번으로
-					- 있다.
-						->타일셀에 있는 컴포넌트 검사.
-							-몬스터다. ->공격
-							-그외 -> 2번으로
-				2. 움직인다.
-			*/
-			Map* map = GameSystem::GetInstance().GetStage()->GetMap();
-
-			int range = _character->GetAttackRange();
-			int minTileX = _character->GetTileX() - range;
-			int maxTileX = _character->GetTileX() + range;
-			int minTileY = _character->GetTileY() - range;
-			int maxTileY = _character->GetTileY() + range;
-
-			if (minTileX < 0)
-				minTileX = 0;
-			if (map->GetWidth() <= maxTileX)
-				maxTileX = map->GetWidth() - 1;
-			if (minTileY < 0)
-				minTileY = 0;
-			if (map->GetHeight() <= maxTileY)
-				maxTileY = map->GetHeight() - 1;
-			
-			for (int y = minTileY; y <= maxTileY; y++)
-			{
-				for (int x = minTileX; x <= maxTileX; x++)
-				{
-					TileCell* checkTileCell = map->GetTileCell(x, y);
-					if (checkTileCell == _character->GetTargetCell())
-					{
-						std::list<Component*> collisionList;
-						bool canMove = checkTileCell->GetCollisionList(collisionList);
-						if (false == canMove)
-						{
-							Component* target = _character->Collision(collisionList);
-							if (NULL != target && _character->IsAttackCooltime())
-							{
-								_character->ResetAttackCooltime();
-								_character->SetTarget(target);
-								_nextState = eStateType::ET_ATTACK;
-								return;
-							}
-						}
-					}
-				}
-			}
 
 			if (true == tileCell->CanMove())
 			{

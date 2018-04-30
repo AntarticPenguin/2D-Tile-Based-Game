@@ -1,10 +1,10 @@
 #include <fstream>
 #include <reader.h>	//JSON PARSING
 
+#include "Sprite.h"
+
 #include "GameSystem.h"
 #include "ResourceManager.h"
-
-#include "Sprite.h"
 #include "Frame.h"
 
 Sprite::Sprite(std::wstring textureFileName) :

@@ -1,4 +1,5 @@
 #include "AttackUI.h"
+
 #include "UISystem.h"
 #include "Character.h"
 
@@ -15,6 +16,7 @@ AttackUI::~AttackUI()
 
 void AttackUI::Action(Character* character)
 {
+	UISystem::GetInstance().SetClickedUI(eUIType::ATTACK);
 	UISystem::GetInstance().TurnOffBattleMenu();
 	character->ChangeState(eStateType::ET_SELECT_TARGET);
 }
