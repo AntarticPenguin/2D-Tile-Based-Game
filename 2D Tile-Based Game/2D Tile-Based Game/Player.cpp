@@ -28,12 +28,12 @@ Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFi
 
 	//Stat Info
 	{
-		_attackPoint = 10;
+		_attackPoint = 2;
 		_attackedPoint = 0;
 		_maxHp = 50;
 		_hp = _maxHp - 40;
 
-		_attackRange = 2;
+		_attackRange = 4;
 	}
 }
 
@@ -69,6 +69,9 @@ void Player::UpdateCharacter()
 		TileCell* targetTileCell = GameSystem::GetInstance().GetStage()->GetMap()
 			->FindTileCellWithMousePosition(mouseX, mouseY);
 
+		if (NULL == targetTileCell)
+			return;
+
 		if (eStage::TOWN == GameSystem::GetInstance().GetStage()->GetStageInfo())
 		{
 			SetTargetTileCell(targetTileCell);
@@ -76,9 +79,6 @@ void Player::UpdateCharacter()
 		}
 		else if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo())
 		{
-			if (NULL == targetTileCell)
-				return;
-
 			if (false == UISystem::GetInstance().IsBattleMenuOn() && IsClickCharacter(targetTileCell))
 			{
 				UISystem::GetInstance().TurnOnBattleMenu();

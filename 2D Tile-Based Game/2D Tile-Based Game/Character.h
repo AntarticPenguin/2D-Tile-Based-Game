@@ -79,13 +79,21 @@ protected:
 	int _maxHp;
 	int _hp;
 	int _attackedPoint;
+	int _movePoint;
+
+	bool _canBattle;
 
 public:
 	int GetAttackedPoint();
 	void DecreaseHP(int decreaseHP);
+
 	void DecreaseBehaviorPoint(int point);
 	void ChargeBehavior(float deltaTime);
 	int GetBehaviorPoint();
+	int GetMovePoint();
+
+	void SetCanBattle(bool canBattle);
+	bool CanBattle();
 
 	//Move
 protected:

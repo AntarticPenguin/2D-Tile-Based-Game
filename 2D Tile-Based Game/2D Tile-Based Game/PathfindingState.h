@@ -15,5 +15,6 @@ public:
 public:
 	void Init(Character* character);
 	void Start();
+	void Stop();
 };
 

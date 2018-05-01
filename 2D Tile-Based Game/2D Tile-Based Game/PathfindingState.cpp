@@ -32,7 +32,11 @@ void PathfindingState::Start()
 	_pathfinder->Reset();
 	_pathfinder->FindPath(ePathMode::FIND_PATH, eFindMethod::ASTAR);	//타일이 클릭되면 경로를 탐색 : Astar
 	_pathfinder->BuildPath();											//경로를 도출하여 움직인다.
+}
 
+void PathfindingState::Stop()
+{
+	_character->SetTargetTileCell(NULL);
 	_character->ClearColorTile();
 	UISystem::GetInstance().TurnOffBattleMenu();
 }

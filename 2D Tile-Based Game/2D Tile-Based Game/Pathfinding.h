@@ -6,13 +6,14 @@ class Character;
 class Map;
 struct TilePosition;
 
-enum ePathMode
+enum class ePathMode
 {
-	VIEW_RANGE,
+	VIEW_MOVE_RANGE,
+	VIEW_ATTACK_RANGE,
 	FIND_PATH,
 };
 
-enum eFindMethod
+enum class eFindMethod
 {
 	DISTANCE,
 	SIMPLE,
@@ -46,11 +47,13 @@ private:
 	Character * _character;
 	TileCell* _reverseTileCell;
 	Map* _map;
+	int _range;
 	std::priority_queue<sPathCommand, std::vector<sPathCommand>, compare> _pathfindingTileQueue;
 
 public:
 	void Init();
-	void FindPath(ePathMode mode, int range, eFindMethod method = eFindMethod::DISTANCE);
+	void SetRange(int range);
+	void FindPath(ePathMode mode, eFindMethod method = eFindMethod::DISTANCE);
 	void BuildPath();
 	bool CheckPreCondition(ePathMode mode, TilePosition nextTilePos, TileCell* nextTileCell, TileCell* targetTileCell);
 	void Reset();

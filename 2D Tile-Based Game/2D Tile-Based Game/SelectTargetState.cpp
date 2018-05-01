@@ -54,23 +54,22 @@ void SelectTargetState::Start()
 {
 	State::Start();
 
-	if (eStateType::ET_NONE != _nextState)
-	{
-		_character->ChangeState(_nextState);
-		return;
-	}
-
 	_curState = eStateType::ET_SELECT_TARGET;
 
-	int moveRange = GetViewRange();
+	int range = GetViewRange();
+	ePathMode mode = GetPathMode();
 
 	_pathfinder->Reset();
-	_pathfinder->FindPath(ePathMode::VIEW_RANGE, moveRange);
+	_pathfinder->SetRange(range);
+	_pathfinder->FindPath(mode);
 }
 
 void SelectTargetState::Stop()
 {
 	State::Stop();
+
+	_character->ClearColorTile();
+	UISystem::GetInstance().TurnOffBattleMenu();
 }
 
 int SelectTargetState::GetViewRange()
@@ -82,9 +81,21 @@ int SelectTargetState::GetViewRange()
 		return _character->GetMoveRange();
 	case eUIType::ATTACK:
 		return _character->GetAttackRange();
+	default:
+		return 0;
 	}
+}
 
-	return 0;
+ePathMode SelectTargetState::GetPathMode()
+{
+	eUIType rangeType = UISystem::GetInstance().GetClickedUI();
+	switch (rangeType)
+	{
+	case eUIType::MOVE:
+		return ePathMode::VIEW_MOVE_RANGE;
+	case eUIType::ATTACK:
+		return ePathMode::VIEW_ATTACK_RANGE;
+	}
 }
 
 void SelectTargetState::SetNextStateByType()
@@ -98,6 +109,26 @@ void SelectTargetState::SetNextStateByType()
 			)
 		{
 			_nextState = eStateType::ET_PATHFINDING;
+		}
+	}
+	else if (eUIType::ATTACK == type)
+	{
+		TileCell* targetCell = _character->GetTargetCell();
+		if (NULL != targetCell)
+		{
+			std::list<Component*> components = targetCell->GetComponentList();
+			std::list<Component*>::iterator itr;
+
+			for (itr = components.begin(); itr != components.end(); itr++)
+			{
+				Component* com = (*itr);
+
+				if (eComponentType::CT_MONSTER == (*itr)->GetType())
+				{
+					_character->SetTarget(com);
+					_nextState = eStateType::ET_ATTACK;
+				}
+			}
 		}
 	}
 }

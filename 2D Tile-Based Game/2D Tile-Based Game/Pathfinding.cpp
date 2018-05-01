@@ -14,6 +14,7 @@ Pathfinding::Pathfinding(Character* character)
 	_reverseTileCell = NULL;
 
 	_prevOverCell = NULL;
+	_range = 0;
 }
 
 Pathfinding::~Pathfinding()
@@ -26,7 +27,12 @@ void Pathfinding::Init()
 	_map = GameSystem::GetInstance().GetStage()->GetMap();
 }
 
-void Pathfinding::FindPath(ePathMode mode, int range, eFindMethod method)
+void Pathfinding::SetRange(int range)
+{
+	_range = range;
+}
+
+void Pathfinding::FindPath(ePathMode mode, eFindMethod method)
 {
 	_prevOverCell = NULL;
 
@@ -69,7 +75,8 @@ void Pathfinding::FindPath(ePathMode mode, int range, eFindMethod method)
 					float distanceFromStart = command.tileCell->GetDistanceFromStart() + command.tileCell->GetDistanceWeight();	//거리우선
 					float heuristic = CalcHeuristic(method, distanceFromStart, command.tileCell, nextTileCell, targetTileCell);
 
-					if (ePathMode::VIEW_RANGE == mode && (range < distanceFromStart))
+					if ((ePathMode::VIEW_MOVE_RANGE == mode || ePathMode::VIEW_ATTACK_RANGE == mode)
+						&& (_range < distanceFromStart))
 						return;
 
 					if (NULL == nextTileCell->GetPrevPathfindingCell())
@@ -83,7 +90,7 @@ void Pathfinding::FindPath(ePathMode mode, int range, eFindMethod method)
 						newCommand.tileCell = nextTileCell;
 						_pathfindingTileQueue.push(newCommand);
 
-						if(ePathMode::VIEW_RANGE == mode)	//검색범위를 그려준다.
+						if(ePathMode::VIEW_MOVE_RANGE == mode || ePathMode::VIEW_ATTACK_RANGE == mode)	//검색범위를 그려준다.
 						{
 							if ( !(nextTileCell->GetTileX() == _character->GetTileX()
 								&& nextTileCell->GetTileY() == _character->GetTileY()) )
@@ -128,15 +135,25 @@ bool Pathfinding::CheckPreCondition(ePathMode mode, TilePosition nextTilePos, Ti
 {
 	bool condition = false;
 
-	//갈 수 있는 타일이고 방문하지 않은 타일인가?
 	/*
-		if ((true == _map->CanMoveTileMap(nextTilePos) && false == nextTileCell->IsPathfindingMark())
-			|| (nextTileCell->GetTileX() == targetTileCell->GetTileX() && nextTileCell->GetTileY() == targetTileCell->GetTileY()))
+	//갈 수 있는 타일이고 방문하지 않은 타일인가?
+	if ((true == _map->CanMoveTileMap(nextTilePos) && false == nextTileCell->IsPathfindingMark())
+		|| (nextTileCell->GetTileX() == targetTileCell->GetTileX() && nextTileCell->GetTileY() == targetTileCell->GetTileY()))
 	*/
-	if ((true == _map->CanMoveTileMap(nextTilePos) && false == nextTileCell->IsPathfindingMark()))
+	/*if ((true == _map->CanMoveTileMap(nextTilePos) && false == nextTileCell->IsPathfindingMark()))
+		condition = true;*/
+
+	//공격,마법은 canMove가 false여도 범위를 보여주어야 한다. 즉 방문여부만 체크해주면 된다.
+	if (false == nextTileCell->IsPathfindingMark())
 		condition = true;
 
-	if (ePathMode::VIEW_RANGE == mode)
+	if (ePathMode::VIEW_MOVE_RANGE == mode || ePathMode::FIND_PATH == mode)
+	{
+		if (condition)
+			condition = _map->CanMoveTileMap(nextTilePos);
+	}
+
+	if (ePathMode::VIEW_MOVE_RANGE == mode || ePathMode::VIEW_ATTACK_RANGE == mode)
 		return condition;
 	else if (ePathMode::FIND_PATH == mode)
 	{
@@ -177,9 +194,9 @@ float Pathfinding::CalcHeuristic(eFindMethod eMethod, float distanceFromStart, T
 		return CalcComplexHeuristic(nextTileCell, targetTileCell);
 	case eFindMethod::ASTAR:
 		return CalcAStarHeuristic(distanceFromStart, nextTileCell, targetTileCell);
+	default:
+		return 0;
 	}
-
-	return 0;
 }
 
 float Pathfinding::CalcSimpleHeuristic(TileCell* tileCell, TileCell* nextTileCell, TileCell* targetTileCell)

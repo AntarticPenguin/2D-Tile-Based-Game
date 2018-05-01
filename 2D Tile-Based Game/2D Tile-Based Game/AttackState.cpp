@@ -55,10 +55,17 @@ void AttackState::Start()
 	msgParam.attackPoint = _character->GetAttackPoint();
 	ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
 
+	_character->SetCanBattle(false);
+
 	_nextState = eStateType::ET_IDLE;
 }
 
 void AttackState::Stop()
 {
 	State::Stop();
+
+	_character->DecreaseBehaviorPoint(4);
+
+	_character->SetTarget(NULL);
+	_character->SetTargetTileCell(NULL);
 }

@@ -2,6 +2,7 @@
 #include "State.h"
 
 enum class eUIType;
+enum class ePathMode;
 class Pathfinding;
 
 class SelectTargetState : public State
@@ -22,5 +23,6 @@ public:
 
 public:
 	int GetViewRange();
+	ePathMode GetPathMode();
 	void SetNextStateByType();
 };

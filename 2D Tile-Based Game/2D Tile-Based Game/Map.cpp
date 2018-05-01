@@ -283,6 +283,16 @@ int Map::GetHeight()
 
 TileCell* Map::GetTileCell(int tileX, int tileY)
 {
+	//예외처리(범위 밖으로 벗어났을 경우)
+	if (tileX < 0)
+		tileX = 0;
+	if (_mapWidth <= tileX)
+		tileX = _mapWidth - 1;
+	if (tileY < 0)
+		tileY = 0;
+	if (_mapHeight <= tileY)
+		tileY = _mapHeight - 1;
+
 	return _tileMap[tileY][tileX];
 }
 

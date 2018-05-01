@@ -37,6 +37,11 @@ Character::Character(std::wstring name, std::wstring scriptName, std::wstring sp
 		_attackPoint = 10;
 		_attackedPoint = 0;
 		_attackRange = 1;
+
+		_movePoint = 2;
+
+		_canBattle = false;
+
 		_maxHp = 20;
 		_hp = _maxHp;
 	}
@@ -123,7 +128,7 @@ void Character::Render()
 {
 	_state->Render();
 
-	_font->SetPosition(_x, _y);
+	_font->SetPosition(_x, _y - 20);
 	_font->Render();
 }
 
@@ -270,6 +275,7 @@ void Character::ChargeBehavior(float deltaTime)
 	if (10 <= _behaviorPoint)
 	{
 		_behaviorPoint = 10;
+		_canBattle = true;
 		return;
 	}
 
@@ -287,6 +293,21 @@ void Character::ChargeBehavior(float deltaTime)
 int Character::GetBehaviorPoint()
 {
 	return _behaviorPoint;
+}
+
+int Character::GetMovePoint()
+{
+	return _movePoint;
+}
+
+void Character::SetCanBattle(bool canBattle)
+{
+	_canBattle = canBattle;
+}
+
+bool Character::CanBattle()
+{
+	return _canBattle;
 }
 
 void Character::MoveStart(int newTileX, int newTileY)
@@ -428,7 +449,7 @@ void Character::UpdateText()
 
 	WCHAR text[255];
 	//wsprintf(text, L"HP:%d\nCool: %d\nState::%s", _hp, coolTime, state);
-	wsprintf(text, L"BehaviorPoint: %d\n State: %s\n", _behaviorPoint, state);
+	wsprintf(text, L"BehaviorPoint: %d\n HP: %d\n State: %s\n Battle: %d\n", _behaviorPoint, _hp, state, _canBattle);
 
 	_font->SetText(text);
 }

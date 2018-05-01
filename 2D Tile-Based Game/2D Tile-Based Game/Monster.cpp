@@ -1,6 +1,8 @@
 #include "Monster.h"
 
 #include "IdleState.h"
+#include "DefenseState.h"
+#include "DeadState.h"
 
 Monster::Monster(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
 	Character(name, scriptName, spriteFileName)
@@ -28,6 +30,8 @@ Monster::~Monster()
 void Monster::InitState()
 {
 	ReplaceState(eStateType::ET_IDLE, new IdleState());
+	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
+	ReplaceState(eStateType::ET_DEAD, new DeadState());
 }
 
 void Monster::UpdateCharacter()
