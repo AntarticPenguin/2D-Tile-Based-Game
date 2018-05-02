@@ -84,39 +84,10 @@ void Player::UpdateCharacter()
 				UISystem::GetInstance().TurnOnBattleMenu();
 			}
 			else
-			{
-				if (CheckRange(targetTileCell))
-					SetTargetTileCell(targetTileCell);
-				else
-					SetTargetTileCell(NULL);
-			}
+				SetTargetTileCell(targetTileCell);
 		}
 	}
 }
-
-//void Player::UpdateAI(float deltaTime)
-//{
-//	//¾ÆÀÌÅÛ ¸Ô±â ¹× ÀåÂø
-//	if (GameSystem::GetInstance().IsKeyDown(VK_SPACE))
-//	{
-//		Map* map = GameSystem::GetInstance().GetStage()->GetMap();
-//
-//		std::list<Component*> componentList = map->GetTileComponentList(_tileX, _tileY);
-//		for (std::list<Component*>::iterator itr = componentList.begin(); itr != componentList.end(); itr++)
-//		{
-//			Component* component = (*itr);
-//			if (eComponentType::CT_ITEM == component->GetType() ||
-//				eComponentType::CT_ITEM_WEAPON == component->GetType())
-//			{
-//				sComponentMsgParam msgParam;
-//				msgParam.sender = (Component*)this;
-//				msgParam.receiver = component;
-//				msgParam.message = L"Use";
-//				ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
-//			}
-//		}
-//	}
-//}
 
 Component* Player::Collision(std::list<Component*>& collisionList)
 {

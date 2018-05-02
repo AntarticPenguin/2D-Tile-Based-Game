@@ -8,13 +8,29 @@
 #include "Stage.h"
 #include "TileCell.h"
 
-Pathfinding::Pathfinding(Character* character)
+Pathfinding::Pathfinding()
 {
-	_character = character;
 	_reverseTileCell = NULL;
 
 	_prevOverCell = NULL;
 	_range = 0;
+
+	_colorTileList.clear();
+
+	//test
+	_startTileCell = NULL;
+}
+
+Pathfinding::Pathfinding(Character* character)
+{
+	Pathfinding();
+	_character = character;
+	/*_reverseTileCell = NULL;
+
+	_prevOverCell = NULL;
+	_range = 0;
+
+	_colorTileList.clear();*/
 }
 
 Pathfinding::~Pathfinding()
@@ -27,6 +43,17 @@ void Pathfinding::Init()
 	_map = GameSystem::GetInstance().GetStage()->GetMap();
 }
 
+void Pathfinding::Init(Character* character)
+{
+	Init();
+	_character = character;
+}
+
+void Pathfinding::Init(TileCell* tileCell)
+{
+	_startTileCell = tileCell;
+}
+
 void Pathfinding::SetRange(int range)
 {
 	_range = range;
@@ -36,12 +63,15 @@ void Pathfinding::FindPath(ePathMode mode, eFindMethod method)
 {
 	_prevOverCell = NULL;
 
+	_startTileCell = _map->GetTileCell(_character->GetTileX(), _character->GetTileY());
+
 	TileCell* targetTileCell = _character->GetTargetCell();
 	TileCell* startTileCell = _map->GetTileCell(_character->GetTileX(), _character->GetTileY());
 
 	sPathCommand newCommand;
 	newCommand.heuristic = 0.0f;
-	newCommand.tileCell = startTileCell;
+	//newCommand.tileCell = startTileCell;
+	newCommand.tileCell = _startTileCell;
 	_pathfindingTileQueue.push(newCommand);
 
 	while (0 != _pathfindingTileQueue.size())
@@ -92,11 +122,13 @@ void Pathfinding::FindPath(ePathMode mode, eFindMethod method)
 
 						if(ePathMode::VIEW_MOVE_RANGE == mode || ePathMode::VIEW_ATTACK_RANGE == mode)	//검색범위를 그려준다.
 						{
-							if ( !(nextTileCell->GetTileX() == _character->GetTileX()
-								&& nextTileCell->GetTileY() == _character->GetTileY()) )
+							/*if ( !(nextTileCell->GetTileX() == _character->GetTileX()
+								&& nextTileCell->GetTileY() == _character->GetTileY()) )*/
+							if (!(nextTileCell->GetTileX() == _startTileCell->GetTileX()
+								&& nextTileCell->GetTileY() == _startTileCell->GetTileY()))
 							{
 								nextTileCell->TurnOnColorTile(D3DCOLOR_ARGB(100, 0, 0, 255));
-								_character->PushColorTileCell(nextTileCell);
+								_colorTileList.push_back(nextTileCell);
 							}
 						}
 					}	
@@ -271,6 +303,23 @@ float Pathfinding::CalcAStarHeuristic(float distanceFromStart, TileCell* nextTil
 	return distanceFromStart + CalcComplexHeuristic(nextTileCell, targetTileCell);
 }
 
+bool Pathfinding::CheckRange(TileCell* targetTileCell)
+{
+	for (int i = 0; i < _colorTileList.size(); i++)
+	{
+		if (_colorTileList[i] == targetTileCell)
+			return true;
+	}
+	return false;
+}
+
+void Pathfinding::ClearColorTile()
+{
+	for (int i = 0; i < _colorTileList.size(); i++)
+		_colorTileList[i]->TurnOffColorTile();
+	_colorTileList.clear();
+}
+
 void Pathfinding::ColorMouseOverCell()
 {
 	int mouseX = GameSystem::GetInstance().GetMouseX();
@@ -279,7 +328,7 @@ void Pathfinding::ColorMouseOverCell()
 	_map = GameSystem::GetInstance().GetStage()->GetMap();
 	_mouseOverCell = _map->FindTileCellWithMousePosition(mouseX, mouseY);
 
-	if (_character->CheckRange(_mouseOverCell))
+	if (CheckRange(_mouseOverCell))
 	{
 		if (NULL != _prevOverCell && _prevOverCell != _mouseOverCell)
 			_prevOverCell->SetMouseOver(false);

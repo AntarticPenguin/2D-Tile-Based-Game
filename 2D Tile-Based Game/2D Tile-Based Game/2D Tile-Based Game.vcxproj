@@ -23,6 +23,7 @@
     <ClCompile Include="AttackUI.cpp" />
     <ClCompile Include="DefaultStageLoader.cpp" />
     <ClCompile Include="GlobalTile.cpp" />
+    <ClCompile Include="MagicUI.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MoveUI.cpp" />
     <ClCompile Include="PathfindingState.cpp" />
@@ -59,6 +60,7 @@
     <ClInclude Include="AttackUI.h" />
     <ClInclude Include="DefaultStageLoader.h" />
     <ClInclude Include="GlobalTile.h" />
+    <ClInclude Include="MagicUI.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MoveUI.h" />
     <ClInclude Include="PathfindingState.h" />

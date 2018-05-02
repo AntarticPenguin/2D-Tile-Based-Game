@@ -4,8 +4,6 @@
 Component::Component()
 {
 	_canMove = false;
-	_moveDistancePerTimeX = 0;
-	_moveDistancePerTimeY = 0;
 	_eType = eComponentType::CT_NONE;
 	_isLive = true;
 }
@@ -14,8 +12,6 @@ Component::Component(std::wstring name)
 {
 	_name = name;
 	_canMove = false;
-	_moveDistancePerTimeX = 0;
-	_moveDistancePerTimeY = 0;
 	_eType = eComponentType::CT_NONE;
 	_isLive = true;
 

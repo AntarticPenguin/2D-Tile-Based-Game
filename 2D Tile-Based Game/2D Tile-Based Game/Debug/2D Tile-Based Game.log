@@ -1,38 +1,6 @@
-﻿  State.cpp
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\state.cpp(12): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\state.cpp(40): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\state.cpp(48): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-  SelectTargetState.cpp
-  Player.cpp
-  PathfindingState.cpp
-  PathfindingMoveState.cpp
-  Pathfinding.cpp
-  MoveUI.cpp
-  Monster.cpp
-  IdleState.cpp
-  DefenseState.cpp
-  DeadState.cpp
-  Character.cpp
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(88): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(89): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(131): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(181): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(182): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(492): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\character.cpp(504): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-  AttackUI.cpp
-  AttackState.cpp
-  코드를 생성하고 있습니다...
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\selecttargetstate.cpp(99): warning C4715: 'SelectTargetState::GetPathMode': 모든 제어 경로에서 값을 반환하지는 않습니다.
-  컴파일하고 있습니다...
-  UISystem.cpp
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\uisystem.cpp(27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\uisystem.cpp(44): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-  RecoveryItem.cpp
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\recoveryitem.cpp(39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\recoveryitem.cpp(40): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  DefaultStageLoader.cpp
-  코드를 생성하고 있습니다...
+﻿  Pathfinding.cpp
+c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\pathfinding.cpp(308): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\atents\documents\github\2d-tile-based-game\2d tile-based game\2d tile-based game\pathfinding.cpp(318): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
 json_vc71_libmtd.lib(json_reader.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_reader.obj)' 또는 'C:\Users\Atents\Documents\GitHub\2D-Tile-Based-Game\2D Tile-Based Game\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
 json_vc71_libmtd.lib(json_value.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_value.obj)' 또는 'C:\Users\Atents\Documents\GitHub\2D-Tile-Based-Game\2D Tile-Based Game\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
 json_vc71_libmtd.lib(json_writer.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_writer.obj)' 또는 'C:\Users\Atents\Documents\GitHub\2D-Tile-Based-Game\2D Tile-Based Game\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.

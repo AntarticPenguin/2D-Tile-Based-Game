@@ -21,8 +21,9 @@ PathfindingState::~PathfindingState()
 void PathfindingState::Init(Character* character)
 {
 	State::Init(character);
-	_pathfinder = new Pathfinding(character);
+	_pathfinder = new Pathfinding();
 	_pathfinder->Init();
+	_pathfinder->Init(character);
 }
 
 void PathfindingState::Start()
@@ -37,6 +38,6 @@ void PathfindingState::Start()
 void PathfindingState::Stop()
 {
 	_character->SetTargetTileCell(NULL);
-	_character->ClearColorTile();
+	_pathfinder->ClearColorTile();
 	UISystem::GetInstance().TurnOffBattleMenu();
 }

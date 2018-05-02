@@ -48,7 +48,6 @@ Character::Character(std::wstring name, std::wstring scriptName, std::wstring sp
 
 	_targetTileCell = NULL;
 	_counterTarget = NULL;
-	_colorTileList.clear();
 }
 
 Character::~Character()
@@ -448,9 +447,8 @@ void Character::UpdateText()
 	}
 
 	WCHAR text[255];
-	//wsprintf(text, L"HP:%d\nCool: %d\nState::%s", _hp, coolTime, state);
-	wsprintf(text, L"BehaviorPoint: %d\n HP: %d\n State: %s\n Battle: %d\n", _behaviorPoint, _hp, state, _canBattle);
-
+	//wsprintf(text, L"BehaviorPoint: %d\n HP: %d\n State: %s\n Battle: %d\n", _behaviorPoint, _hp, state, _canBattle);
+	wsprintf(text, L"BehaviorPoint: %d\n HP: %d\n", _behaviorPoint, _hp);
 	_font->SetText(text);
 }
 
@@ -484,27 +482,5 @@ bool Character::IsClickCharacter(TileCell* tileCell)
 {
 	if ((tileCell->GetTileX() == _tileX) && (tileCell->GetTileY() == _tileY))
 		return true;
-	return false;
-}
-
-void Character::ClearColorTile()
-{
-	for (int i = 0; i < _colorTileList.size(); i++)
-		_colorTileList[i]->TurnOffColorTile();
-	_colorTileList.clear();
-}
-
-void Character::PushColorTileCell(TileCell* tileCell)
-{
-	_colorTileList.push_back(tileCell);
-}
-
-bool Character::CheckRange(TileCell* tileCell)
-{
-	for (int i = 0; i < _colorTileList.size(); i++)
-	{
-		if (_colorTileList[i] == tileCell)
-			return true;
-	}
 	return false;
 }

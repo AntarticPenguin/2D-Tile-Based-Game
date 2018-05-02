@@ -6,6 +6,7 @@ enum class eUIType
 	NONE,
 	MOVE,
 	ATTACK,
+	MAGIC,
 };
 
 class UI;

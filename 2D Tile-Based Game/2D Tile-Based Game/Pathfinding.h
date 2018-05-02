@@ -1,5 +1,6 @@
 #pragma once
 #include <queue>
+#include <vector>
 
 class TileCell;
 class Character;
@@ -40,6 +41,7 @@ public:
 	};
 
 public:
+	Pathfinding();
 	Pathfinding(Character* character);
 	~Pathfinding();
 
@@ -48,10 +50,16 @@ private:
 	TileCell* _reverseTileCell;
 	Map* _map;
 	int _range;
+	std::vector<TileCell*> _colorTileList;
 	std::priority_queue<sPathCommand, std::vector<sPathCommand>, compare> _pathfindingTileQueue;
+
+	//test
+	TileCell* _startTileCell;
 
 public:
 	void Init();
+	void Init(Character* character);
+	void Init(TileCell* tileCell);
 	void SetRange(int range);
 	void FindPath(ePathMode mode, eFindMethod method = eFindMethod::DISTANCE);
 	void BuildPath();
@@ -68,5 +76,7 @@ private:
 	TileCell* _mouseOverCell;
 
 public:
+	bool CheckRange(TileCell* targetTileCell);
+	void ClearColorTile();
 	void ColorMouseOverCell();
 };

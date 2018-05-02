@@ -157,12 +157,6 @@ public:
 	void ClearPathTileCellStack();
 
 	//In Dungeon
-private:
-	std::vector<TileCell*> _colorTileList;
-
 public:
 	bool IsClickCharacter(TileCell* tileCell);
-	void ClearColorTile();
-	void PushColorTileCell(TileCell* tileCell);
-	bool CheckRange(TileCell* tileCell);
 };

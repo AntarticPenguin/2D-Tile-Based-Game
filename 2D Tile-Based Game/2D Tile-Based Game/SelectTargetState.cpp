@@ -21,7 +21,7 @@ void SelectTargetState::Init(Character* character)
 {
 	State::Init(character);
 
-	_pathfinder = new Pathfinding(_character);
+	_pathfinder = new Pathfinding(character);
 	_pathfinder->Init();
 }
 
@@ -40,7 +40,7 @@ void SelectTargetState::Update(float deltaTime)
 	if (GameSystem::GetInstance().IsRightMouseDown())
 	{
 		_character->SetTargetTileCell(NULL);
-		_character->ClearColorTile();
+		_pathfinder->ClearColorTile();
 		_character->ChangeState(eStateType::ET_IDLE);
 	}
 
@@ -59,6 +59,8 @@ void SelectTargetState::Start()
 	int range = GetViewRange();
 	ePathMode mode = GetPathMode();
 
+	_character->SetTargetTileCell(NULL);
+
 	_pathfinder->Reset();
 	_pathfinder->SetRange(range);
 	_pathfinder->FindPath(mode);
@@ -68,7 +70,7 @@ void SelectTargetState::Stop()
 {
 	State::Stop();
 
-	_character->ClearColorTile();
+	_pathfinder->ClearColorTile();
 	UISystem::GetInstance().TurnOffBattleMenu();
 }
 
@@ -101,34 +103,37 @@ ePathMode SelectTargetState::GetPathMode()
 void SelectTargetState::SetNextStateByType()
 {
 	eUIType type = UISystem::GetInstance().GetClickedUI();
+	TileCell* targetCell = _character->GetTargetCell();
+	if (NULL == targetCell)
+		return;
+
 	if (eUIType::MOVE == type)
 	{
-		TileCell* targetCell = _character->GetTargetCell();
-		if ((NULL != targetCell)
-			&& !(targetCell->GetTileX() == _character->GetTileX() && targetCell->GetTileY() == _character->GetTileY())
-			)
+		if (!(targetCell->GetTileX() == _character->GetTileX() 
+			&& targetCell->GetTileY() == _character->GetTileY()))
 		{
-			_nextState = eStateType::ET_PATHFINDING;
+			if(_pathfinder->CheckRange(targetCell))
+				_nextState = eStateType::ET_PATHFINDING;
 		}
 	}
 	else if (eUIType::ATTACK == type)
 	{
-		TileCell* targetCell = _character->GetTargetCell();
-		if (NULL != targetCell)
+		std::list<Component*> components = targetCell->GetComponentList();
+		std::list<Component*>::iterator itr;
+
+		for (itr = components.begin(); itr != components.end(); itr++)
 		{
-			std::list<Component*> components = targetCell->GetComponentList();
-			std::list<Component*>::iterator itr;
+			Component* com = (*itr);
 
-			for (itr = components.begin(); itr != components.end(); itr++)
+			if (eComponentType::CT_MONSTER == (*itr)->GetType())
 			{
-				Component* com = (*itr);
-
-				if (eComponentType::CT_MONSTER == (*itr)->GetType())
-				{
-					_character->SetTarget(com);
-					_nextState = eStateType::ET_ATTACK;
-				}
+				_character->SetTarget(com);
+				_nextState = eStateType::ET_ATTACK;
 			}
 		}
+	}
+	else if (eUIType::MAGIC == type)
+	{
+		
 	}
 }

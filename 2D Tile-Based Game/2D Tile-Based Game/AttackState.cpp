@@ -64,8 +64,8 @@ void AttackState::Stop()
 {
 	State::Stop();
 
-	_character->DecreaseBehaviorPoint(4);
+	_character->DecreaseBehaviorPoint(2);
 
-	_character->SetTarget(NULL);
+	_character->ResetTarget();
 	_character->SetTargetTileCell(NULL);
 }

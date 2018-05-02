@@ -5,6 +5,7 @@
 
 #include "AttackUI.h"
 #include "MoveUI.h"
+#include "MagicUI.h"
 
 #include "Character.h"
 #include "Sprite.h"
@@ -87,7 +88,7 @@ void UISystem::InitBattleMenu()
 		_battleMenuList.push_back(button);
 	}
 	{
-		UI* button = new UI(L"마법", L"menu_MAGIC.png", width, height);
+		UI* button = new MagicUI(L"마법", L"menu_MAGIC.png", width, height);
 		button->SetPosition(_character->GetX() - 32.0f, _character->GetY());
 		_battleMenuList.push_back(button);
 	}
