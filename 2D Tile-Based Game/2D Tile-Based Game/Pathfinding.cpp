@@ -14,7 +14,9 @@ Pathfinding::Pathfinding()
 	_prevOverCell = NULL;
 	_map = GameSystem::GetInstance().GetStage()->GetMap();
 	_range = 0;
+	_startTileCell = NULL;
 
+	_color = D3DCOLOR_ARGB(100, 0, 0, 255);
 	_colorTileList.clear();
 }
 
@@ -274,12 +276,17 @@ bool Pathfinding::CheckRange(TileCell* targetTileCell)
 	return false;
 }
 
+void Pathfinding::SetColor(D3DCOLOR color)
+{
+	_color = color;
+}
+
 void Pathfinding::DrawSearchTile(TileCell* tileCell)
 {
 	if (!(tileCell->GetTileX() == _startTileCell->GetTileX()
 		&& tileCell->GetTileY() == _startTileCell->GetTileY()))
 	{
-		tileCell->TurnOnColorTile(D3DCOLOR_ARGB(100, 0, 0, 255));
+		tileCell->TurnOnColorTile(_color);
 		_colorTileList.push_back(tileCell);
 	}
 }

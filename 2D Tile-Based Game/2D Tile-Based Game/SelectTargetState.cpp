@@ -11,6 +11,8 @@
 
 SelectTargetState::SelectTargetState()
 {
+	_mouseOverCell = NULL;
+	_prevOverCell = NULL;
 }
 
 SelectTargetState::~SelectTargetState()
@@ -22,6 +24,7 @@ void SelectTargetState::Init(Character* character)
 	State::Init(character);
 
 	_pathfinder = new Pathfinding();
+	_skillViewer = new Pathfinding();
 }
 
 void SelectTargetState::Update(float deltaTime)
@@ -35,16 +38,8 @@ void SelectTargetState::Update(float deltaTime)
 	}
 
 	_pathfinder->ColorMouseOverCell();
-
-	if (GameSystem::GetInstance().IsRightMouseDown())
-	{
-		_character->SetTargetTileCell(NULL);
-		_pathfinder->ClearColorTile();
-		_character->ChangeState(eStateType::ET_IDLE);
-	}
-
+	CancelUI(GameSystem::GetInstance().IsRightMouseDown());
 	_character->ChargeBehavior(deltaTime);
-	
 	SetNextStateByType();
 }
 
@@ -55,15 +50,9 @@ void SelectTargetState::Start()
 
 	_curState = eStateType::ET_SELECT_TARGET;
 
-	int range = GetViewRange();
-	ePathMode mode = GetPathMode();
-
 	_character->SetTargetTileCell(NULL);
 
-	_pathfinder->Reset();
-	_pathfinder->SetStartFromCharacter(_character);
-	_pathfinder->SetRange(range);
-	_pathfinder->FindPath(mode);
+	ShowBaseRange();		//선택한 기능의 기본 범위 Draw
 }
 
 void SelectTargetState::Stop()
@@ -71,6 +60,28 @@ void SelectTargetState::Stop()
 	State::Stop();
 	_pathfinder->ClearColorTile();
 	UISystem::GetInstance().TurnOffBattleMenu();
+}
+
+void SelectTargetState::CancelUI(bool rightDown)
+{
+	if (rightDown)
+	{
+		_character->SetTargetTileCell(NULL);
+		_pathfinder->ClearColorTile();
+		_skillViewer->ClearColorTile();
+		_character->ChangeState(eStateType::ET_IDLE);
+	}
+}
+
+void SelectTargetState::ShowBaseRange()
+{
+	int range = GetViewRange();
+	ePathMode mode = GetPathMode();
+
+	_pathfinder->Reset();
+	_pathfinder->SetStartFromCharacter(_character);
+	_pathfinder->SetRange(range);
+	_pathfinder->FindPath(mode);
 }
 
 int SelectTargetState::GetViewRange()
@@ -105,51 +116,77 @@ ePathMode SelectTargetState::GetPathMode()
 void SelectTargetState::SetNextStateByType()
 {
 	eUIType type = UISystem::GetInstance().GetClickedUI();
+
+	switch (type)
+	{
+	case eUIType::MOVE:
+		DoMoveFunction();
+		break;
+	case eUIType::ATTACK:
+		DoAttackFunction();
+		break;
+	case eUIType::MAGIC:
+		DoMagicFunction();
+		break;
+	default:
+		break;
+	}
+}
+
+void SelectTargetState::DoMoveFunction()
+{
 	TileCell* targetCell = _character->GetTargetCell();
 	if (NULL == targetCell)
 		return;
 
-	if (eUIType::MOVE == type)
+	if (!(targetCell->GetTileX() == _character->GetTileX()
+		&& targetCell->GetTileY() == _character->GetTileY()))
 	{
-		if (!(targetCell->GetTileX() == _character->GetTileX() 
-			&& targetCell->GetTileY() == _character->GetTileY()))
+		if (_pathfinder->CheckRange(targetCell))
+			_nextState = eStateType::ET_PATHFINDING;
+	}
+}
+
+void SelectTargetState::DoAttackFunction()
+{
+	TileCell* targetCell = _character->GetTargetCell();
+	if (NULL == targetCell)
+		return;
+
+	std::list<Component*> components = targetCell->GetComponentList();
+	std::list<Component*>::iterator itr;
+
+	for (itr = components.begin(); itr != components.end(); itr++)
+	{
+		Component* com = (*itr);
+
+		if (eComponentType::CT_MONSTER == (*itr)->GetType())
 		{
-			if(_pathfinder->CheckRange(targetCell))
-				_nextState = eStateType::ET_PATHFINDING;
+			_character->SetTarget(com);
+			_nextState = eStateType::ET_ATTACK;
 		}
 	}
-	else if (eUIType::ATTACK == type)
+}
+
+void SelectTargetState::DoMagicFunction()
+{
+	int mouseX = GameSystem::GetInstance().GetMouseX();
+	int mouseY = GameSystem::GetInstance().GetMouseY();
+
+	Map* map = GameSystem::GetInstance().GetStage()->GetMap();
+
+	_mouseOverCell = map->FindTileCellWithMousePosition(mouseX, mouseY);
+
+	if (_pathfinder->CheckRange(_mouseOverCell))
 	{
-		std::list<Component*> components = targetCell->GetComponentList();
-		std::list<Component*>::iterator itr;
+		ShowBaseRange();
 
-		for (itr = components.begin(); itr != components.end(); itr++)
-		{
-			Component* com = (*itr);
+		_skillViewer->ColorMouseOverCell();
 
-			if (eComponentType::CT_MONSTER == (*itr)->GetType())
-			{
-				_character->SetTarget(com);
-				_nextState = eStateType::ET_ATTACK;
-			}
-		}
-	}
-	else if (eUIType::MAGIC == type)
-	{
-		//int mouseX = GameSystem::GetInstance().GetMouseX();
-		//int mouseY = GameSystem::GetInstance().GetMouseY();
-
-		//Map* map = GameSystem::GetInstance().GetStage()->GetMap();
-
-		//TileCell* overCell = map->FindTileCellWithMousePosition(mouseX, mouseY);
-
-		//if (_pathfinder->CheckRange(overCell))
-		//{
-		//	Pathfinding* skillviewer = new Pathfinding();
-		//	skillviewer->Reset();
-		//	skillviewer->SetStartCell(overCell);
-		//	skillviewer->SetRange(4);
-		//	skillviewer->FindPath(ePathMode::VIEW_ATTACK_RANGE);
-		//}
+		_skillViewer->Reset();
+		_skillViewer->SetStartCell(_mouseOverCell);
+		_skillViewer->SetColor(D3DCOLOR_ARGB(100, 255, 255, 0));
+		_skillViewer->SetRange(1);
+		_skillViewer->FindPath(ePathMode::VIEW_ATTACK_RANGE);
 	}
 }

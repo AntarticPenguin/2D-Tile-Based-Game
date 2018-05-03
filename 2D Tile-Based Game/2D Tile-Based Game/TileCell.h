@@ -69,6 +69,7 @@ public:
 	//FOR DUNGEON
 private:
 	Sprite* _colorSprite;
+	D3DCOLOR _baseColor;
 
 public:
 	void InitColorTile();

@@ -1,4 +1,5 @@
 #pragma once
+#include <d3dx9.h>
 #include <queue>
 #include <vector>
 
@@ -47,13 +48,10 @@ public:
 private:
 	Character * _character;
 	TileCell* _reverseTileCell;
+	TileCell* _startTileCell;
 	Map* _map;
 	int _range;
-	std::vector<TileCell*> _colorTileList;
 	std::priority_queue<sPathCommand, std::vector<sPathCommand>, compare> _pathfindingTileQueue;
-
-	//test
-	TileCell* _startTileCell;
 
 public:
 	void SetRange(int range);
@@ -70,11 +68,14 @@ public:
 	float CalcAStarHeuristic(float distanceFromStart, TileCell* nextTileCell, TileCell* targetTileCell);
 
 private:
+	std::vector<TileCell*> _colorTileList;
 	TileCell* _prevOverCell;
 	TileCell* _mouseOverCell;
+	D3DCOLOR _color;
 
 public:
 	bool CheckRange(TileCell* targetTileCell);
+	void SetColor(D3DCOLOR color);
 	void DrawSearchTile(TileCell* tileCell);
 	void ClearColorTile();
 	void ColorMouseOverCell();

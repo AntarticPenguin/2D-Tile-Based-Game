@@ -206,7 +206,8 @@ void TileCell::InitColorTile()
 
 void TileCell::TurnOnColorTile(D3DCOLOR color)
 {
-	_colorSprite->SetColor(color);
+	_baseColor = color;
+	_colorSprite->SetColor(_baseColor);
 }
 
 void TileCell::TurnOffColorTile()
@@ -219,5 +220,5 @@ void TileCell::SetMouseOver(bool mouseOver)
 	if(true == mouseOver)
 		_colorSprite->SetColor(D3DCOLOR_ARGB(100, 255, 0, 0));
 	else
-		_colorSprite->SetColor(D3DCOLOR_ARGB(100, 0, 0, 255));
+		_colorSprite->SetColor(_baseColor);
 }
