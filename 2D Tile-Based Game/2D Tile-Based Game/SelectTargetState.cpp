@@ -21,8 +21,7 @@ void SelectTargetState::Init(Character* character)
 {
 	State::Init(character);
 
-	_pathfinder = new Pathfinding(character);
-	_pathfinder->Init();
+	_pathfinder = new Pathfinding();
 }
 
 void SelectTargetState::Update(float deltaTime)
@@ -62,6 +61,7 @@ void SelectTargetState::Start()
 	_character->SetTargetTileCell(NULL);
 
 	_pathfinder->Reset();
+	_pathfinder->SetStartFromCharacter(_character);
 	_pathfinder->SetRange(range);
 	_pathfinder->FindPath(mode);
 }
@@ -69,7 +69,6 @@ void SelectTargetState::Start()
 void SelectTargetState::Stop()
 {
 	State::Stop();
-
 	_pathfinder->ClearColorTile();
 	UISystem::GetInstance().TurnOffBattleMenu();
 }
@@ -82,6 +81,8 @@ int SelectTargetState::GetViewRange()
 	case eUIType::MOVE:
 		return _character->GetMoveRange();
 	case eUIType::ATTACK:
+		return _character->GetAttackRange();
+	case eUIType::MAGIC:
 		return _character->GetAttackRange();
 	default:
 		return 0;
@@ -96,6 +97,7 @@ ePathMode SelectTargetState::GetPathMode()
 	case eUIType::MOVE:
 		return ePathMode::VIEW_MOVE_RANGE;
 	case eUIType::ATTACK:
+	case eUIType::MAGIC:
 		return ePathMode::VIEW_ATTACK_RANGE;
 	}
 }
@@ -134,6 +136,20 @@ void SelectTargetState::SetNextStateByType()
 	}
 	else if (eUIType::MAGIC == type)
 	{
-		
+		//int mouseX = GameSystem::GetInstance().GetMouseX();
+		//int mouseY = GameSystem::GetInstance().GetMouseY();
+
+		//Map* map = GameSystem::GetInstance().GetStage()->GetMap();
+
+		//TileCell* overCell = map->FindTileCellWithMousePosition(mouseX, mouseY);
+
+		//if (_pathfinder->CheckRange(overCell))
+		//{
+		//	Pathfinding* skillviewer = new Pathfinding();
+		//	skillviewer->Reset();
+		//	skillviewer->SetStartCell(overCell);
+		//	skillviewer->SetRange(4);
+		//	skillviewer->FindPath(ePathMode::VIEW_ATTACK_RANGE);
+		//}
 	}
 }

@@ -42,7 +42,6 @@ public:
 
 public:
 	Pathfinding();
-	Pathfinding(Character* character);
 	~Pathfinding();
 
 private:
@@ -57,10 +56,9 @@ private:
 	TileCell* _startTileCell;
 
 public:
-	void Init();
-	void Init(Character* character);
-	void Init(TileCell* tileCell);
 	void SetRange(int range);
+	void SetStartCell(TileCell* tileCell);
+	void SetStartFromCharacter(Character* character);
 	void FindPath(ePathMode mode, eFindMethod method = eFindMethod::DISTANCE);
 	void BuildPath();
 	bool CheckPreCondition(ePathMode mode, TilePosition nextTilePos, TileCell* nextTileCell, TileCell* targetTileCell);
@@ -77,6 +75,7 @@ private:
 
 public:
 	bool CheckRange(TileCell* targetTileCell);
+	void DrawSearchTile(TileCell* tileCell);
 	void ClearColorTile();
 	void ColorMouseOverCell();
 };

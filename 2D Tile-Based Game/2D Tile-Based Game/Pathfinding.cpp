@@ -11,26 +11,11 @@
 Pathfinding::Pathfinding()
 {
 	_reverseTileCell = NULL;
-
 	_prevOverCell = NULL;
+	_map = GameSystem::GetInstance().GetStage()->GetMap();
 	_range = 0;
 
 	_colorTileList.clear();
-
-	//test
-	_startTileCell = NULL;
-}
-
-Pathfinding::Pathfinding(Character* character)
-{
-	Pathfinding();
-	_character = character;
-	/*_reverseTileCell = NULL;
-
-	_prevOverCell = NULL;
-	_range = 0;
-
-	_colorTileList.clear();*/
 }
 
 Pathfinding::~Pathfinding()
@@ -38,45 +23,40 @@ Pathfinding::~Pathfinding()
 	
 }
 
-void Pathfinding::Init()
-{
-	_map = GameSystem::GetInstance().GetStage()->GetMap();
-}
-
-void Pathfinding::Init(Character* character)
-{
-	Init();
-	_character = character;
-}
-
-void Pathfinding::Init(TileCell* tileCell)
-{
-	_startTileCell = tileCell;
-}
-
 void Pathfinding::SetRange(int range)
 {
 	_range = range;
 }
 
+void Pathfinding::SetStartFromCharacter(Character* character)
+{
+	_character = character;
+	SetStartCell(_map->GetTileCell(_character->GetTileX(), _character->GetTileY()));
+}
+
+void Pathfinding::SetStartCell(TileCell* tileCell)
+{
+	_startTileCell = tileCell;
+}
+
 void Pathfinding::FindPath(ePathMode mode, eFindMethod method)
 {
+	bool isViewRange = (ePathMode::VIEW_MOVE_RANGE == mode || ePathMode::VIEW_ATTACK_RANGE == mode);
+
 	_prevOverCell = NULL;
 
-	_startTileCell = _map->GetTileCell(_character->GetTileX(), _character->GetTileY());
-
-	TileCell* targetTileCell = _character->GetTargetCell();
-	TileCell* startTileCell = _map->GetTileCell(_character->GetTileX(), _character->GetTileY());
+	TileCell* targetTileCell = NULL;
+	if (ePathMode::FIND_PATH == mode)
+		targetTileCell = _character->GetTargetCell();
 
 	sPathCommand newCommand;
 	newCommand.heuristic = 0.0f;
-	//newCommand.tileCell = startTileCell;
 	newCommand.tileCell = _startTileCell;
 	_pathfindingTileQueue.push(newCommand);
 
 	while (0 != _pathfindingTileQueue.size())
 	{
-		//첫번째 노드를 꺼내서 검사
+		//1.첫번째 노드를 꺼내서 검사
 		sPathCommand command = _pathfindingTileQueue.top();
 		_pathfindingTileQueue.pop();
 
@@ -84,15 +64,16 @@ void Pathfinding::FindPath(ePathMode mode, eFindMethod method)
 		{
 			command.tileCell->PathFinded();
 
-			//목표 타겟이면 종료
-			if ( (ePathMode::FIND_PATH == mode)
-				&& (command.tileCell->GetTileX() == targetTileCell->GetTileX() 
-					&& command.tileCell->GetTileY() == targetTileCell->GetTileY()) )
+			//2.꺼낸 노드가 목표 타겟이면 종료
+			if ((ePathMode::FIND_PATH == mode)
+				&& (command.tileCell->GetTileX() == targetTileCell->GetTileX()
+					&& command.tileCell->GetTileY() == targetTileCell->GetTileY()))
 			{
 				_reverseTileCell = targetTileCell;
 				return;
 			}
 
+			//3.인접한 노드들을 조건에 따라 검사 후, 큐에 삽입
 			for (int direction = 0; direction < (int)eDirection::NONE; direction++)
 			{
 				TilePosition curTilePos = { command.tileCell->GetTileX(), command.tileCell->GetTileY() };
@@ -102,16 +83,15 @@ void Pathfinding::FindPath(ePathMode mode, eFindMethod method)
 
 				if (CheckPreCondition(mode, nextTilePos, nextTileCell, targetTileCell))
 				{
-					float distanceFromStart = command.tileCell->GetDistanceFromStart() + command.tileCell->GetDistanceWeight();	//거리우선
+					float distanceFromStart = command.tileCell->GetDistanceFromStart() + command.tileCell->GetDistanceWeight();
 					float heuristic = CalcHeuristic(method, distanceFromStart, command.tileCell, nextTileCell, targetTileCell);
 
-					if ((ePathMode::VIEW_MOVE_RANGE == mode || ePathMode::VIEW_ATTACK_RANGE == mode)
-						&& (_range < distanceFromStart))
+					if (isViewRange	&& (_range < distanceFromStart))  //검색범위 제한
 						return;
 
 					if (NULL == nextTileCell->GetPrevPathfindingCell())
 					{
-						nextTileCell->SetDistanceFromStart(distanceFromStart);	//거리우선
+						nextTileCell->SetDistanceFromStart(distanceFromStart);
 						nextTileCell->SetHeuristic(heuristic);
 						nextTileCell->SetPrevPathfindingCell(command.tileCell);
 
@@ -120,18 +100,9 @@ void Pathfinding::FindPath(ePathMode mode, eFindMethod method)
 						newCommand.tileCell = nextTileCell;
 						_pathfindingTileQueue.push(newCommand);
 
-						if(ePathMode::VIEW_MOVE_RANGE == mode || ePathMode::VIEW_ATTACK_RANGE == mode)	//검색범위를 그려준다.
-						{
-							/*if ( !(nextTileCell->GetTileX() == _character->GetTileX()
-								&& nextTileCell->GetTileY() == _character->GetTileY()) )*/
-							if (!(nextTileCell->GetTileX() == _startTileCell->GetTileX()
-								&& nextTileCell->GetTileY() == _startTileCell->GetTileY()))
-							{
-								nextTileCell->TurnOnColorTile(D3DCOLOR_ARGB(100, 0, 0, 255));
-								_colorTileList.push_back(nextTileCell);
-							}
-						}
-					}	
+						if (isViewRange)
+							DrawSearchTile(nextTileCell);	//검색범위를 색칠
+					}
 					else
 					{
 						if (distanceFromStart < nextTileCell->GetDistanceFromStart())
@@ -172,8 +143,6 @@ bool Pathfinding::CheckPreCondition(ePathMode mode, TilePosition nextTilePos, Ti
 	if ((true == _map->CanMoveTileMap(nextTilePos) && false == nextTileCell->IsPathfindingMark())
 		|| (nextTileCell->GetTileX() == targetTileCell->GetTileX() && nextTileCell->GetTileY() == targetTileCell->GetTileY()))
 	*/
-	/*if ((true == _map->CanMoveTileMap(nextTilePos) && false == nextTileCell->IsPathfindingMark()))
-		condition = true;*/
 
 	//공격,마법은 canMove가 false여도 범위를 보여주어야 한다. 즉 방문여부만 체크해주면 된다.
 	if (false == nextTileCell->IsPathfindingMark())
@@ -249,13 +218,9 @@ float Pathfinding::CalcSimpleHeuristic(TileCell* tileCell, TileCell* nextTileCel
 			diffFromNext = diffFromNext * (-1);
 
 		if (diffFromNext < diffFromCurrent)		//다음 타일이 현재 타일보다 목표타일에 가까울 때
-		{
 			heuristic -= 1.0f;
-		}
 		else if (diffFromNext > diffFromCurrent)
-		{
 			heuristic += 1.0f;
-		}
 	}
 
 	//y의 발견적 값 누적 갱신
@@ -269,13 +234,9 @@ float Pathfinding::CalcSimpleHeuristic(TileCell* tileCell, TileCell* nextTileCel
 			diffFromNext = diffFromNext * (-1);
 
 		if (diffFromNext < diffFromCurrent)		//다음 타일이 현재 타일보다 목표타일에 가까울 때
-		{
 			heuristic -= 1.0f;
-		}
 		else if (diffFromNext > diffFromCurrent)
-		{
 			heuristic += 1.0f;
-		}
 	}
 
 	//Add heuristic what you want
@@ -311,6 +272,16 @@ bool Pathfinding::CheckRange(TileCell* targetTileCell)
 			return true;
 	}
 	return false;
+}
+
+void Pathfinding::DrawSearchTile(TileCell* tileCell)
+{
+	if (!(tileCell->GetTileX() == _startTileCell->GetTileX()
+		&& tileCell->GetTileY() == _startTileCell->GetTileY()))
+	{
+		tileCell->TurnOnColorTile(D3DCOLOR_ARGB(100, 0, 0, 255));
+		_colorTileList.push_back(tileCell);
+	}
 }
 
 void Pathfinding::ClearColorTile()
