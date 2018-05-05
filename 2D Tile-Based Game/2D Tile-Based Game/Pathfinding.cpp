@@ -44,6 +44,8 @@ void Pathfinding::SetStartCell(TileCell* tileCell)
 void Pathfinding::FindPath(ePathMode mode, eFindMethod method)
 {
 	bool isViewRange = (ePathMode::VIEW_MOVE_RANGE == mode || ePathMode::VIEW_ATTACK_RANGE == mode);
+	if (isViewRange)
+		DrawSearchTile(_startTileCell);
 
 	_prevOverCell = NULL;
 
@@ -283,8 +285,8 @@ void Pathfinding::SetColor(D3DCOLOR color)
 
 void Pathfinding::DrawSearchTile(TileCell* tileCell)
 {
-	if (!(tileCell->GetTileX() == _startTileCell->GetTileX()
-		&& tileCell->GetTileY() == _startTileCell->GetTileY()))
+	/*if (!(tileCell->GetTileX() == _startTileCell->GetTileX()
+		&& tileCell->GetTileY() == _startTileCell->GetTileY()))*/
 	{
 		tileCell->TurnOnColorTile(_color);
 		_colorTileList.push_back(tileCell);

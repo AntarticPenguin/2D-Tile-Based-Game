@@ -13,6 +13,7 @@ SelectTargetState::SelectTargetState()
 {
 	_mouseOverCell = NULL;
 	_prevOverCell = NULL;
+	_turnOn = true;
 }
 
 SelectTargetState::~SelectTargetState()
@@ -37,12 +38,11 @@ void SelectTargetState::Update(float deltaTime)
 		return;
 	}
 
-	_pathfinder->ColorMouseOverCell();
+	ColorMouseOver();
 	CancelUI(GameSystem::GetInstance().IsRightMouseDown());
 	_character->ChargeBehavior(deltaTime);
 	SetNextStateByType();
 }
-
 
 void SelectTargetState::Start()
 {
@@ -53,6 +53,7 @@ void SelectTargetState::Start()
 	_character->SetTargetTileCell(NULL);
 
 	ShowBaseRange();		//선택한 기능의 기본 범위 Draw
+	TurnOnMouseOver();
 }
 
 void SelectTargetState::Stop()
@@ -60,6 +61,22 @@ void SelectTargetState::Stop()
 	State::Stop();
 	_pathfinder->ClearColorTile();
 	UISystem::GetInstance().TurnOffBattleMenu();
+}
+
+void SelectTargetState::ColorMouseOver()
+{
+	if (_turnOn)
+		_pathfinder->ColorMouseOverCell();
+}
+
+void SelectTargetState::TurnOnMouseOver()
+{
+	_turnOn = true;
+}
+
+void SelectTargetState::TurnOffMouseOver()
+{
+	_turnOn = false;
 }
 
 void SelectTargetState::CancelUI(bool rightDown)
@@ -127,6 +144,7 @@ void SelectTargetState::SetNextStateByType()
 		break;
 	case eUIType::MAGIC:
 		DoMagicFunction();
+		TurnOffMouseOver();
 		break;
 	default:
 		break;
@@ -178,11 +196,17 @@ void SelectTargetState::DoMagicFunction()
 	_mouseOverCell = map->FindTileCellWithMousePosition(mouseX, mouseY);
 
 	if (_pathfinder->CheckRange(_mouseOverCell))
+		ShowSkillRange();
+	_prevOverCell = _mouseOverCell;
+}
+
+void SelectTargetState::ShowSkillRange()
+{
+	if (_prevOverCell != _mouseOverCell)
 	{
+		_skillViewer->ClearColorTile();
+
 		ShowBaseRange();
-
-		_skillViewer->ColorMouseOverCell();
-
 		_skillViewer->Reset();
 		_skillViewer->SetStartCell(_mouseOverCell);
 		_skillViewer->SetColor(D3DCOLOR_ARGB(100, 255, 255, 0));

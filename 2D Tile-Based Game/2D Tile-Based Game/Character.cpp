@@ -448,7 +448,7 @@ void Character::UpdateText()
 
 	WCHAR text[255];
 	//wsprintf(text, L"BehaviorPoint: %d\n HP: %d\n State: %s\n Battle: %d\n", _behaviorPoint, _hp, state, _canBattle);
-	wsprintf(text, L"BehaviorPoint: %d\n HP: %d\n", _behaviorPoint, _hp);
+	wsprintf(text, L"BehaviorPoint: %d\n State: %s\n", _behaviorPoint, state);
 	_font->SetText(text);
 }
 

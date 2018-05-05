@@ -13,6 +13,7 @@ private:
 	Pathfinding* _skillViewer;
 	TileCell* _mouseOverCell;
 	TileCell* _prevOverCell;
+	bool _turnOn;
 
 public:
 	SelectTargetState();
@@ -25,6 +26,9 @@ public:
 	void Start();
 	void Stop();
 
+	void ColorMouseOver();
+	void TurnOnMouseOver();
+	void TurnOffMouseOver();
 	void CancelUI(bool rightDown);
 
 public:
@@ -36,4 +40,5 @@ public:
 	void DoMoveFunction();
 	void DoAttackFunction();
 	void DoMagicFunction();
+	void ShowSkillRange();
 };
