@@ -77,6 +77,7 @@ public:
 	bool CheckRange(TileCell* targetTileCell);
 	void SetColor(D3DCOLOR color);
 	void DrawSearchTile(TileCell* tileCell);
+	std::vector<TileCell*>& GetRangeTiles();
 	void ClearColorTile();
 	void ColorMouseOverCell();
 };

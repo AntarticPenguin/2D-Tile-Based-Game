@@ -28,7 +28,7 @@ Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFi
 
 	//Stat Info
 	{
-		_attackPoint = 2;
+		_attackPoint = 5;
 		_attackedPoint = 0;
 		_maxHp = 50;
 		_hp = _maxHp - 40;

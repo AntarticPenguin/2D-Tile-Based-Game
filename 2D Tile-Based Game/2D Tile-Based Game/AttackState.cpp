@@ -22,7 +22,6 @@ void AttackState::Update(float deltaTime)
 
 	if (eStateType::ET_NONE != _nextState)
 	{
-		_character->ResetTarget();
 		_character->ChangeState(_nextState);
 		return;
 	}
@@ -48,12 +47,28 @@ void AttackState::Start()
 	State::Start();
 	_curState = eStateType::ET_ATTACK;
 
-	sComponentMsgParam msgParam;
-	msgParam.sender = (Component*)_character;
-	msgParam.receiver = _character->GetTarget();
-	msgParam.message = L"Attack";
-	msgParam.attackPoint = _character->GetAttackPoint();
-	ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
+	std::vector<Component*> targets = _character->GetTargets();
+	if (1 == targets.size())
+	{
+		sComponentMsgParam msgParam;
+		msgParam.sender = (Component*)_character;
+		msgParam.receiver = targets[0];
+		msgParam.message = L"Attack";
+		msgParam.attackPoint = _character->GetAttackPoint();
+		ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
+	}
+	else if(1 < targets.size())
+	{
+		for (int i = 0; i < targets.size(); i++)
+		{
+			sComponentMsgParam msgParam;
+			msgParam.sender = (Component*)_character;
+			msgParam.receiver = targets[i];
+			msgParam.message = L"Attack";
+			msgParam.attackPoint = _character->GetAttackPoint();
+			ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
+		}
+	}
 
 	_character->SetCanBattle(false);
 
@@ -63,9 +78,7 @@ void AttackState::Start()
 void AttackState::Stop()
 {
 	State::Stop();
-
 	_character->DecreaseBehaviorPoint(2);
-
-	_character->ResetTarget();
+	_character->ResetTargets();
 	_character->SetTargetTileCell(NULL);
 }

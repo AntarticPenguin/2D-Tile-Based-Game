@@ -41,11 +41,6 @@ bool UI::CheckCollision(int mouseX, int mouseY)
 		return false;
 	if (_collider.bottom < mouseY)
 		return false;
-
-	WCHAR text[50];
-	wsprintf(text, L"%s Å¬¸¯!\n", _name.c_str());
-	OutputDebugStringW(text);
-
 	return true;
 }
 

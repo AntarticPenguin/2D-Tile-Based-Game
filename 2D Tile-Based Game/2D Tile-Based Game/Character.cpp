@@ -47,7 +47,8 @@ Character::Character(std::wstring name, std::wstring scriptName, std::wstring sp
 	}
 
 	_targetTileCell = NULL;
-	_counterTarget = NULL;
+
+	_targets.clear();
 }
 
 Character::~Character()
@@ -225,12 +226,6 @@ void Character::ReplaceState(eStateType changeType, State* replaceState)
 	_stateMap[changeType] = state;
 }
 
-//void Character::UpdateAI(float deltaTime)
-//{
-//	_curDirection = (eDirection)(rand() % 4);
-//	_state->NextState(eStateType::ET_MOVE);
-//}
-
 void Character::ChangeState(eStateType stateType)
 {
 	if (NULL != _state)
@@ -370,30 +365,24 @@ void Character::ReceiveMessage(const sComponentMsgParam& msgParam)
 {
 	if (L"Attack" == msgParam.message)
 	{
-		_counterTarget = msgParam.sender;
 		_attackedPoint = msgParam.attackPoint;
 		_state->NextState(eStateType::ET_DEFENSE);
 	}
 }
 
-Component* Character::GetTarget()
+std::vector<Component*>& Character::GetTargets()
 {
-	return _target;
+	return _targets;
 }
 
-Component* Character::GetCounterTarget()
+void Character::AddTarget(Component* target)
 {
-	return _counterTarget;
+	_targets.push_back(target);
 }
 
-void Character::SetTarget(Component* target)
+void Character::ResetTargets()
 {
-	_target = target;
-}
-
-void Character::ResetTarget()
-{
-	_target = NULL;
+	_targets.clear();
 }
 
 int Character::GetAttackPoint()
@@ -448,7 +437,7 @@ void Character::UpdateText()
 
 	WCHAR text[255];
 	//wsprintf(text, L"BehaviorPoint: %d\n HP: %d\n State: %s\n Battle: %d\n", _behaviorPoint, _hp, state, _canBattle);
-	wsprintf(text, L"BehaviorPoint: %d\n State: %s\n", _behaviorPoint, state);
+	wsprintf(text, L"BehaviorPoint: %d\n State: %s\n HP: %d\n", _behaviorPoint, state, _hp);
 	_font->SetText(text);
 }
 

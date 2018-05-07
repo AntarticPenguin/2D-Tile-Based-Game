@@ -44,8 +44,11 @@ void DefaultStageLoader::CreateComponents(std::wstring mapName)
 	*/
 
 	//Monster
+	for(int i = 0 ; i < 30; i++)
 	{
-		Monster* monster = new Monster(L"monster", L"monster", L"monster");
+		WCHAR name[256];
+		wsprintf(name, L"monster_%d", i);
+		Monster* monster = new Monster(name, L"monster", L"monster");
 		_stage->AddStageComponent(monster);
 	}
 	

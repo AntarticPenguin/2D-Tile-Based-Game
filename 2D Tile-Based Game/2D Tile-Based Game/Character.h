@@ -121,16 +121,14 @@ public:
 
 	//Attack
 protected:
-	Component* _target;
-	Component* _counterTarget;	//나에게 공격을 날린 대상(카운터공격에 사용됨)
+	std::vector<Component*> _targets;
 	int _attackPoint;
 	int _attackRange;
 
 public:
-	Component* GetTarget();
-	Component* GetCounterTarget();
-	void SetTarget(Component* target);
-	void ResetTarget();
+	std::vector<Component*>& GetTargets();
+	void AddTarget(Component* target);	//범위공격 타겟들
+	void ResetTargets();
 	int GetAttackPoint();
 	int GetAttackRange();
 

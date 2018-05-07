@@ -60,6 +60,7 @@ void SelectTargetState::Stop()
 {
 	State::Stop();
 	_pathfinder->ClearColorTile();
+	_skillViewer->ClearColorTile();
 	UISystem::GetInstance().TurnOffBattleMenu();
 }
 
@@ -180,7 +181,7 @@ void SelectTargetState::DoAttackFunction()
 
 		if (eComponentType::CT_MONSTER == (*itr)->GetType())
 		{
-			_character->SetTarget(com);
+			_character->AddTarget(com);
 			_nextState = eStateType::ET_ATTACK;
 		}
 	}
@@ -198,6 +199,33 @@ void SelectTargetState::DoMagicFunction()
 	if (_pathfinder->CheckRange(_mouseOverCell))
 		ShowSkillRange();
 	_prevOverCell = _mouseOverCell;
+
+	if (NULL != _character->GetTargetCell())
+	{
+		bool _haveTargets = false;
+		std::vector<TileCell*> tiles = _skillViewer->GetRangeTiles();
+
+		for (int i = 0; i < tiles.size(); i++)
+		{
+			std::list<Component*> components = tiles[i]->GetComponentList();
+			std::list<Component*>::iterator itr;
+
+			for (itr = components.begin(); itr != components.end(); itr++)
+			{
+				Component* com = (*itr);
+
+				if (eComponentType::CT_MONSTER == (*itr)->GetType())
+				{
+					_character->AddTarget(com);
+					_haveTargets = true;
+				}
+			}
+		}
+		if(_haveTargets)
+			_nextState = eStateType::ET_ATTACK;
+	}
+
+	_character->SetTargetTileCell(NULL);
 }
 
 void SelectTargetState::ShowSkillRange()
@@ -210,7 +238,7 @@ void SelectTargetState::ShowSkillRange()
 		_skillViewer->Reset();
 		_skillViewer->SetStartCell(_mouseOverCell);
 		_skillViewer->SetColor(D3DCOLOR_ARGB(100, 255, 255, 0));
-		_skillViewer->SetRange(1);
+		_skillViewer->SetRange(2);
 		_skillViewer->FindPath(ePathMode::VIEW_ATTACK_RANGE);
 	}
 }

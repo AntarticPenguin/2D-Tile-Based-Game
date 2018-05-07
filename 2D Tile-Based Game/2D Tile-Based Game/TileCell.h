@@ -41,7 +41,7 @@ public:
 
 	bool CanMove();
 	bool GetCollisionList(std::list<Component*>& collisionList);
-	std::list<Component*> GetComponentList();
+	std::list<Component*>& GetComponentList();
 
 	//FindPath
 private:

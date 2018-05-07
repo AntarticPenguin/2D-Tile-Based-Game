@@ -285,12 +285,13 @@ void Pathfinding::SetColor(D3DCOLOR color)
 
 void Pathfinding::DrawSearchTile(TileCell* tileCell)
 {
-	/*if (!(tileCell->GetTileX() == _startTileCell->GetTileX()
-		&& tileCell->GetTileY() == _startTileCell->GetTileY()))*/
-	{
-		tileCell->TurnOnColorTile(_color);
-		_colorTileList.push_back(tileCell);
-	}
+	tileCell->TurnOnColorTile(_color);
+	_colorTileList.push_back(tileCell);
+}
+
+std::vector<TileCell*>& Pathfinding::GetRangeTiles()
+{
+	return _colorTileList;
 }
 
 void Pathfinding::ClearColorTile()

@@ -1,7 +1,9 @@
 ﻿  SelectTargetState.cpp
-  Player.cpp
+d:\programmingfolder\2dtilegame\2d tile-based game\2d tile-based game\selecttargetstate.cpp(208): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  AttackState.cpp
+d:\programmingfolder\2dtilegame\2d tile-based game\2d tile-based game\attackstate.cpp(62): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   코드를 생성하고 있습니다...
-d:\programmingfolder\2dtilegame\2d tile-based game\2d tile-based game\selecttargetstate.cpp(131): warning C4715: 'SelectTargetState::GetPathMode': 모든 제어 경로에서 값을 반환하지는 않습니다.
+d:\programmingfolder\2dtilegame\2d tile-based game\2d tile-based game\selecttargetstate.cpp(132): warning C4715: 'SelectTargetState::GetPathMode': 모든 제어 경로에서 값을 반환하지는 않습니다.
 json_vc71_libmtd.lib(json_reader.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_reader.obj)' 또는 'D:\ProgrammingFolder\2DTileGame\2D Tile-Based Game\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
 json_vc71_libmtd.lib(json_value.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_value.obj)' 또는 'D:\ProgrammingFolder\2DTileGame\2D Tile-Based Game\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
 json_vc71_libmtd.lib(json_writer.obj) : warning LNK4099: 'lib_json.pdb' PDB를 'json_vc71_libmtd.lib(json_writer.obj)' 또는 'D:\ProgrammingFolder\2DTileGame\2D Tile-Based Game\Debug\lib_json.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
