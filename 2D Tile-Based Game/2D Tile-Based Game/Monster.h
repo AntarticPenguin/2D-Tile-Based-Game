@@ -10,4 +10,5 @@ public:
 public:
 	void InitState();
 	void UpdateCharacter();
+	void UpdateText() override;
 };

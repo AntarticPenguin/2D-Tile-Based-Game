@@ -39,5 +39,5 @@ void PathfindingState::Stop()
 	State::Stop();
 	_character->SetTargetTileCell(NULL);
 	_pathfinder->ClearColorTile();
-	UISystem::GetInstance().TurnOffBattleMenu();
+	UISystem::GetInstance().TurnOffMenu();
 }

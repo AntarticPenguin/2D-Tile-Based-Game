@@ -48,9 +48,10 @@ void AttackState::Start()
 	_curState = eStateType::ET_ATTACK;
 
 	std::vector<Component*> targets = _character->GetTargets();
+	sComponentMsgParam msgParam;
+
 	if (1 == targets.size())
 	{
-		sComponentMsgParam msgParam;
 		msgParam.sender = (Component*)_character;
 		msgParam.receiver = targets[0];
 		msgParam.message = L"Attack";
@@ -61,7 +62,6 @@ void AttackState::Start()
 	{
 		for (int i = 0; i < targets.size(); i++)
 		{
-			sComponentMsgParam msgParam;
 			msgParam.sender = (Component*)_character;
 			msgParam.receiver = targets[i];
 			msgParam.message = L"Attack";

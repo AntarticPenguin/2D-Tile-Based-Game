@@ -43,6 +43,9 @@
     <Filter Include="소스 파일\System\UISystem">
       <UniqueIdentifier>{17acc49d-c940-4444-bffa-d7ea013e14f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Game\Skill">
+      <UniqueIdentifier>{6a401d67-8934-4fce-8f07-3c696704d876}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -150,6 +153,12 @@
     <ClCompile Include="MagicUI.cpp">
       <Filter>소스 파일\System\UISystem</Filter>
     </ClCompile>
+    <ClCompile Include="Skill.cpp">
+      <Filter>소스 파일\Game\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="SkillUI.cpp">
+      <Filter>소스 파일\System\UISystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameSystem.h">
@@ -255,6 +264,12 @@
       <Filter>소스 파일\Game\Character</Filter>
     </ClInclude>
     <ClInclude Include="MagicUI.h">
+      <Filter>소스 파일\System\UISystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill.h">
+      <Filter>소스 파일\Game\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillUI.h">
       <Filter>소스 파일\System\UISystem</Filter>
     </ClInclude>
   </ItemGroup>

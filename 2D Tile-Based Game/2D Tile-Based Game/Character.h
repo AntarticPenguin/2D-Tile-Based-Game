@@ -24,6 +24,7 @@ enum eStateType
 class State;
 class Font;
 class TileCell;
+class Skill;
 
 class Character : public Component
 {
@@ -134,12 +135,20 @@ public:
 
 	void RecoveryHP(int hp);
 
+	//Skill
+protected:
+	std::vector<Skill*>	_skillList;
+
+public:
+	void InitSkill();
+	std::vector<Skill*>& GetSkillList();
+
 	//UI(Font)
-private:
+protected:
 	Font* _font;
 
 public:
-	void UpdateText();
+	virtual void UpdateText();
 
 	//Pathfinding
 private:

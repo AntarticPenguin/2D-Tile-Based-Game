@@ -61,7 +61,7 @@ void SelectTargetState::Stop()
 	State::Stop();
 	_pathfinder->ClearColorTile();
 	_skillViewer->ClearColorTile();
-	UISystem::GetInstance().TurnOffBattleMenu();
+	UISystem::GetInstance().TurnOffMenu();
 }
 
 void SelectTargetState::ColorMouseOver()

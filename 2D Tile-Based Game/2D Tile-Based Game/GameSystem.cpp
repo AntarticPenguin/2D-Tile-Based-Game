@@ -231,6 +231,7 @@ int	GameSystem::Update()
 						_stage = new Stage();
 						_stage->Init(L"", eStage::DUNGEON);
 						UISystem::GetInstance().InitBattleMenu();
+						UISystem::GetInstance().InitSkillMenu();
 					}
 				}
 			}

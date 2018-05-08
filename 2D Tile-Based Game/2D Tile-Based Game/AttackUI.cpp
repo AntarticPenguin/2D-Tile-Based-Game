@@ -19,7 +19,7 @@ void AttackUI::Action(Character* character)
 	if (character->CanBattle())
 	{
 		UISystem::GetInstance().SetClickedUI(eUIType::ATTACK);
-		UISystem::GetInstance().TurnOffBattleMenu();
+		UISystem::GetInstance().TurnOffMenu();
 		character->ChangeState(eStateType::ET_SELECT_TARGET);
 	}
 }

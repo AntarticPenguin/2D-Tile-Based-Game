@@ -6,17 +6,22 @@
 #include "AttackUI.h"
 #include "MoveUI.h"
 #include "MagicUI.h"
+#include "SkillUI.h"
 
 #include "Character.h"
 #include "Sprite.h"
+#include "Skill.h"
 
 UISystem* UISystem::_instance = NULL;
 
-UISystem::UISystem()
+UISystem::UISystem() :
+	_activeMenu(_battleMenu)
 {
 	_character = NULL;
 	_IsBattle = false;
 	_clickedUI = eUIType::NONE;
+
+	_menuOn = true;
 }
 
 UISystem::~UISystem()
@@ -25,12 +30,11 @@ UISystem::~UISystem()
 
 void UISystem::Render()
 {
-	for (int i = 0; i < _battleMenuList.size(); i++)
+	for (int i = 0; i < _activeMenu.size(); i++)
 	{
-		if(_IsBattle)
-			_battleMenuList[i]->Render();
+		if (_menuOn)
+			_activeMenu[i]->Render();
 	}
-		
 }
 
 UISystem& UISystem::GetInstance()
@@ -42,11 +46,11 @@ UISystem& UISystem::GetInstance()
 
 bool UISystem::CheckUIClick(int mouseX, int mouseY)
 {
-	for (int i = 0; i < _battleMenuList.size(); i++)
+	for (int i = 0; i < _activeMenu.size(); i++)
 	{
-		if (true == _IsBattle && true == _battleMenuList[i]->CheckCollision(mouseX, mouseY))
+		if (true == _menuOn && true == _activeMenu[i]->CheckCollision(mouseX, mouseY))
 		{
-			_battleMenuList[i]->Action(_character);
+			_activeMenu[i]->Action(_character);
 			return true;
 		}
 	}
@@ -75,41 +79,75 @@ void UISystem::InitBattleMenu()
 	{
 		UI* button = new MoveUI(L"이동", L"menu_MOVE.png", width, height);
 		button->SetPosition(_character->GetX() - 32.0f, _character->GetY() - 32.0f);
-		_battleMenuList.push_back(button);
+		_battleMenu.push_back(button);
 	}
 	{
 		UI* button = new UI(L"아이템", L"menu_ITEM.png", width, height);
 		button->SetPosition(_character->GetX(), _character->GetY() - 32.0f);
-		_battleMenuList.push_back(button);
+		_battleMenu.push_back(button);
 	}
 	{
 		UI* button = new AttackUI(L"공격", L"menu_ATTACK.png", width, height);
 		button->SetPosition(_character->GetX() + 32.0f, _character->GetY() - 32.0f);
-		_battleMenuList.push_back(button);
+		_battleMenu.push_back(button);
 	}
 	{
 		UI* button = new MagicUI(L"마법", L"menu_MAGIC.png", width, height);
 		button->SetPosition(_character->GetX() - 32.0f, _character->GetY());
-		_battleMenuList.push_back(button);
+		_battleMenu.push_back(button);
 	}
 	{
 		UI* button = new UI(L"휴식", L"menu_REST.png", width, height);
 		button->SetPosition(_character->GetX() - 32.0f, _character->GetY() + 32.0f);
-		_battleMenuList.push_back(button);
+		_battleMenu.push_back(button);
 	}
 }
 
-void UISystem::TurnOnBattleMenu()
+void UISystem::InitSkillMenu()
 {
-	_IsBattle = true;
+	int width = 32;
+	int height = 32;
+
+	std::vector<Skill*> list = _character->GetSkillList();
+
+	for (int i = 0; i < list.size(); i++)
+	{
+		std::wstring name = list[i]->GetName();
+		std::wstring fileName = list[i]->GetFileName();
+		UI* button = new SkillUI(name, fileName, width, height);
+		button->SetPosition(_character->GetX() - 32.0f, _character->GetY() - 32.0f);
+		_skillMenu.push_back(button);
+	}
 }
 
-void UISystem::TurnOffBattleMenu()
+void UISystem::TurnOnMenu()
 {
-	_IsBattle = false;
+	_menuOn = true;
 }
 
-bool UISystem::IsBattleMenuOn()
+void UISystem::TurnOffMenu()
 {
-	return _IsBattle;
+	_menuOn = false;
+}
+
+bool UISystem::IsMenuOn()
+{
+	return _menuOn;
+}
+
+void UISystem::SetActiveMenu(eMenuType menuType)
+{
+	switch (menuType)
+	{
+	case eMenuType::NONE:
+		break;
+	case eMenuType::BATTLE:
+		_activeMenu = _battleMenu;
+		break;
+	case eMenuType::SKILL:
+		_activeMenu = _skillMenu;
+		break;
+	default:
+		break;
+	}
 }

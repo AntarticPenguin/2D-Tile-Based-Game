@@ -14,6 +14,8 @@
 #include "IdleState.h"
 #include "PathfindingMoveState.h"
 
+#include "Skill.h"
+
 #include "Font.h"
 
 Character::Character(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
@@ -92,6 +94,7 @@ void Character::Init(int tileX, int tileY)
 
 	InitMove();
 	InitState();
+	InitSkill();
 	ChangeState(eStateType::ET_IDLE);
 
 	//Font
@@ -403,10 +406,21 @@ void Character::RecoveryHP(int hp)
 		_hp = _maxHp;
 }
 
+void Character::InitSkill()
+{
+	{
+		Skill* skill = new Skill(L"파이어볼", L"skill_fireball.png");
+		_skillList.push_back(skill);
+	}
+}
+
+std::vector<Skill*>& Character::GetSkillList()
+{
+	return _skillList;
+}
+
 void Character::UpdateText()
 {
-	//int coolTime = (int)(_attackCooltimeDuration * 1000.0f);
-
 	WCHAR state[100];
 	ZeroMemory(state, sizeof(state));
 

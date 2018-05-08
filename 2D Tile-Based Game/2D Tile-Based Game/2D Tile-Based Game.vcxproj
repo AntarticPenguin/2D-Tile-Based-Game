@@ -30,6 +30,8 @@
     <ClCompile Include="PathfindingMoveState.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="SelectTargetState.cpp" />
+    <ClCompile Include="Skill.cpp" />
+    <ClCompile Include="SkillUI.cpp" />
     <ClCompile Include="StageLoader.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -67,6 +69,8 @@
     <ClInclude Include="PathfindingMoveState.h" />
     <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="SelectTargetState.h" />
+    <ClInclude Include="Skill.h" />
+    <ClInclude Include="SkillUI.h" />
     <ClInclude Include="StageLoader.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Component.h" />
