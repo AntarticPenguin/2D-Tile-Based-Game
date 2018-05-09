@@ -14,14 +14,14 @@
 
 UISystem* UISystem::_instance = NULL;
 
-UISystem::UISystem() :
-	_activeMenu(_battleMenu)
+UISystem::UISystem()
 {
 	_character = NULL;
 	_IsBattle = false;
 	_clickedUI = eUIType::NONE;
 
-	_menuOn = true;
+	_menuOn = false;
+	_activeMenu = &_battleMenu;
 }
 
 UISystem::~UISystem()
@@ -30,10 +30,10 @@ UISystem::~UISystem()
 
 void UISystem::Render()
 {
-	for (int i = 0; i < _activeMenu.size(); i++)
+	for (int i = 0; i < _activeMenu->size(); i++)
 	{
 		if (_menuOn)
-			_activeMenu[i]->Render();
+			_activeMenu[0][i]->Render();
 	}
 }
 
@@ -46,11 +46,11 @@ UISystem& UISystem::GetInstance()
 
 bool UISystem::CheckUIClick(int mouseX, int mouseY)
 {
-	for (int i = 0; i < _activeMenu.size(); i++)
+	for (int i = 0; i < _activeMenu->size(); i++)
 	{
-		if (true == _menuOn && true == _activeMenu[i]->CheckCollision(mouseX, mouseY))
+		if (true == _menuOn && true == _activeMenu[0][i]->CheckCollision(mouseX, mouseY))
 		{
-			_activeMenu[i]->Action(_character);
+			_activeMenu[0][i]->Action(_character);
 			return true;
 		}
 	}
@@ -110,13 +110,33 @@ void UISystem::InitSkillMenu()
 
 	std::vector<Skill*> list = _character->GetSkillList();
 
+	int rowCount = 0;
+	int posX = -32;
+	int posY = -32;
+
 	for (int i = 0; i < list.size(); i++)
 	{
+		if (0 == posX && 0 == posY)
+		{
+			posX += 32.0f;
+			rowCount++;
+		}
+
 		std::wstring name = list[i]->GetName();
 		std::wstring fileName = list[i]->GetFileName();
+
 		UI* button = new SkillUI(name, fileName, width, height);
-		button->SetPosition(_character->GetX() - 32.0f, _character->GetY() - 32.0f);
+
+		button->SetPosition(_character->GetX() + posX, _character->GetY() + posY);
 		_skillMenu.push_back(button);
+
+		rowCount++;
+		posX += 32.0f;
+		if (0 == rowCount % 3)
+		{
+			posX = -32;
+			posY += 32;
+		}
 	}
 }
 
@@ -142,10 +162,10 @@ void UISystem::SetActiveMenu(eMenuType menuType)
 	case eMenuType::NONE:
 		break;
 	case eMenuType::BATTLE:
-		_activeMenu = _battleMenu;
+		_activeMenu = &_battleMenu;
 		break;
 	case eMenuType::SKILL:
-		_activeMenu = _skillMenu;
+		_activeMenu = &_skillMenu;
 		break;
 	default:
 		break;

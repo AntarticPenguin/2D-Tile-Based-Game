@@ -5,6 +5,7 @@
 #include "UISystem.h"
 
 #include "Stage.h"
+#include "Skill.h"
 #include "Map.h"
 
 #include "AttackState.h"
@@ -31,7 +32,7 @@ Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFi
 		_attackPoint = 5;
 		_attackedPoint = 0;
 		_maxHp = 50;
-		_hp = _maxHp - 40;
+		_hp = _maxHp;
 
 		_attackRange = 4;
 	}
@@ -52,6 +53,38 @@ void Player::InitState()
 	ReplaceState(eStateType::ET_ATTACK, new AttackState());
 	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
 	ReplaceState(eStateType::ET_DEAD, new DeadState());
+}
+
+void Player::InitSkill()
+{
+	{
+		Skill* skill = new Skill(L"파이어볼", L"skill_fireball.png");
+		_skillList.push_back(skill);
+	}
+	{
+		Skill* skill = new Skill(L"아이스볼트", L"skill_icebolt.png");
+		_skillList.push_back(skill);
+	}
+	{
+		Skill* skill = new Skill(L"썬더", L"skill_thunder.png");
+		_skillList.push_back(skill);
+	}
+	{
+		Skill* skill = new Skill(L"윈드스톰", L"skill_windstorm.png");
+		_skillList.push_back(skill);
+	}
+	{
+		Skill* skill = new Skill(L"수면", L"skill_sleep.png");
+		_skillList.push_back(skill);
+	}
+	{
+		Skill* skill = new Skill(L"체인라이트닝", L"skill_chainlightning.png");
+		_skillList.push_back(skill);
+	}
+	{
+		Skill* skill = new Skill(L"체인라이트닝2", L"skill_chainlightning.png");
+		_skillList.push_back(skill);
+	}
 }
 
 void Player::UpdateCharacter()
@@ -81,6 +114,7 @@ void Player::UpdateCharacter()
 		{
 			if (false == UISystem::GetInstance().IsMenuOn() && IsClickCharacter(targetTileCell))
 			{
+				UISystem::GetInstance().SetActiveMenu(eMenuType::BATTLE);
 				UISystem::GetInstance().TurnOnMenu();
 			}
 			else

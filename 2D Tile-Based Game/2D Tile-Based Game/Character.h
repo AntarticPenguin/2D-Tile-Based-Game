@@ -140,7 +140,7 @@ protected:
 	std::vector<Skill*>	_skillList;
 
 public:
-	void InitSkill();
+	virtual void InitSkill();
 	std::vector<Skill*>& GetSkillList();
 
 	//UI(Font)

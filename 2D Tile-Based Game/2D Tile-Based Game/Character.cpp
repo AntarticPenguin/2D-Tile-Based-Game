@@ -408,10 +408,7 @@ void Character::RecoveryHP(int hp)
 
 void Character::InitSkill()
 {
-	{
-		Skill* skill = new Skill(L"파이어볼", L"skill_fireball.png");
-		_skillList.push_back(skill);
-	}
+	
 }
 
 std::vector<Skill*>& Character::GetSkillList()

@@ -14,11 +14,9 @@ MagicUI::~MagicUI()
 
 void MagicUI::Action(Character* character)
 {
-	/*if (character->CanBattle())
+	if (character->CanBattle())
 	{
 		UISystem::GetInstance().SetClickedUI(eUIType::MAGIC);
-		UISystem::GetInstance().TurnOffMenu();
-		character->ChangeState(eStateType::ET_SELECT_TARGET);
-	}*/
-	UISystem::GetInstance().SetActiveMenu(eMenuType::SKILL);
+		UISystem::GetInstance().SetActiveMenu(eMenuType::SKILL);
+	}
 }

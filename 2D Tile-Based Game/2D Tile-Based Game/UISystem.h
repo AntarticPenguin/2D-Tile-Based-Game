@@ -43,7 +43,7 @@ private:
 	bool _IsBattle;
 
 	//test
-	std::vector<UI*>& _activeMenu;
+	std::vector<UI*>* _activeMenu;
 	bool _menuOn;
 
 public:
