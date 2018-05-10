@@ -1,6 +1,9 @@
 #include "IdleState.h"
 #include "Character.h"
 
+#include "GameSystem.h"
+#include "UISystem.h"
+
 IdleState::IdleState()
 {
 
@@ -20,7 +23,7 @@ void IdleState::Update(float deltaTime)
 {
 	State::Update(deltaTime);
 
-	if (eStateType::ET_NONE != _nextState)
+	if (eStateType::NONE != _nextState)
 	{
 		_character->ChangeState(_nextState);
 		return;
@@ -29,6 +32,12 @@ void IdleState::Update(float deltaTime)
 	if (false == _character->IsLive())
 		return;
 
+	if (eComponentType::PLAYER == _character->GetType() && GameSystem::GetInstance().IsRightMouseDown())
+	{
+		if (UISystem::GetInstance().IsMenuOn())
+			UISystem::GetInstance().TurnOffMenu();
+	}
+
 	_character->ChargeBehavior(deltaTime);
 }
 
@@ -36,7 +45,7 @@ void IdleState::Start()
 {
 	State::Start();
 
-	_curState = eStateType::ET_IDLE;
+	_curState = eStateType::IDLE;
 }
 
 void IdleState::Stop()

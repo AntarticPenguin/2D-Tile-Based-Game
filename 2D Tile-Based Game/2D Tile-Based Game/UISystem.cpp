@@ -21,6 +21,8 @@ UISystem::UISystem()
 	_clickedUI = eUIType::NONE;
 
 	_menuOn = false;
+
+	//test
 	_activeMenu = &_battleMenu;
 }
 
@@ -33,7 +35,7 @@ void UISystem::Render()
 	for (int i = 0; i < _activeMenu->size(); i++)
 	{
 		if (_menuOn)
-			_activeMenu[0][i]->Render();
+			(*_activeMenu)[i]->Render();
 	}
 }
 
@@ -48,9 +50,9 @@ bool UISystem::CheckUIClick(int mouseX, int mouseY)
 {
 	for (int i = 0; i < _activeMenu->size(); i++)
 	{
-		if (true == _menuOn && true == _activeMenu[0][i]->CheckCollision(mouseX, mouseY))
+		if (true == _menuOn && true == (*_activeMenu)[i]->CheckCollision(mouseX, mouseY))
 		{
-			_activeMenu[0][i]->Action(_character);
+			(*_activeMenu)[i]->Action(_character);
 			return true;
 		}
 	}

@@ -4,7 +4,7 @@
 TileObject::TileObject(std::wstring name, Sprite* sprite, int tileX, int tileY)
 	: Component(name), _posX(0.0f), _posY(0.0f)
 {
-	_eType = eComponentType::CT_TILE_OBJECT;
+	_eType = eComponentType::TILE_OBJECT;
 	_sprite = sprite;
 	_tileX = tileX;
 	_tileY = tileY;

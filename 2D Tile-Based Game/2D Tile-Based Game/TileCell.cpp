@@ -91,7 +91,7 @@ void TileCell::AddComponent(Component* component, bool isRender)
 {
 	_componentList.push_back(component);
 
-	if (eComponentType::CT_TILE_OBJECT == component->GetType())
+	if (eComponentType::TILE_OBJECT == component->GetType())
 		_distanceWeight = ((TileObject*)component)->GetDistanceWeight();
 
 	if (isRender)

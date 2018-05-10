@@ -7,7 +7,7 @@
 
 #include "ComponentMessage.h"
 
-enum eComponentType;
+enum class eComponentType;
 class Component;
 
 class ComponentSystem

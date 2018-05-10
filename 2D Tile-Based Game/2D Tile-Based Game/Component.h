@@ -3,15 +3,15 @@
 #include <string>
 #include "ComponentMessage.h"
 
-enum eComponentType
+enum class eComponentType
 {
-	CT_PLAYER,
-	CT_MONSTER,
-	CT_NPC,
-	CT_TILE_OBJECT,
-	CT_ITEM,
-	CT_ITEM_WEAPON,
-	CT_NONE,
+	PLAYER,
+	MONSTER,
+	NPC,
+	TILE_OBJECT,
+	ITEM,
+	ITEM_WEAPON,
+	NONE,
 };
 
 class Component

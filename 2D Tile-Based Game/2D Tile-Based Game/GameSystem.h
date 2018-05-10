@@ -51,7 +51,7 @@ private:
 
 	//Input
 public:
-	enum eKeyState
+	enum class eKeyState
 	{
 		KEY_DOWN,
 		KEY_UP,
@@ -60,7 +60,7 @@ public:
 
 	//INPUT
 private:
-	enum eMouseState
+	enum class eMouseState
 	{
 		DOWN,
 		HOLD,

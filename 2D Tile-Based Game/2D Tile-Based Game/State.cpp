@@ -4,7 +4,7 @@
 
 State::State()
 {
-	_nextState = eStateType::ET_NONE;
+	_nextState = eStateType::NONE;
 }
 
 State::~State()
@@ -53,8 +53,8 @@ void State::Reset()
 
 void State::Start()
 {
-	_curState = eStateType::ET_NONE;
-	_nextState = eStateType::ET_NONE;
+	_curState = eStateType::NONE;
+	_nextState = eStateType::NONE;
 }
 
 void State::Stop()

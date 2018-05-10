@@ -20,7 +20,7 @@ void DefenseState::Update(float deltaTime)
 {
 	State::Update(deltaTime);
 
-	if (eStateType::ET_NONE != _nextState)
+	if (eStateType::NONE != _nextState)
 	{
 		_character->ChangeState(_nextState);
 		return;
@@ -46,7 +46,7 @@ void DefenseState::Start()
 {
 	State::Start();
 
-	_curState = eStateType::ET_DEFENSE;
+	_curState = eStateType::DEFENSE;
 	
 	int defenseRate = (rand() % 100) + 1;
 	
@@ -60,11 +60,11 @@ void DefenseState::Start()
 	{
 		_character->SetCanMove(true);
 		_character->MoveStop();
-		_nextState = eStateType::ET_DEAD;
+		_nextState = eStateType::DEAD;
 	}
 	else
 	{
-		_nextState = eStateType::ET_IDLE;
+		_nextState = eStateType::IDLE;
 	}
 }
 

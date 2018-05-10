@@ -8,7 +8,7 @@ class Map;
 class StageLoader;
 class TileCell;
 
-enum eStage
+enum class eStage
 {
 	TOWN,
 	DUNGEON,

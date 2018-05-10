@@ -135,7 +135,7 @@ void Pathfinding::BuildPath()
 		_reverseTileCell = _reverseTileCell->GetPrevPathfindingCell();
 	}
 
-	_character->ChangeState(eStateType::ET_MOVE);
+	_character->ChangeState(eStateType::MOVE);
 }
 
 bool Pathfinding::CheckPreCondition(ePathMode mode, TilePosition nextTilePos, TileCell* nextTileCell, TileCell* targetTileCell)

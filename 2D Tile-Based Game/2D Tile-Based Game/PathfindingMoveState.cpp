@@ -31,7 +31,7 @@ void PathfindingMoveState::Update(float deltaTime)
 {
 	State::Update(deltaTime);
 
-	if (eStateType::ET_NONE != _nextState)
+	if (eStateType::NONE != _nextState)
 	{
 		_character->ChangeState(_nextState);
 		return;
@@ -62,12 +62,12 @@ void PathfindingMoveState::Update(float deltaTime)
 			}
 			else
 			{
-				_nextState = eStateType::ET_IDLE;
+				_nextState = eStateType::IDLE;
 			}
 		}
 		else
 		{
-			_nextState = eStateType::ET_IDLE;
+			_nextState = eStateType::IDLE;
 		}
 	}
 	else
@@ -79,7 +79,7 @@ void PathfindingMoveState::Update(float deltaTime)
 void PathfindingMoveState::Start()
 {
 	State::Start();
-	_curState = eStateType::ET_MOVE;
+	_curState = eStateType::MOVE;
 
 	_movingDuration = 0.0f;
 

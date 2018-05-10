@@ -9,7 +9,7 @@
 Monster::Monster(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
 	Character(name, scriptName, spriteFileName)
 {
-	_eType = eComponentType::CT_MONSTER;
+	_eType = eComponentType::MONSTER;
 
 	_moveTime = 0.0f;
 	_moveRange = 5;
@@ -31,9 +31,9 @@ Monster::~Monster()
 
 void Monster::InitState()
 {
-	ReplaceState(eStateType::ET_IDLE, new IdleState());
-	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
-	ReplaceState(eStateType::ET_DEAD, new DeadState());
+	ReplaceState(eStateType::IDLE, new IdleState());
+	ReplaceState(eStateType::DEFENSE, new DefenseState());
+	ReplaceState(eStateType::DEAD, new DeadState());
 }
 
 void Monster::UpdateCharacter()
@@ -48,25 +48,25 @@ void Monster::UpdateText()
 
 	switch (_state->GetState())
 	{
-	case eStateType::ET_ATTACK:
+	case eStateType::ATTACK:
 		wsprintf(state, L"ATTACK");
 		break;
-	case eStateType::ET_DEAD:
+	case eStateType::DEAD:
 		wsprintf(state, L"DEAD");
 		break;
-	case eStateType::ET_DEFENSE:
+	case eStateType::DEFENSE:
 		wsprintf(state, L"DEFENSE");
 		break;
-	case eStateType::ET_IDLE:
+	case eStateType::IDLE:
 		wsprintf(state, L"IDLE");
 		break;
-	case eStateType::ET_MOVE:
+	case eStateType::MOVE:
 		wsprintf(state, L"MOVE");
 		break;
-	case eStateType::ET_PATHFINDING:
+	case eStateType::PATHFINDING:
 		wsprintf(state, L"PATHFINDING");
 		break;
-	case eStateType::ET_SELECT_TARGET:
+	case eStateType::SELECT_TARGET:
 		wsprintf(state, L"WAITING SELECT");
 		break;
 	}

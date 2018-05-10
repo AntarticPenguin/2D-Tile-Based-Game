@@ -23,7 +23,7 @@ void DeadState::Update(float deltaTime)
 {
 	State::Update(deltaTime);
 
-	if (eStateType::ET_NONE != _nextState)
+	if (eStateType::NONE != _nextState)
 	{
 		_character->ChangeState(_nextState);
 		return;
@@ -49,7 +49,7 @@ void DeadState::Start()
 {
 	State::Start();
 
-	_curState = eStateType::ET_DEAD;
+	_curState = eStateType::DEAD;
 }
 
 void DeadState::Stop()

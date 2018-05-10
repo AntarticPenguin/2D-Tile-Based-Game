@@ -10,7 +10,7 @@
 RecoveryItem::RecoveryItem(std::wstring name, std::wstring scriptName, std::wstring spriteFileName)
 	: Component(name), _posX(0.0f), _posY(0.0f)
 {
-	_eType = eComponentType::CT_ITEM;
+	_eType = eComponentType::ITEM;
 	_sprite = NULL;
 	_scriptFileName = scriptName;
 	_spriteFileName = spriteFileName;
@@ -104,9 +104,9 @@ void RecoveryItem::ReceiveMessage(const sComponentMsgParam& msgParam)
 		Component* sender = msgParam.sender;
 		switch (sender->GetType())
 		{
-		case eComponentType::CT_NPC:
-		case eComponentType::CT_MONSTER:
-		case eComponentType::CT_PLAYER:
+		case eComponentType::NPC:
+		case eComponentType::MONSTER:
+		case eComponentType::PLAYER:
 			((Character*)sender)->RecoveryHP(100);
 			map->ResetTileComponent(_tileX, _tileY, this);
 			_isLive = false;

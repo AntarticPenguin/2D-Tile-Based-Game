@@ -20,7 +20,7 @@ void AttackState::Update(float deltaTime)
 {
 	State::Update(deltaTime);
 
-	if (eStateType::ET_NONE != _nextState)
+	if (eStateType::NONE != _nextState)
 	{
 		_character->ChangeState(_nextState);
 		return;
@@ -45,7 +45,7 @@ void AttackState::Reset()
 void AttackState::Start()
 {
 	State::Start();
-	_curState = eStateType::ET_ATTACK;
+	_curState = eStateType::ATTACK;
 
 	std::vector<Component*> targets = _character->GetTargets();
 	sComponentMsgParam msgParam;
@@ -72,7 +72,7 @@ void AttackState::Start()
 
 	_character->SetCanBattle(false);
 
-	_nextState = eStateType::ET_IDLE;
+	_nextState = eStateType::IDLE;
 }
 
 void AttackState::Stop()

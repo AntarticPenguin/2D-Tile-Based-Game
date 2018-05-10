@@ -9,16 +9,16 @@
 #include "Component.h"
 #include "GlobalTile.h"
 
-enum eStateType
+enum class eStateType
 {
-	ET_NONE,
-	ET_IDLE,
-	ET_MOVE,
-	ET_SELECT_TARGET,
-	ET_ATTACK,
-	ET_DEFENSE,
-	ET_PATHFINDING,
-	ET_DEAD,
+	NONE,
+	IDLE,
+	MOVE,
+	SELECT_TARGET,
+	ATTACK,
+	DEFENSE,
+	PATHFINDING,
+	DEAD,
 };
 
 class State;

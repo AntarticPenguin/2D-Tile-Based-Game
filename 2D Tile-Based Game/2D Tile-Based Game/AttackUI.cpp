@@ -20,6 +20,6 @@ void AttackUI::Action(Character* character)
 	{
 		UISystem::GetInstance().SetClickedUI(eUIType::ATTACK);
 		UISystem::GetInstance().TurnOffMenu();
-		character->ChangeState(eStateType::ET_SELECT_TARGET);
+		character->ChangeState(eStateType::SELECT_TARGET);
 	}
 }

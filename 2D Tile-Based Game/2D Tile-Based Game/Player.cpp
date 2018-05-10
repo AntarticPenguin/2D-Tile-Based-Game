@@ -19,7 +19,7 @@
 Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFileName) :
 	Character(name, scriptName, spriteFileName)
 {
-	_eType = eComponentType::CT_PLAYER;
+	_eType = eComponentType::PLAYER;
 
 	_moveTime = 0.0f;
 	_moveRange = 10;
@@ -45,14 +45,14 @@ Player::~Player()
 
 void Player::InitState()
 {
-	ReplaceState(eStateType::ET_IDLE, new IdleState());
-	ReplaceState(eStateType::ET_MOVE, new PathfindingMoveState());
-	ReplaceState(eStateType::ET_PATHFINDING, new PathfindingState());
+	ReplaceState(eStateType::IDLE, new IdleState());
+	ReplaceState(eStateType::MOVE, new PathfindingMoveState());
+	ReplaceState(eStateType::PATHFINDING, new PathfindingState());
 	
-	ReplaceState(eStateType::ET_SELECT_TARGET, new SelectTargetState());
-	ReplaceState(eStateType::ET_ATTACK, new AttackState());
-	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
-	ReplaceState(eStateType::ET_DEAD, new DeadState());
+	ReplaceState(eStateType::SELECT_TARGET, new SelectTargetState());
+	ReplaceState(eStateType::ATTACK, new AttackState());
+	ReplaceState(eStateType::DEFENSE, new DefenseState());
+	ReplaceState(eStateType::DEAD, new DeadState());
 }
 
 void Player::InitSkill()
@@ -108,7 +108,7 @@ void Player::UpdateCharacter()
 		if (eStage::TOWN == GameSystem::GetInstance().GetStage()->GetStageInfo())
 		{
 			SetTargetTileCell(targetTileCell);
-			ChangeState(eStateType::ET_PATHFINDING);
+			ChangeState(eStateType::PATHFINDING);
 		}
 		else if (eStage::DUNGEON == GameSystem::GetInstance().GetStage()->GetStageInfo())
 		{
@@ -128,7 +128,7 @@ Component* Player::Collision(std::list<Component*>& collisionList)
 	for (std::list<Component*>::iterator itr = collisionList.begin(); itr != collisionList.end(); itr++)
 	{
 		Component* com = (*itr);
-		if (eComponentType::CT_MONSTER == com->GetType())
+		if (eComponentType::MONSTER == com->GetType())
 		{
 			return com;
 		}

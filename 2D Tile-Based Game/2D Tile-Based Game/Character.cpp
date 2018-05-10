@@ -95,7 +95,7 @@ void Character::Init(int tileX, int tileY)
 	InitMove();
 	InitState();
 	InitSkill();
-	ChangeState(eStateType::ET_IDLE);
+	ChangeState(eStateType::IDLE);
 
 	//Font
 	{
@@ -208,11 +208,11 @@ void Character::InitMove()
 
 void Character::InitState()
 {
-	ReplaceState(eStateType::ET_IDLE, new IdleState());
-	ReplaceState(eStateType::ET_MOVE, new PathfindingMoveState());
-	ReplaceState(eStateType::ET_ATTACK, new AttackState());
-	ReplaceState(eStateType::ET_DEFENSE, new DefenseState());
-	ReplaceState(eStateType::ET_DEAD, new DeadState());
+	ReplaceState(eStateType::IDLE, new IdleState());
+	ReplaceState(eStateType::MOVE, new PathfindingMoveState());
+	ReplaceState(eStateType::ATTACK, new AttackState());
+	ReplaceState(eStateType::DEFENSE, new DefenseState());
+	ReplaceState(eStateType::DEAD, new DeadState());
 }
 
 void Character::ReplaceState(eStateType changeType, State* replaceState)
@@ -253,7 +253,7 @@ void Character::DecreaseHP(int decreaseHP)
 		_isLive = false;
 		_hp = 0;
 
-		_state->NextState(eStateType::ET_DEAD);
+		_state->NextState(eStateType::DEAD);
 	}
 }
 
@@ -369,7 +369,7 @@ void Character::ReceiveMessage(const sComponentMsgParam& msgParam)
 	if (L"Attack" == msgParam.message)
 	{
 		_attackedPoint = msgParam.attackPoint;
-		_state->NextState(eStateType::ET_DEFENSE);
+		_state->NextState(eStateType::DEFENSE);
 	}
 }
 
@@ -423,25 +423,25 @@ void Character::UpdateText()
 
 	switch (_state->GetState())
 	{
-	case eStateType::ET_ATTACK:
+	case eStateType::ATTACK:
 		wsprintf(state, L"ATTACK");
 		break;
-	case eStateType::ET_DEAD:
+	case eStateType::DEAD:
 		wsprintf(state, L"DEAD");
 		break;
-	case eStateType::ET_DEFENSE:
+	case eStateType::DEFENSE:
 		wsprintf(state, L"DEFENSE");
 		break;
-	case eStateType::ET_IDLE:
+	case eStateType::IDLE:
 		wsprintf(state, L"IDLE");
 		break;
-	case eStateType::ET_MOVE:
+	case eStateType::MOVE:
 		wsprintf(state, L"MOVE");
 		break;
-	case eStateType::ET_PATHFINDING:
+	case eStateType::PATHFINDING:
 		wsprintf(state, L"PATHFINDING");
 		break;
-	case eStateType::ET_SELECT_TARGET:
+	case eStateType::SELECT_TARGET:
 		wsprintf(state, L"WAITING SELECT");
 		break;
 	}

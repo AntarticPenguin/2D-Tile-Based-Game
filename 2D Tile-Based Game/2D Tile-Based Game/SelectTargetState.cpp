@@ -32,7 +32,7 @@ void SelectTargetState::Update(float deltaTime)
 {
 	State::Update(deltaTime);
 
-	if (eStateType::ET_NONE != _nextState)
+	if (eStateType::NONE != _nextState)
 	{
 		_character->ChangeState(_nextState);
 		return;
@@ -48,7 +48,7 @@ void SelectTargetState::Start()
 {
 	State::Start();
 
-	_curState = eStateType::ET_SELECT_TARGET;
+	_curState = eStateType::SELECT_TARGET;
 
 	_character->SetTargetTileCell(NULL);
 
@@ -87,7 +87,7 @@ void SelectTargetState::CancelUI(bool rightDown)
 		_character->SetTargetTileCell(NULL);
 		_pathfinder->ClearColorTile();
 		_skillViewer->ClearColorTile();
-		_character->ChangeState(eStateType::ET_IDLE);
+		_character->ChangeState(eStateType::IDLE);
 	}
 }
 
@@ -162,7 +162,7 @@ void SelectTargetState::DoMoveFunction()
 		&& targetCell->GetTileY() == _character->GetTileY()))
 	{
 		if (_pathfinder->CheckRange(targetCell))
-			_nextState = eStateType::ET_PATHFINDING;
+			_nextState = eStateType::PATHFINDING;
 	}
 }
 
@@ -179,10 +179,10 @@ void SelectTargetState::DoAttackFunction()
 	{
 		Component* com = (*itr);
 
-		if (eComponentType::CT_MONSTER == (*itr)->GetType())
+		if (eComponentType::MONSTER == (*itr)->GetType())
 		{
 			_character->AddTarget(com);
-			_nextState = eStateType::ET_ATTACK;
+			_nextState = eStateType::ATTACK;
 		}
 	}
 }
@@ -214,7 +214,7 @@ void SelectTargetState::DoMagicFunction()
 			{
 				Component* com = (*itr);
 
-				if (eComponentType::CT_MONSTER == (*itr)->GetType())
+				if (eComponentType::MONSTER == (*itr)->GetType())
 				{
 					_character->AddTarget(com);
 					_haveTargets = true;
@@ -222,7 +222,7 @@ void SelectTargetState::DoMagicFunction()
 			}
 		}
 		if(_haveTargets)
-			_nextState = eStateType::ET_ATTACK;
+			_nextState = eStateType::ATTACK;
 	}
 
 	_character->SetTargetTileCell(NULL);
