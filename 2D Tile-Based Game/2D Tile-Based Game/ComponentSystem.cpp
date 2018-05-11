@@ -95,7 +95,7 @@ Component* ComponentSystem::FindComponentInRange(Component* mapComponent, Compon
 					//죽은대상이면 검사 제외
 					if (component->IsLive())
 					{
-						for (int i = 0; i < compareTypeList.size(); i++)
+						for (size_t i = 0; i < compareTypeList.size(); i++)
 						{
 							if (compareTypeList[i] == component->GetType())
 							{

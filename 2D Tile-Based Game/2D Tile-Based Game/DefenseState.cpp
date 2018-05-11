@@ -52,8 +52,8 @@ void DefenseState::Start()
 	
 	if (0 != (defenseRate % 5))
 	{
-		int attackPoint = _character->GetAttackedPoint();
-		_character->DecreaseHP(attackPoint);
+		int damage = _character->GetDamage();
+		_character->DecreaseHP(damage);
 	}
 
 	if(false == _character->IsLive())

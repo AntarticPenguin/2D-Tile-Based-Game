@@ -9,7 +9,7 @@ State::State()
 
 State::~State()
 {
-	for (int i = 0; i < _spriteList.size(); i++)
+	for (size_t i = 0; i < _spriteList.size(); i++)
 	{
 		_spriteList[i]->Deinit();
 		delete _spriteList[i];
@@ -37,7 +37,7 @@ void State::Render()
 
 void State::Release()
 {
-	for (int i = 0; i < _spriteList.size(); i++)
+	for (size_t i = 0; i < _spriteList.size(); i++)
 	{
 		_spriteList[i]->Release();
 	}
@@ -45,7 +45,7 @@ void State::Release()
 
 void State::Reset()
 {
-	for (int i = 0; i < _spriteList.size(); i++)
+	for (size_t i = 0; i < _spriteList.size(); i++)
 	{
 		_spriteList[i]->Reset();
 	}

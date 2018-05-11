@@ -7,6 +7,7 @@
 #include "Map.h"
 #include "Pathfinding.h"
 #include "Stage.h"
+#include "Skill.h"
 #include "TileCell.h"
 
 SelectTargetState::SelectTargetState()
@@ -112,7 +113,7 @@ int SelectTargetState::GetViewRange()
 	case eUIType::ATTACK:
 		return _character->GetAttackRange();
 	case eUIType::MAGIC:
-		return _character->GetAttackRange();
+		return _character->GetSelectedSkill()->GetSkillRange();
 	default:
 		return 0;
 	}
@@ -182,6 +183,7 @@ void SelectTargetState::DoAttackFunction()
 		if (eComponentType::MONSTER == (*itr)->GetType())
 		{
 			_character->AddTarget(com);
+			_character->SetAttackType(eAttackType::NORMAL);
 			_nextState = eStateType::ATTACK;
 		}
 	}
@@ -205,7 +207,7 @@ void SelectTargetState::DoMagicFunction()
 		bool _haveTargets = false;
 		std::vector<TileCell*> tiles = _skillViewer->GetRangeTiles();
 
-		for (int i = 0; i < tiles.size(); i++)
+		for (size_t i = 0; i < tiles.size(); i++)
 		{
 			std::list<Component*> components = tiles[i]->GetComponentList();
 			std::list<Component*>::iterator itr;
@@ -221,8 +223,11 @@ void SelectTargetState::DoMagicFunction()
 				}
 			}
 		}
-		if(_haveTargets)
+		if (_haveTargets)
+		{
+			_character->SetAttackType(eAttackType::SKILL);
 			_nextState = eStateType::ATTACK;
+		}
 	}
 
 	_character->SetTargetTileCell(NULL);
@@ -238,7 +243,7 @@ void SelectTargetState::ShowSkillRange()
 		_skillViewer->Reset();
 		_skillViewer->SetStartCell(_mouseOverCell);
 		_skillViewer->SetColor(D3DCOLOR_ARGB(100, 255, 255, 0));
-		_skillViewer->SetRange(2);
+		_skillViewer->SetRange(_character->GetSelectedSkill()->GetAttackRange());
 		_skillViewer->FindPath(ePathMode::VIEW_ATTACK_RANGE);
 	}
 }

@@ -8,5 +8,5 @@ typedef struct sComponentMsgParam
 	Component* sender;
 	Component* receiver;
 	std::wstring message;
-	int attackPoint;
+	int damage;
 }sComponentMsgParam;

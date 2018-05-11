@@ -23,11 +23,8 @@ void DeadState::Update(float deltaTime)
 {
 	State::Update(deltaTime);
 
-	if (eStateType::NONE != _nextState)
-	{
-		_character->ChangeState(_nextState);
+	if (false == _character->IsLive())
 		return;
-	}
 }
 
 void DeadState::Render()

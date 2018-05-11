@@ -21,6 +21,12 @@ enum class eStateType
 	DEAD,
 };
 
+enum class eAttackType
+{
+	NORMAL,
+	SKILL,
+};
+
 class State;
 class Font;
 class TileCell;
@@ -79,13 +85,14 @@ protected:
 	float _behaviorDuration;
 	int _maxHp;
 	int _hp;
-	int _attackedPoint;
+	int _damage;
 	int _movePoint;
 
 	bool _canBattle;
+	eAttackType _attackType;
 
 public:
-	int GetAttackedPoint();
+	int GetDamage();
 	void DecreaseHP(int decreaseHP);
 
 	void DecreaseBehaviorPoint(int point);
@@ -95,6 +102,9 @@ public:
 
 	void SetCanBattle(bool canBattle);
 	bool CanBattle();
+	
+	eAttackType GetAttackType();
+	void SetAttackType(eAttackType type);
 
 	//Move
 protected:
@@ -137,11 +147,15 @@ public:
 
 	//Skill
 protected:
-	std::vector<Skill*>	_skillList;
+	std::map<std::wstring, Skill*> _skillList;
+	std::wstring _selectedSkillName;
 
 public:
 	virtual void InitSkill();
-	std::vector<Skill*>& GetSkillList();
+	void AddSkill(std::wstring name, Skill* skill);
+	std::map<std::wstring, Skill*>& GetSkillList();
+	void SetSelectedSkill(std::wstring name);
+	Skill* GetSelectedSkill();
 
 	//UI(Font)
 protected:

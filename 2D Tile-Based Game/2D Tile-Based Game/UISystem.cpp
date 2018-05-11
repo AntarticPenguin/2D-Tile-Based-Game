@@ -17,12 +17,8 @@ UISystem* UISystem::_instance = NULL;
 UISystem::UISystem()
 {
 	_character = NULL;
-	_IsBattle = false;
 	_clickedUI = eUIType::NONE;
-
 	_menuOn = false;
-
-	//test
 	_activeMenu = &_battleMenu;
 }
 
@@ -32,7 +28,7 @@ UISystem::~UISystem()
 
 void UISystem::Render()
 {
-	for (int i = 0; i < _activeMenu->size(); i++)
+	for (size_t i = 0; i < _activeMenu->size(); i++)
 	{
 		if (_menuOn)
 			(*_activeMenu)[i]->Render();
@@ -48,7 +44,7 @@ UISystem& UISystem::GetInstance()
 
 bool UISystem::CheckUIClick(int mouseX, int mouseY)
 {
-	for (int i = 0; i < _activeMenu->size(); i++)
+	for (size_t i = 0; i < _activeMenu->size(); i++)
 	{
 		if (true == _menuOn && true == (*_activeMenu)[i]->CheckCollision(mouseX, mouseY))
 		{
@@ -110,13 +106,14 @@ void UISystem::InitSkillMenu()
 	int width = 32;
 	int height = 32;
 
-	std::vector<Skill*> list = _character->GetSkillList();
+	std::map<std::wstring, Skill*> list = _character->GetSkillList();
 
 	int rowCount = 0;
 	int posX = -32;
 	int posY = -32;
 
-	for (int i = 0; i < list.size(); i++)
+	auto itr = list.begin();
+	for(; itr != list.end(); itr++)
 	{
 		if (0 == posX && 0 == posY)
 		{
@@ -124,8 +121,8 @@ void UISystem::InitSkillMenu()
 			rowCount++;
 		}
 
-		std::wstring name = list[i]->GetName();
-		std::wstring fileName = list[i]->GetFileName();
+		std::wstring name = itr->first;
+		std::wstring fileName = itr->second->GetFileName();
 
 		UI* button = new SkillUI(name, fileName, width, height);
 

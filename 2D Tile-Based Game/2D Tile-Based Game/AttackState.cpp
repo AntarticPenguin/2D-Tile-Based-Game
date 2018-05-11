@@ -1,6 +1,7 @@
 #include "ComponentSystem.h"
 #include "AttackState.h"
 #include "Character.h"
+#include "Skill.h"
 
 AttackState::AttackState()
 {
@@ -50,22 +51,24 @@ void AttackState::Start()
 	std::vector<Component*> targets = _character->GetTargets();
 	sComponentMsgParam msgParam;
 
+	int damage = GetDamageByType(_character->GetAttackType());
+
 	if (1 == targets.size())
 	{
 		msgParam.sender = (Component*)_character;
 		msgParam.receiver = targets[0];
 		msgParam.message = L"Attack";
-		msgParam.attackPoint = _character->GetAttackPoint();
+		msgParam.damage = damage;
 		ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
 	}
 	else if(1 < targets.size())
 	{
-		for (int i = 0; i < targets.size(); i++)
+		for (size_t i = 0; i < targets.size(); i++)
 		{
 			msgParam.sender = (Component*)_character;
 			msgParam.receiver = targets[i];
 			msgParam.message = L"Attack";
-			msgParam.attackPoint = _character->GetAttackPoint();
+			msgParam.damage = damage;
 			ComponentSystem::GetInstance().SendMessageToComponent(msgParam);
 		}
 	}
@@ -81,4 +84,17 @@ void AttackState::Stop()
 	_character->DecreaseBehaviorPoint(2);
 	_character->ResetTargets();
 	_character->SetTargetTileCell(NULL);
+}
+
+int AttackState::GetDamageByType(eAttackType type)
+{
+	switch (type)
+	{
+	case eAttackType::NORMAL:
+		return _character->GetAttackPoint();
+	case eAttackType::SKILL:
+		return _character->GetSelectedSkill()->GetSkillDamage();
+	default:
+		return 0;
+	}
 }

@@ -40,10 +40,8 @@ public:
 private:
 	std::vector<UI*> _battleMenu;
 	std::vector<UI*> _skillMenu;
-	bool _IsBattle;
-
-	//test
 	std::vector<UI*>* _activeMenu;
+
 	bool _menuOn;
 
 public:

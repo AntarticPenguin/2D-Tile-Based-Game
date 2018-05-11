@@ -23,28 +23,8 @@ void DefaultStageLoader::CreateComponents(std::wstring mapName)
 {
 	StageLoader::CreateComponents(L"Map01");
 
-	/*
-	//Recovery Item
-	for (int i = 0; i < 20; i++)
-	{
-		WCHAR name[256];
-		wsprintf(name, L"recovery_Item_%d", i);
-		RecoveryItem* item = new RecoveryItem(name, L"recovery_Item", L"recovery_Item");
-		_stage->AddStageComponent(item);
-	}
-
-	//NPC
-	for (int i = 0; i < 20; i++)
-	{
-		WCHAR name[256];
-		wsprintf(name, L"npc_%d", i);
-		NPC* npc = new NPC(name, L"npc", L"Npc");
-		_stage->AddStageComponent(npc);
-	}
-	*/
-
 	//Monster
-	for(int i = 0 ; i < 30; i++)
+	for (size_t i = 0; i < 30; i++)
 	{
 		WCHAR name[256];
 		wsprintf(name, L"monster_%d", i);

@@ -359,7 +359,7 @@ void GameSystem::InitInput()
 	_mouseX = 0;
 	_mouseY = 0;
 
-	for (int i = 0; i < 256; i++)
+	for (size_t i = 0; i < 256; i++)
 		_eKeyState[i] = eKeyState::KEY_UP;
 }
 

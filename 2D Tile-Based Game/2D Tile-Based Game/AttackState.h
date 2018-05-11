@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
 
+enum class eAttackType;
 class Character;
 
 class AttackState : public State
@@ -18,4 +19,6 @@ public:
 
 	void Start();
 	void Stop();
+
+	int GetDamageByType(eAttackType type);
 };

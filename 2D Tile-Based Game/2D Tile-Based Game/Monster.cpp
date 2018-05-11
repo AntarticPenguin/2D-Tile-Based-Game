@@ -17,7 +17,7 @@ Monster::Monster(std::wstring name, std::wstring scriptName, std::wstring sprite
 	//Stat Info
 	{
 		_attackPoint = 10;
-		_attackedPoint = 0;
+		_damage = 0;
 		_maxHp = 50;
 		_hp = _maxHp - 40;
 

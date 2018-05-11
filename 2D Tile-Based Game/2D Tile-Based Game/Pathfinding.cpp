@@ -270,7 +270,7 @@ float Pathfinding::CalcAStarHeuristic(float distanceFromStart, TileCell* nextTil
 
 bool Pathfinding::CheckRange(TileCell* targetTileCell)
 {
-	for (int i = 0; i < _colorTileList.size(); i++)
+	for (size_t i = 0; i < _colorTileList.size(); i++)
 	{
 		if (_colorTileList[i] == targetTileCell)
 			return true;
@@ -296,7 +296,7 @@ std::vector<TileCell*>& Pathfinding::GetRangeTiles()
 
 void Pathfinding::ClearColorTile()
 {
-	for (int i = 0; i < _colorTileList.size(); i++)
+	for (size_t i = 0; i < _colorTileList.size(); i++)
 		_colorTileList[i]->TurnOffColorTile();
 	_colorTileList.clear();
 }

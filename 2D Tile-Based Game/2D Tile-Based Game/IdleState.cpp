@@ -29,9 +29,6 @@ void IdleState::Update(float deltaTime)
 		return;
 	}
 
-	if (false == _character->IsLive())
-		return;
-
 	if (eComponentType::PLAYER == _character->GetType() && GameSystem::GetInstance().IsRightMouseDown())
 	{
 		if (UISystem::GetInstance().IsMenuOn())

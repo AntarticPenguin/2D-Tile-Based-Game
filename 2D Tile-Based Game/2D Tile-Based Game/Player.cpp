@@ -30,7 +30,7 @@ Player::Player(std::wstring name, std::wstring scriptName, std::wstring spriteFi
 	//Stat Info
 	{
 		_attackPoint = 5;
-		_attackedPoint = 0;
+		_damage = 0;
 		_maxHp = 50;
 		_hp = _maxHp;
 
@@ -58,32 +58,32 @@ void Player::InitState()
 void Player::InitSkill()
 {
 	{
-		Skill* skill = new Skill(L"파이어볼", L"skill_fireball.png");
-		_skillList.push_back(skill);
+		Skill* skill = new Skill(L"파이어볼", L"skill_fireball.png", 3, 1, 3, 7);
+		AddSkill(L"파이어볼", skill);
 	}
 	{
-		Skill* skill = new Skill(L"아이스볼트", L"skill_icebolt.png");
-		_skillList.push_back(skill);
+		Skill* skill = new Skill(L"아이스볼트", L"skill_icebolt.png", 3, 1, 3, 7);
+		AddSkill(L"아이스볼트", skill);
 	}
 	{
-		Skill* skill = new Skill(L"썬더", L"skill_thunder.png");
-		_skillList.push_back(skill);
+		Skill* skill = new Skill(L"썬더", L"skill_thunder.png", 5, 1, 3, 8);
+		AddSkill(L"썬더", skill);
 	}
 	{
-		Skill* skill = new Skill(L"윈드스톰", L"skill_windstorm.png");
-		_skillList.push_back(skill);
+		Skill* skill = new Skill(L"윈드스톰", L"skill_windstorm.png", 5, 2, 4, 8);
+		AddSkill(L"윈드스톰", skill);
 	}
 	{
-		Skill* skill = new Skill(L"수면", L"skill_sleep.png");
-		_skillList.push_back(skill);
+		Skill* skill = new Skill(L"수면", L"skill_sleep.png", 4, 3, 4, 1);
+		AddSkill(L"수면", skill);
 	}
 	{
-		Skill* skill = new Skill(L"체인라이트닝", L"skill_chainlightning.png");
-		_skillList.push_back(skill);
+		Skill* skill = new Skill(L"체인라이트닝", L"skill_chainlightning.png", 6, 5, 5, 10);
+		AddSkill(L"체인라이트닝", skill);
 	}
 	{
-		Skill* skill = new Skill(L"체인라이트닝2", L"skill_chainlightning.png");
-		_skillList.push_back(skill);
+		Skill* skill = new Skill(L"체인라이트닝2", L"skill_chainlightning.png", 6, 5, 5, 10);
+		AddSkill(L"체인라이트닝2", skill);
 	}
 }
 

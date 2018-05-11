@@ -37,7 +37,7 @@ Character::Character(std::wstring name, std::wstring scriptName, std::wstring sp
 		_behaviorPoint = 10;
 		_behaviorDuration = 0.0f;
 		_attackPoint = 10;
-		_attackedPoint = 0;
+		_damage = 0;
 		_attackRange = 1;
 
 		_movePoint = 2;
@@ -49,7 +49,6 @@ Character::Character(std::wstring name, std::wstring scriptName, std::wstring sp
 	}
 
 	_targetTileCell = NULL;
-
 	_targets.clear();
 }
 
@@ -238,9 +237,9 @@ void Character::ChangeState(eStateType stateType)
 	_state->Start();
 }
 
-int Character::GetAttackedPoint()
+int Character::GetDamage()
 {
-	return _attackedPoint;
+	return _damage;
 }
 
 void Character::DecreaseHP(int decreaseHP)
@@ -307,6 +306,16 @@ bool Character::CanBattle()
 	return _canBattle;
 }
 
+eAttackType Character::GetAttackType()
+{
+	return _attackType;
+}
+
+void Character::SetAttackType(eAttackType type)
+{
+	_attackType = type;
+}
+
 void Character::MoveStart(int newTileX, int newTileY)
 {
 	_isMoving = true;
@@ -368,7 +377,7 @@ void Character::ReceiveMessage(const sComponentMsgParam& msgParam)
 {
 	if (L"Attack" == msgParam.message)
 	{
-		_attackedPoint = msgParam.attackPoint;
+		_damage = msgParam.damage;
 		_state->NextState(eStateType::DEFENSE);
 	}
 }
@@ -411,9 +420,24 @@ void Character::InitSkill()
 	
 }
 
-std::vector<Skill*>& Character::GetSkillList()
+void Character::AddSkill(std::wstring name, Skill* skill)
+{
+	_skillList[name] = skill;
+}
+
+std::map<std::wstring, Skill*>& Character::GetSkillList()
 {
 	return _skillList;
+}
+
+void Character::SetSelectedSkill(std::wstring name)
+{
+	_selectedSkillName = name;
+}
+
+Skill* Character::GetSelectedSkill()
+{
+	return _skillList[_selectedSkillName];
 }
 
 void Character::UpdateText()

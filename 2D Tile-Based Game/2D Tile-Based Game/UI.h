@@ -7,8 +7,7 @@ class Character;
 
 class UI
 {
-	//FOR DEBUG
-private:
+protected:
 	std::wstring _name;
 
 private:

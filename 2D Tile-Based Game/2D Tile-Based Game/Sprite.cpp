@@ -42,7 +42,7 @@ void Sprite::Init()
 		//파일을 읽어, 텍스트 정보를 파싱
 	
 		std::vector<std::string> scriptTextList = ResourceManager::GetInstance().LoadScript(_scriptFileName);
-		for (int i = 0; i < scriptTextList.size(); i++)
+		for (size_t i = 0; i < scriptTextList.size(); i++)
 		{
 			std::string record = scriptTextList[i];
 			
@@ -149,6 +149,6 @@ void Sprite::SetPosition(float x, float y)
 
 void Sprite::SetColor(D3DCOLOR color)
 {
-	for (int i = 0; i < _frameList.size(); i++)
+	for (size_t i = 0; i < _frameList.size(); i++)
 		_frameList[i]->SetColor(color);
 }
