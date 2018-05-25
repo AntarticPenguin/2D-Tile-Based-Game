@@ -59,7 +59,7 @@ public:
 	void SetStartFromCharacter(Character* character);
 	void FindPath(ePathMode mode, eFindMethod method = eFindMethod::DISTANCE);
 	void BuildPath();
-	bool CheckPreCondition(ePathMode mode, TilePosition nextTilePos, TileCell* nextTileCell, TileCell* targetTileCell);
+	bool CheckPreCondition(ePathMode mode, TileCell* nextTileCell, TileCell* targetTileCell);
 	void Reset();
 
 	float CalcHeuristic(eFindMethod eMethod, float distanceFromStart, TileCell* tileCell, TileCell* nextTileCell, TileCell* targetTileCell);

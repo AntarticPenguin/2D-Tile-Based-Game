@@ -85,7 +85,7 @@ void Pathfinding::FindPath(ePathMode mode, eFindMethod method)
 
 				TileCell* nextTileCell = _map->GetTileCell(nextTilePos);
 
-				if (CheckPreCondition(mode, nextTilePos, nextTileCell, targetTileCell))
+				if (CheckPreCondition(mode, nextTileCell, targetTileCell))
 				{
 					float distanceFromStart = command.tileCell->GetDistanceFromStart() + command.tileCell->GetDistanceWeight();
 					float heuristic = CalcHeuristic(method, distanceFromStart, command.tileCell, nextTileCell, targetTileCell);
@@ -138,7 +138,7 @@ void Pathfinding::BuildPath()
 	_character->ChangeState(eStateType::MOVE);
 }
 
-bool Pathfinding::CheckPreCondition(ePathMode mode, TilePosition nextTilePos, TileCell* nextTileCell, TileCell* targetTileCell)
+bool Pathfinding::CheckPreCondition(ePathMode mode, TileCell* nextTileCell, TileCell* targetTileCell)
 {
 	bool condition = false;
 
@@ -155,7 +155,7 @@ bool Pathfinding::CheckPreCondition(ePathMode mode, TilePosition nextTilePos, Ti
 	if (ePathMode::VIEW_MOVE_RANGE == mode || ePathMode::FIND_PATH == mode)
 	{
 		if (condition)
-			condition = _map->CanMoveTileMap(nextTilePos);
+			condition = nextTileCell->CanMove();
 	}
 
 	if (ePathMode::VIEW_MOVE_RANGE == mode || ePathMode::VIEW_ATTACK_RANGE == mode)
